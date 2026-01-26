@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://kauosqegnisajlanwlpz.supabase.co https://cdn.jsdelivr.net https://cdn.botpress.cloud https://files.bpcontent.cloud https://embed.tawk.to https://*.tawk.to; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.tawk.to; font-src 'self' https://fonts.gstatic.com https://*.tawk.to; img-src 'self' data: https://*.supabase.co https://lh3.googleusercontent.com https://images.unsplash.com https://*.tawk.to; connect-src 'self' https://kauosqegnisajlanwlpz.supabase.co wss://kauosqegnisajlanwlpz.supabase.co https://*.tawk.to wss://*.tawk.to https://webchat.botpress.cloud; frame-src 'self' https://*.tawk.to https://webchat.botpress.cloud;">
+    <title>Features - Secure Escrow & Fraud Prevention | Sogoloh</title>
+    <meta name="description" content="Explore Sogoloh's powerful features: secure escrow protection, identity verification, fraud monitoring, and dispute resolution for safe online trading.">
+    <link rel='icon' type='image/png' href='favicon.png?v=1.0.0'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/header-dropdown.css?v=1.0.0">
+    <link rel="stylesheet" href="css/index-modern.css?v=1.0.0">
+    <script src="js/env.js?v=1.0.0"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Sogoloh" class="logo-img">
+            </a>
+            <nav class="nav-menu">
+                <a href="about.html" class="nav-link">About</a>
+                <a href="how-it-works.html" class="nav-link">How It Works</a>
+                <a href="features.html" class="nav-link" style="color: var(--primary);">Features</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+            <div class="nav-actions" id="desktopAuthButtons">
+                <a href="signin.html" class="btn-text">Sign In</a>
+                <a href="signup.html" class="btn-primary">Get Started</a>
+            </div>
+            <div class="user-avatar-container hidden" id="userAvatarContainer">
+                <button class="user-avatar-btn" id="desktopUserAvatarBtn">
+                    <span id="desktopUserInitials">BC</span>
+                </button>
+            </div>
+            <div class="mobile-controls">
+                <button class="user-avatar-btn hidden" id="userAvatarBtn">
+                    <span id="userInitials">BC</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <span class="mobile-menu-title">Menu</span>
+                <button class="mobile-menu-close" id="mobileMenuCloseBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <nav class="mobile-nav">
+                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="how-it-works.html" class="mobile-nav-link">How It Works</a>
+                <a href="features.html" class="mobile-nav-link">Features</a>
+                <a href="faq.html" class="mobile-nav-link">FAQ</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+            </nav>
+            <div class="mobile-auth-container">
+                <div class="mobile-auth-buttons">
+                    <a href="signup.html" class="mobile-auth-btn primary">Get Started</a>
+                    <a href="signin.html" class="mobile-auth-btn secondary">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero hero-page hero-features">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+                    </svg>
+                    Powerful Protection
+                </div>
+                <h1>Features That Keep You Safe</h1>
+                <p>From escrow payments to identity verification, explore the comprehensive security features that make Sogoloh the safest marketplace in Malawi.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Core Features</span>
+                <h2>Built for Security & Trust</h2>
+                <p>Multiple layers of protection for every transaction</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3>Escrow Protection</h3>
+                    <p>Payments held in secure account until buyer confirms delivery. Sellers guaranteed payment, buyers guaranteed delivery—no one gets scammed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3>User Verification</h3>
+                    <p>National ID verification for all users. Verified badges show trustworthy traders. Unverified users have limited access—keeping scammers out.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                    </div>
+                    <h3>Fraud Prevention</h3>
+                    <p>24/7 automated monitoring and manual reviews. Suspicious patterns trigger alerts. Repeat offenders permanently banned.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3>Dispute Resolution</h3>
+                    <p>Expert team investigates with evidence from both parties. Fair decisions based on proof, transaction history, and platform policies. 24-48hr resolution.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+                        </svg>
+                    </div>
+                    <h3>Delivery Tracking</h3>
+                    <p>Track transactions from payment to delivery. Real-time status updates, SMS & email alerts, and clear transaction timelines.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                    </div>
+                    <h3>Secure Messaging</h3>
+                    <p>Communicate safely within the platform. Negotiate terms, share photos, discuss details without exposing phone number or personal contact info.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How Escrow Works -->
+    <section class="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?w=800&auto=format&fit=crop" alt="Escrow protection">
+                </div>
+                <div class="about-content">
+                    <span class="section-label">How Escrow Works</span>
+                    <h2>Eliminating Fraud Permanently</h2>
+                    <p class="lead">Escrow is the foundation of Sogoloh's security.</p>
+                    <p>When a buyer pays, funds are held in a neutral account—not with the seller. The seller can see payment is confirmed, but cannot withdraw it until the buyer approves delivery.</p>
+                    <p>This protects buyers from fake sellers who disappear with money. It protects sellers from buyers who claim non-delivery after receiving goods. No one can cheat the system.</p>
+                    <a href="how-it-works.html" class="btn-primary">See the Full Process</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verification -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="about-grid" style="direction: rtl;">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=800&auto=format&fit=crop" alt="Identity verification">
+                </div>
+                <div class="about-content" style="direction: ltr;">
+                    <span class="section-label">Verification System</span>
+                    <h2>Building a Verified Community</h2>
+                    <p class="lead">Every user must verify their National ID before accessing full platform features.</p>
+                    <p>This filters out scammers before they can list items or make purchases. Verified users display trust badges on their profiles.</p>
+                    <p>Our verification process is quick—most users are approved within minutes. But it's thorough enough to keep bad actors out permanently.</p>
+                    <a href="signup.html" class="btn-primary">Get Verified Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Experience Secure Trading</h2>
+                <p>Join the safest marketplace in Malawi. Sign up today and enjoy peace of mind with every transaction.</p>
+                <div class="cta-actions">
+                    <a href="signup.html" class="cta-btn cta-btn-primary">
+                        <span>Get Started Now</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="logo.png" alt="Sogoloh" class="footer-logo" style="height: 40px; margin-bottom: 16px;">
+                    <p>Making social media buying and selling safer for everyone in Malawi. Safe payments, verified products, and 100% protection from scams.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <a href="about.html">About Us</a>
+                    <a href="how-it-works.html">How It Works</a>
+                    <a href="features.html">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="faq.html">Help Center</a>
+                    <a href="contact.html">Contact Support</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="#">Security</a>
+                </div>
+            </div>
+            <div class="footer-bottom" style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center;">
+                <p>&copy; Sogoloh.com 2026 All rights reserved.</p>
+                <p>Crafted with ♥ by Nyasa Creatives</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/headerAuth.js"></script>
+    <script src="js/index-modern.js"></script>
+</body>
+</html>

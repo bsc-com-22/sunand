@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://kauosqegnisajlanwlpz.supabase.co https://cdn.jsdelivr.net https://cdn.botpress.cloud https://files.bpcontent.cloud https://embed.tawk.to https://*.tawk.to; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.tawk.to; font-src 'self' https://fonts.gstatic.com https://*.tawk.to; img-src 'self' data: https://*.supabase.co https://lh3.googleusercontent.com https://images.unsplash.com https://*.tawk.to; connect-src 'self' https://kauosqegnisajlanwlpz.supabase.co wss://kauosqegnisajlanwlpz.supabase.co https://*.tawk.to wss://*.tawk.to https://webchat.botpress.cloud; frame-src 'self' https://*.tawk.to https://webchat.botpress.cloud;">
+    <title>FAQ - Frequently Asked Questions | Sogoloh</title>
+    <meta name="description" content="Get answers about escrow payments, verification, disputes, refunds, and everything you need to trade safely on Sogoloh.">
+    <link rel='icon' type='image/png' href='favicon.png?v=1.0.0'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/header-dropdown.css?v=1.0.0">
+    <link rel="stylesheet" href="css/index-modern.css?v=1.0.0">
+    <script src="js/env.js?v=1.0.0"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Sogoloh" class="logo-img">
+            </a>
+            <nav class="nav-menu">
+                <a href="about.html" class="nav-link">About</a>
+                <a href="how-it-works.html" class="nav-link">How It Works</a>
+                <a href="features.html" class="nav-link">Features</a>
+                <a href="faq.html" class="nav-link" style="color: var(--primary);">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+            <div class="nav-actions" id="desktopAuthButtons">
+                <a href="signin.html" class="btn-text">Sign In</a>
+                <a href="signup.html" class="btn-primary">Get Started</a>
+            </div>
+            <div class="user-avatar-container hidden" id="userAvatarContainer">
+                <button class="user-avatar-btn" id="desktopUserAvatarBtn">
+                    <span id="desktopUserInitials">BC</span>
+                </button>
+            </div>
+            <div class="mobile-controls">
+                <button class="user-avatar-btn hidden" id="userAvatarBtn">
+                    <span id="userInitials">BC</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <span class="mobile-menu-title">Menu</span>
+                <button class="mobile-menu-close" id="mobileMenuCloseBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <nav class="mobile-nav">
+                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="how-it-works.html" class="mobile-nav-link">How It Works</a>
+                <a href="features.html" class="mobile-nav-link">Features</a>
+                <a href="faq.html" class="mobile-nav-link">FAQ</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+            </nav>
+            <div class="mobile-auth-container">
+                <div class="mobile-auth-buttons">
+                    <a href="signup.html" class="mobile-auth-btn primary">Get Started</a>
+                    <a href="signin.html" class="mobile-auth-btn secondary">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero hero-page hero-faq">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                    </svg>
+                    Got Questions?
+                </div>
+                <h1>Frequently Asked Questions</h1>
+                <p>Get answers about escrow payments, verification, disputes, refunds, and everything else you need to trade safely on Sogoloh.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Everything You Need to Know</span>
+                <h2>Common Questions</h2>
+                <p>Find quick answers to the most frequently asked questions</p>
+            </div>
+            <div class="faq-list">
+                <!-- Getting Started -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How do I buy an item safely?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Find an item, negotiate with the seller, and initiate a transaction. Pay into Sogoloh's escrow account using mobile money or bank transfer. Only approve delivery after inspecting the item. Never send money outside the platform.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What happens if I don't receive my item?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>If the item isn't delivered within the agreed timeframe, report it immediately. Your funds remain in escrow and will be refunded to you after investigation. The seller's account may be suspended.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How long do I have to inspect an item?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>You have 24-48 hours (depending on the item category) to inspect and approve or reject the item after delivery. This gives you time to test electronics, check clothing fit, or verify product authenticity.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>When do sellers get paid?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Funds are released to your Sogoloh wallet immediately after the buyer approves delivery. You can then withdraw to your mobile money account (Airtel Money, Mpamba) or bank account within 24 hours.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How do I list an item?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sign up, verify your identity by uploading your National ID, and click "Post Listing". Add clear photos, detailed description, price, and condition. Verified sellers get more visibility.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What fees do sellers pay?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sogoloh charges a small service fee on successful transactions. The fee structure is transparent and shown before you confirm a sale. There are no hidden charges or listing fees.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is escrow safe?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes. Escrow is one of the safest payment methods available. Sogoloh holds funds in a secure account until both parties fulfill their obligations. Neither party can access funds prematurely.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What payment methods do you accept?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We accept Airtel Money, TNM Mpamba, and bank transfers from all major Malawian banks. Payment instructions are provided during checkout.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Are there transaction limits?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>New users have a transaction limit that increases as you build trust on the platform. Verified users with good transaction history enjoy higher limits. Contact support if you need to process a high-value transaction.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Why do I need to verify my identity?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Verification builds trust and prevents fraud. It ensures all users are real people, which protects you from scammers. Verified users also get access to higher transaction limits and priority support.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How long does verification take?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Most verifications are completed instantly or within a few hours. In rare cases where additional review is needed, it may take up to 24 hours. You'll receive an SMS notification when approved.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What if the item is damaged or not as described?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Do NOT approve the transaction. Take photos of the issue and report it immediately through your transaction dashboard. Our team will investigate and may issue a full refund or partial refund depending on the evidence.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How do refunds work?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Refunds are processed to your Sogoloh wallet or original payment method within 24-48 hours after a dispute is resolved in your favor. Mobile money refunds are typically instant; bank refunds may take 2-3 business days.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How do I reset my password?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Go to the Sign In page and click "Forgot Password". Enter your registered email or phone number to receive a password reset link. Follow the link to create a new password.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is my personal information safe?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, we use bank-level encryption to protect your data. We never share your personal information with third parties without your consent.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Still Have Questions -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Still Have Questions?</h2>
+                <p>Our support team is here to help. Contact us anytime and we'll get back to you within 24 hours.</p>
+                <div class="cta-actions">
+                    <a href="contact.html" class="cta-btn cta-btn-primary">
+                        <span>Contact Support</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                        </svg>
+                    </a>
+                    <a href="signup.html" class="cta-btn cta-btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                        <span>Get Started</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="logo.png" alt="Sogoloh" class="footer-logo" style="height: 40px; margin-bottom: 16px;">
+                    <p>Making social media buying and selling safer for everyone in Malawi. Safe payments, verified products, and 100% protection from scams.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <a href="about.html">About Us</a>
+                    <a href="how-it-works.html">How It Works</a>
+                    <a href="features.html">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="faq.html">Help Center</a>
+                    <a href="contact.html">Contact Support</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="#">Security</a>
+                </div>
+            </div>
+            <div class="footer-bottom" style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center;">
+                <p>&copy; Sogoloh.com 2026 All rights reserved.</p>
+                <p>Crafted with ♥ by Nyasa Creatives</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/headerAuth.js"></script>
+    <script src="js/index-modern.js"></script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://kauosqegnisajlanwlpz.supabase.co https://cdn.jsdelivr.net https://cdn.botpress.cloud https://files.bpcontent.cloud https://embed.tawk.to https://*.tawk.to; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.tawk.to; font-src 'self' https://fonts.gstatic.com https://*.tawk.to; img-src 'self' data: https://*.supabase.co https://lh3.googleusercontent.com https://images.unsplash.com https://*.tawk.to; connect-src 'self' https://kauosqegnisajlanwlpz.supabase.co wss://kauosqegnisajlanwlpz.supabase.co https://*.tawk.to wss://*.tawk.to https://webchat.botpress.cloud; frame-src 'self' https://*.tawk.to https://webchat.botpress.cloud;">
+    <title>How It Works - Secure Escrow & Safe Trading | Sogoloh</title>
+    <meta name="description" content="Learn how Sogoloh's secure escrow process works. From sign up to safe delivery and payment release, we ensure every transaction is protected.">
+    <link rel='icon' type='image/png' href='favicon.png?v=1.0.0'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/header-dropdown.css?v=1.0.0">
+    <link rel="stylesheet" href="css/index-modern.css?v=1.0.0">
+    <script src="js/env.js?v=1.0.0"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Sogoloh" class="logo-img">
+            </a>
+            <nav class="nav-menu">
+                <a href="about.html" class="nav-link">About</a>
+                <a href="how-it-works.html" class="nav-link" style="color: var(--primary);">How It Works</a>
+                <a href="features.html" class="nav-link">Features</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+            <div class="nav-actions" id="desktopAuthButtons">
+                <a href="signin.html" class="btn-text">Sign In</a>
+                <a href="signup.html" class="btn-primary">Get Started</a>
+            </div>
+            <div class="user-avatar-container hidden" id="userAvatarContainer">
+                <button class="user-avatar-btn" id="desktopUserAvatarBtn">
+                    <span id="desktopUserInitials">BC</span>
+                </button>
+            </div>
+            <div class="mobile-controls">
+                <button class="user-avatar-btn hidden" id="userAvatarBtn">
+                    <span id="userInitials">BC</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <span class="mobile-menu-title">Menu</span>
+                <button class="mobile-menu-close" id="mobileMenuCloseBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <nav class="mobile-nav">
+                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="how-it-works.html" class="mobile-nav-link">How It Works</a>
+                <a href="features.html" class="mobile-nav-link">Features</a>
+                <a href="faq.html" class="mobile-nav-link">FAQ</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+            </nav>
+            <div class="mobile-auth-container">
+                <div class="mobile-auth-buttons">
+                    <a href="signup.html" class="mobile-auth-btn primary">Get Started</a>
+                    <a href="signin.html" class="mobile-auth-btn secondary">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero hero-page hero-hiw">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                    </svg>
+                    Simple & Secure
+                </div>
+                <h1>How Sogoloh Protects Your Transactions</h1>
+                <p>Our secure escrow system ensures your payment is held safely until delivery is confirmed, providing comprehensive buyer and seller protection every step of the way.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Process -->
+    <section class="how-it-works" id="process">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">The Complete Process</span>
+                <h2>5 Steps to Safe Trading</h2>
+                <p>From signup to payment release—here's exactly how it works</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <div class="step-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                    </div>
+                    <h3>Sign Up & Verify</h3>
+                    <p>Create your account in minutes. Upload your National ID for KYC verification. Verified users get a trust badge and access to secure transactions.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <div class="step-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                    </div>
+                    <h3>Create or Find Listing</h3>
+                    <p>Sellers post items with photos, descriptions, and prices. Buyers browse verified listings, contact sellers, and negotiate terms—all within the platform.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <div class="step-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3>Buyer Pays into Escrow</h3>
+                    <p>Buyer deposits funds via Airtel Money, TNM Mpamba, or bank transfer. Sogoloh holds the payment securely—seller sees funds are committed, but cannot access them until delivery is approved.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">04</div>
+                    <div class="step-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                        </svg>
+                    </div>
+                    <h3>Delivery & Inspection</h3>
+                    <p>Seller ships or delivers the item. Buyer inspects it carefully to confirm it matches the listing. If there's an issue, buyer can reject and request a refund or open a dispute.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">05</div>
+                    <div class="step-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3>Release Payment to Seller</h3>
+                    <p>Once the buyer approves, funds are instantly released from escrow to the seller's wallet. Seller can withdraw to mobile money or bank. Transaction complete—both parties protected.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">What Makes It Safe</span>
+                <h2>Built-In Protection at Every Step</h2>
+                <p>Multiple layers of security ensure your transaction is always protected</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3>Escrow Holds Funds</h3>
+                    <p>Money stays in a secure neutral account until both parties fulfill their obligations.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3>Identity Verification</h3>
+                    <p>All users verify their National ID before accessing full platform features.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3>Inspection Period</h3>
+                    <p>Buyers have 24-48 hours to inspect items and confirm they match the listing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3>Real-Time Tracking</h3>
+                    <p>Track your transaction status with SMS notifications and timeline updates.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3>Dispute Resolution</h3>
+                    <p>Expert team reviews evidence and resolves issues fairly within 24-48 hours.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                        </svg>
+                    </div>
+                    <h3>Refund Protection</h3>
+                    <p>If something goes wrong, get your money back within 24-48 hours.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Visual -->
+    <section class="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Transaction Timeline</span>
+                <h2>What Happens When</h2>
+                <p>Clear timeframes so you always know what to expect</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" alt="Transaction timeline">
+                </div>
+                <div class="about-content">
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span><strong>Instant:</strong> Verification (most users)</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span><strong>Immediate:</strong> Payment confirmation</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span><strong>24-48 hours:</strong> Inspection period</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span><strong>Instant:</strong> Fund release on approval</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span><strong>24 hours:</strong> Withdrawal processing</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span><strong>24-48 hours:</strong> Dispute resolution</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Start Trading?</h2>
+                <p>Experience the safest way to buy and sell online in Malawi. Create your account in minutes and start your first secure transaction today.</p>
+                <div class="cta-actions">
+                    <a href="signup.html" class="cta-btn cta-btn-primary">
+                        <span>Create Free Account</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </a>
+                    <a href="features.html" class="cta-btn cta-btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <span>Explore Features</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="logo.png" alt="Sogoloh" class="footer-logo" style="height: 40px; margin-bottom: 16px;">
+                    <p>Making social media buying and selling safer for everyone in Malawi. Safe payments, verified products, and 100% protection from scams.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <a href="about.html">About Us</a>
+                    <a href="how-it-works.html">How It Works</a>
+                    <a href="features.html">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="faq.html">Help Center</a>
+                    <a href="contact.html">Contact Support</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="#">Security</a>
+                </div>
+            </div>
+            <div class="footer-bottom" style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center;">
+                <p>&copy; Sogoloh.com 2026 All rights reserved.</p>
+                <p>Crafted with ♥ by Nyasa Creatives</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/headerAuth.js"></script>
+    <script src="js/index-modern.js"></script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://kauosqegnisajlanwlpz.supabase.co https://cdn.jsdelivr.net https://cdn.botpress.cloud https://files.bpcontent.cloud https://embed.tawk.to https://*.tawk.to; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.tawk.to; font-src 'self' https://fonts.gstatic.com https://*.tawk.to; img-src 'self' data: https://*.supabase.co https://lh3.googleusercontent.com https://images.unsplash.com https://*.tawk.to; connect-src 'self' https://kauosqegnisajlanwlpz.supabase.co wss://kauosqegnisajlanwlpz.supabase.co https://*.tawk.to wss://*.tawk.to https://webchat.botpress.cloud; frame-src 'self' https://*.tawk.to https://webchat.botpress.cloud;">
+    <title>Pricing - Transparent Escrow Fees | Sogoloh</title>
+    <meta name="description" content="View Sogoloh's transparent pricing structure. Low transaction fees for secure escrow services and affordable identity verification. No hidden charges.">
+    <link rel='icon' type='image/png' href='favicon.png?v=1.0.0'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/header-dropdown.css?v=1.0.0">
+    <link rel="stylesheet" href="css/index-modern.css?v=1.0.0">
+    <script src="js/env.js?v=1.0.0"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "Why is there an escrow fee?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The escrow fee covers the cost of securely holding funds, transaction monitoring, and providing dispute resolution services to ensure your safety."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Who pays platform fees: buyer or seller?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Typically, the fee is deducted from the total transaction amount, but buyers and sellers can negotiate who covers the cost during the deal setup."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Are verification fees one-time or recurring?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Identity verification is a one-time fee. Once verified, you enjoy the benefits of a trusted profile for life."
+        }
+      }]
+    }
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Sogoloh" class="logo-img">
+            </a>
+            <nav class="nav-menu">
+                <a href="about.html" class="nav-link">About</a>
+                <a href="how-it-works.html" class="nav-link">How It Works</a>
+                <a href="features.html" class="nav-link">Features</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </nav>
+            <div class="nav-actions" id="desktopAuthButtons">
+                <a href="signin.html" class="btn-text">Sign In</a>
+                <a href="signup.html" class="btn-primary">Get Started</a>
+            </div>
+            <div class="user-avatar-container hidden" id="userAvatarContainer">
+                <button class="user-avatar-btn" id="desktopUserAvatarBtn">
+                    <span id="desktopUserInitials">BC</span>
+                </button>
+            </div>
+            <div class="mobile-controls">
+                <button class="user-avatar-btn hidden" id="userAvatarBtn">
+                    <span id="userInitials">BC</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <span class="mobile-menu-title">Menu</span>
+                <button class="mobile-menu-close" id="mobileMenuCloseBtn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <nav class="mobile-nav">
+                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="how-it-works.html" class="mobile-nav-link">How It Works</a>
+                <a href="features.html" class="mobile-nav-link">Features</a>
+                <a href="faq.html" class="mobile-nav-link">FAQ</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+            </nav>
+            <div class="mobile-auth-container">
+                <div class="mobile-auth-buttons">
+                    <a href="signup.html" class="mobile-auth-btn primary">Get Started</a>
+                    <a href="signin.html" class="mobile-auth-btn secondary">Sign In</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                    </svg>
+                    Simple & Transparent
+                </div>
+                <h1>Fair Pricing for Secure Trading</h1>
+                <p>No hidden fees. Just simple, affordable pricing to keep your transactions safe and your identity verified.</p>
+                <div class="hero-actions">
+                    <a href="signup.html" class="btn-primary btn-lg">Start Trading</a>
+                    <a href="#pricing" class="btn-secondary btn-lg">View Fees</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Cards -->
+    <section class="features" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Our Fees</span>
+                <h2>Choose Your Protection</h2>
+                <p>Affordable options for every user</p>
+            </div>
+            <div class="about-grid" style="align-items: stretch;">
+                <!-- Verification Fee -->
+                <div class="about-content" style="background: white; padding: 48px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border: 1px solid var(--border);">
+                    <div style="margin-bottom: 24px;">
+                        <span style="background: var(--bg-alt); color: var(--text-light); padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 500;">Identity Verification</span>
+                        <div style="font-size: 48px; font-weight: 700; color: var(--text); margin: 16px 0;">MK 2,000<span style="font-size: 16px; color: var(--text-light); font-weight: 400;">/one-time</span></div>
+                        <p style="color: var(--text-light);">Build trust instantly with a verified badge on your profile.</p>
+                    </div>
+                    <div class="features-list" style="margin-bottom: 32px;">
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Verified Badge on Profile</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Increased Buyer Trust</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Priority Support</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Lifetime Validity</span>
+                        </div>
+                    </div>
+                    <a href="signup.html" class="btn-secondary" style="width: 100%; text-align: center;">Get Verified</a>
+                </div>
+
+                <!-- Transaction Fee -->
+                <div class="about-content" style="background: white; padding: 48px; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); border: 2px solid var(--primary); position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 24px; right: -32px; background: var(--primary); color: white; padding: 6px 40px; transform: rotate(45deg); font-size: 14px; font-weight: 600;">Recommended</div>
+                    <div style="margin-bottom: 24px;">
+                        <span style="background: rgba(37, 99, 235, 0.1); color: var(--primary); padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 500;">Escrow Service</span>
+                        <div style="font-size: 48px; font-weight: 700; color: var(--text); margin: 16px 0;">3%<span style="font-size: 16px; color: var(--text-light); font-weight: 400;">/transaction</span></div>
+                        <p style="color: var(--text-light);">Complete protection for your money until delivery is confirmed.</p>
+                    </div>
+                    <div class="features-list" style="margin-bottom: 32px;">
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Secure Fund Holding</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Fraud Protection</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Dispute Resolution</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span>Instant Release</span>
+                        </div>
+                    </div>
+                    <a href="signup.html" class="btn-primary" style="width: 100%; text-align: center;">Start Trading</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">What You Get</span>
+                <h2>More Than Just Payments</h2>
+                <p>Your fees support a complete safety infrastructure</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3>Secure Processing</h3>
+                    <p>We handle complex bank and mobile money integrations so you don't have to.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3>Identity Checks</h3>
+                    <p>Automated and manual verification of government IDs to keep scammers out.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path>
+                        </svg>
+                    </div>
+                    <h3>Dispute Handling</h3>
+                    <p>A dedicated team to mediate and resolve issues fairly if something goes wrong.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3>24/7 Support</h3>
+                    <p>Round-the-clock assistance for any questions or concerns you might have.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing FAQ -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Common Questions</span>
+                <h2>Pricing FAQ</h2>
+                <p>Answers to common questions about our fees</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Why is there an escrow fee?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>The escrow fee covers the cost of securely holding funds, transaction monitoring, and providing dispute resolution services. It ensures both parties are protected.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Who pays the fee?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Typically, the fee is deducted from the total transaction amount, but buyers and sellers can negotiate who covers the cost during the deal setup.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Is verification recurring?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No, identity verification is a one-time fee. Once verified, you enjoy the benefits for life as long as you maintain good standing.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Are there hidden charges?</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No, transparency is key. All fees are clearly displayed before you confirm any transaction. You will never be charged a fee you didn't agree to.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Trade Safely?</h2>
+                <p>Join thousands of Malawians who trust Sogoloh for their online transactions.</p>
+                <div class="cta-actions">
+                    <a href="signup.html" class="cta-btn cta-btn-primary">
+                        <span>Create Free Account</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <img src="logo.png" alt="Sogoloh" class="footer-logo" style="height: 40px; margin-bottom: 16px;">
+                    <p>Making social media buying and selling safer for everyone in Malawi. Safe payments, verified products, and 100% protection from scams.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Platform</h4>
+                    <a href="about.html">About Us</a>
+                    <a href="how-it-works.html">How It Works</a>
+                    <a href="features.html">Features</a>
+                    <a href="pricing.html">Pricing</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Support</h4>
+                    <a href="faq.html">Help Center</a>
+                    <a href="contact.html">Contact Support</a>
+                    <a href="faq.html">FAQ</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="#">Security</a>
+                </div>
+            </div>
+            <div class="footer-bottom" style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center;">
+                <p>&copy; Sogoloh.com 2026 All rights reserved.</p>
+                <p>Crafted with ♥ by Nyasa Creatives</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/headerAuth.js"></script>
+    <script src="js/index-modern.js"></script>
+</body>
+</html>
