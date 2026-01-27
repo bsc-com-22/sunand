@@ -990,7 +990,7 @@
     width: 70px;
     height: 70px;
     margin: 0 auto 1.5rem;
-    background: rgba(27, 94, 32, 0.1);
+    background: #1b5e20;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1001,6 +1001,7 @@
 .work-icon svg {
     width: 32px;
     height: 32px;
+    color: #fbc02d;
 }
 
 .work-card h3 {
@@ -1181,8 +1182,8 @@
 }
 
 .cta .btn-primary {
-    background: #fff;
-    color: var(--primary);
+    background: #fbc02d;
+    color: #1b5e20;
     border: 2px solid #fff;
     font-weight: 600;
     padding: 12px 30px;
