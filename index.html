@@ -60,23 +60,8 @@
 
     <!-- Impact Metrics (Quick Stats) -->
     <section class="impact-metrics">
-        <div class="container metrics-grid">
-            <div class="metric-item">
-                <span class="counter" id="stat_farmers" data-target="85">0</span>
-                <p>Farmers Trained</p>
-            </div>
-            <div class="metric-item">
-                <span class="counter" id="stat_solar" data-target="10">0</span>
-                <p>Solar Systems Installed</p>
-            </div>
-            <div class="metric-item">
-                <span class="counter" id="stat_districts" data-target="5">0</span>
-                <p>Districts Reached</p>
-            </div>
-            <div class="metric-item">
-                <span class="counter" id="stat_lives" data-target="1200">0</span>
-                <p>Lives Impacted</p>
-            </div>
+        <div class="container metrics-grid" data-cms-block="home_stats">
+            <!-- Stats will be loaded from Supabase -->
         </div>
     </section>
 
@@ -231,8 +216,8 @@
             <h2 data-cms-block="home_cta_title">Join Us in Building a Food-Secure Malawi</h2>
             <p data-cms-block="home_cta_subtitle">Encourage donations, partnerships, and volunteering.</p>
             <div class="cta-buttons">
-                <a href="donate.html" class="btn btn-primary">Support Our Work</a>
-                <a href="contact.html" class="btn btn-secondary">Get In Touch</a>
+                <a href="donate.html" class="btn btn-primary" data-cms-block="home_cta_btn1_label" data-cms-link="home_cta_btn1_link">Support Our Work</a>
+                <a href="contact.html" class="btn btn-secondary" data-cms-block="home_cta_btn2_label" data-cms-link="home_cta_btn2_link">Get In Touch</a>
             </div>
         </div>
     </section>

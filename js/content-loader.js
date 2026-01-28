@@ -29,6 +29,7 @@ async function loadGlobalSettings() {
 }
 
 async function loadImpactMetrics() {
+    // This function now handles both the old site_settings stats and the new home_stats section
     const { data: stats } = await supabase.from('site_settings').select('*').filter('key', 'like', 'stat_%');
     if (stats) {
         stats.forEach(stat => {
@@ -146,7 +147,6 @@ async function loadPageContent() {
             const heroSection = document.querySelector('.hero');
             if (heroSection) {
                 heroSection.style.backgroundImage = `url('${page.hero_image_url}')`;
-                // Ensure overlay is still visible if it's a background image
                 heroSection.style.backgroundSize = 'cover';
                 heroSection.style.backgroundPosition = 'center';
             }
@@ -154,17 +154,46 @@ async function loadPageContent() {
 
         if (page.sections) {
             page.sections.forEach(section => {
-                const identifier = section.section_name || section.identifier || section.slug;
+                const identifier = section.section_name;
                 if (!identifier) return;
 
+                // 1. Handle Repeatable Stats
+                if (identifier === 'home_stats' && section.content?.stats) {
+                    const container = document.querySelector('[data-cms-block="home_stats"]');
+                    if (container) {
+                        container.innerHTML = section.content.stats.map(s => `
+                            <div class="metric-item">
+                                <span class="counter" data-target="${s.number.replace(/[^0-9]/g, '')}">${s.number}</span>
+                                <p>${s.label}</p>
+                            </div>
+                        `).join('');
+
+                        // Re-trigger counter animation if script.js is already loaded
+                        if (window.initCounters) window.initCounters();
+                    }
+                    return;
+                }
+
+                // 2. Handle Links
+                const linkElements = document.querySelectorAll(`[data-cms-link="${identifier}"]`);
+                linkElements.forEach(el => {
+                    const link = section.content?.html || section.content || '';
+                    if (link) el.href = link;
+                });
+
+                // 3. Handle Standard Blocks
                 const elements = document.querySelectorAll(`[data-cms-block="${identifier}"]`);
                 elements.forEach(el => {
-                    // If content is an object (JSONB), try to get 'html' or 'text' property
                     let htmlContent = section.content;
                     if (htmlContent && typeof htmlContent === 'object') {
-                        htmlContent = htmlContent.html || htmlContent.text || JSON.stringify(htmlContent);
+                        htmlContent = htmlContent.html || htmlContent.text || '';
                     }
-                    el.innerHTML = htmlContent || '';
+
+                    if (el.tagName === 'A') {
+                        el.textContent = htmlContent || '';
+                    } else {
+                        el.innerHTML = htmlContent || '';
+                    }
                 });
             });
         }

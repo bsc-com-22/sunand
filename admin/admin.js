@@ -39,6 +39,161 @@ async function logAction(action, type, id, details = {}) {
     }
 }
 
+// Page Structure Mapping for Visual Editor
+const PAGE_STRUCTURE = {
+    'index.html': [
+        {
+            id: 'hero',
+            label: 'Top Page Image',
+            description: 'The main banner at the top of the homepage.',
+            fields: [
+                { key: 'home_hero_title', label: 'Main Heading', type: 'text' },
+                { key: 'home_hero_subtitle', label: 'Sub-heading', type: 'text' }
+            ],
+            hasHeroImage: true
+        },
+        {
+            id: 'stats',
+            label: 'Impact Numbers',
+            description: 'Key statistics shown on the homepage.',
+            isRepeatable: true,
+            key: 'home_stats'
+        },
+        {
+            id: 'challenge',
+            label: 'The Challenge',
+            description: 'Section explaining the problems being addressed.',
+            fields: [
+                { key: 'home_challenge_title', label: 'Section Title', type: 'text' },
+                { key: 'home_challenge_content', label: 'Main Content', type: 'rich' }
+            ]
+        },
+        {
+            id: 'work',
+            label: 'Our Model',
+            description: 'Overview of the integrated delivery model.',
+            fields: [
+                { key: 'home_work_title', label: 'Section Title', type: 'text' },
+                { key: 'home_work_subtitle', label: 'Sub-heading', type: 'text' }
+            ]
+        },
+        {
+            id: 'cta',
+            label: 'Action Section',
+            description: 'The final call-to-action at the bottom of the page.',
+            fields: [
+                { key: 'home_cta_title', label: 'Heading', type: 'text' },
+                { key: 'home_cta_subtitle', label: 'Description', type: 'text' },
+                { key: 'home_cta_btn1_label', label: 'Button 1 Label', type: 'text' },
+                { key: 'home_cta_btn1_link', label: 'Button 1 Link', type: 'page' },
+                { key: 'home_cta_btn2_label', label: 'Button 2 Label', type: 'text' },
+                { key: 'home_cta_btn2_link', label: 'Button 2 Link', type: 'page' }
+            ]
+        }
+    ],
+    'about.html': [
+        {
+            id: 'hero',
+            label: 'Top Page Image',
+            description: 'The main banner at the top of the About page.',
+            fields: [
+                { key: 'about_hero_title', label: 'Page Title', type: 'text' },
+                { key: 'about_hero_subtitle', label: 'Page Subtitle', type: 'text' }
+            ],
+            hasHeroImage: true
+        },
+        {
+            id: 'story',
+            label: 'Our Story',
+            description: 'Detailed information about the foundation.',
+            fields: [
+                { key: 'about_who_we_are_title', label: 'Section Title', type: 'text' },
+                { key: 'about_who_we_are_content', label: 'Main Content', type: 'rich' }
+            ]
+        }
+    ],
+    'work.html': [
+        {
+            id: 'hero',
+            label: 'Top Page Image',
+            fields: [
+                { key: 'work_hero_title', label: 'Page Title', type: 'text' },
+                { key: 'work_hero_subtitle', label: 'Page Subtitle', type: 'text' }
+            ],
+            hasHeroImage: true
+        },
+        {
+            id: 'model',
+            label: 'Our Integrated Model',
+            fields: [
+                { key: 'work_model_title', label: 'Section Title', type: 'text' },
+                { key: 'work_model_content', label: 'Main Content', type: 'rich' }
+            ]
+        }
+    ],
+    'impact.html': [
+        {
+            id: 'hero',
+            label: 'Top Page Image',
+            fields: [
+                { key: 'impact_hero_title', label: 'Page Title', type: 'text' },
+                { key: 'impact_hero_subtitle', label: 'Page Subtitle', type: 'text' }
+            ],
+            hasHeroImage: true
+        },
+        {
+            id: 'scaling',
+            label: 'Scaling Forward',
+            fields: [
+                { key: 'impact_scaling_title', label: 'Section Title', type: 'text' },
+                { key: 'impact_scaling_target', label: 'Target Number', type: 'text' },
+                { key: 'impact_scaling_subtext', label: 'Description', type: 'text' }
+            ]
+        }
+    ],
+    'contact.html': [
+        {
+            id: 'hero',
+            label: 'Top Page Image',
+            fields: [
+                { key: 'contact_hero_title', label: 'Page Title', type: 'text' },
+                { key: 'contact_hero_subtitle', label: 'Page Subtitle', type: 'text' }
+            ],
+            hasHeroImage: true
+        },
+        {
+            id: 'form',
+            label: 'Contact Form',
+            fields: [
+                { key: 'contact_form_title', label: 'Form Heading', type: 'text' }
+            ]
+        }
+    ]
+};
+
+function createRichEditor(container, initialValue) {
+    const toolbar = document.createElement('div');
+    toolbar.className = 'editor-toolbar';
+    toolbar.style.display = 'flex';
+    toolbar.style.gap = '0.5rem';
+    toolbar.style.marginBottom = '0.5rem';
+    toolbar.innerHTML = `
+        <button type="button" class="btn-icon" onclick="document.execCommand('bold', false, null)"><b>B</b></button>
+        <button type="button" class="btn-icon" onclick="document.execCommand('italic', false, null)"><i>I</i></button>
+        <button type="button" class="btn-icon" onclick="document.execCommand('insertUnorderedList', false, null)">• List</button>
+    `;
+
+    const editor = document.createElement('div');
+    editor.className = 'rich-editor';
+    editor.contentEditable = true;
+    editor.innerHTML = initialValue;
+
+    container.appendChild(toolbar);
+    container.appendChild(editor);
+
+    return editor;
+}
+
 // UI Helpers
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
@@ -646,31 +801,28 @@ async function showNewsForm(id = null) {
                 await supabase.from('news').update(newsData).eq('id', id);
                 await logAction('Updated', 'News Post', id, { title: newsData.title });
             } else {
-                const { data, error } = await supabase.from('news').insert([newsData]).select();
-                if (data) {
-                    newsId = data[0].id;
-                    await logAction('Created', 'News Post', newsId, { title: newsData.title });
-                }
+                const { data } = await supabase.from('news').insert([newsData]).select();
+                newsId = data[0].id;
+                await logAction('Created', 'News Post', newsId, { title: newsData.title });
             }
 
-            // Handle document uploads
+            // Handle Attachments
             const docFiles = document.getElementById('news-docs-input').files;
-            if (docFiles.length > 0 && newsId) {
-                for (const file of docFiles) {
-                    const docData = await uploadDocument(file);
-                    if (docData) {
-                        await supabase.from('news_attachments').insert([{
-                            news_id: newsId,
-                            file_url: docData.url,
-                            file_name: docData.name,
-                            file_type: docData.type,
-                            file_size: docData.size
-                        }]);
-                    }
+            for (let i = 0; i < docFiles.length; i++) {
+                const doc = await uploadDocument(docFiles[i]);
+                if (doc) {
+                    await supabase.from('news_attachments').insert({
+                        news_id: newsId,
+                        file_name: doc.name,
+                        file_url: doc.url,
+                        file_type: doc.type,
+                        file_size: doc.size,
+                        storage_path: doc.path
+                    });
                 }
             }
 
-            showToast(id ? 'News post updated' : 'News post created');
+            showToast('News post saved successfully');
             closeModal();
             renderNews();
         } catch (error) {
@@ -686,25 +838,14 @@ window.removeAttachment = async (id, url) => {
     if (confirm('Remove this attachment?')) {
         // Delete from DB
         await supabase.from('news_attachments').delete().eq('id', id);
-
-        // Try to delete from storage if we can extract the path
-        try {
-            const urlObj = new URL(url);
-            const pathParts = urlObj.pathname.split('/');
-            const fileName = pathParts[pathParts.length - 1];
-            await supabase.storage.from('news_attachments').remove([fileName]);
-        } catch (e) {
-            console.error('Could not delete file from storage:', e);
-        }
-
-        // Remove from UI
-        const item = document.querySelector(`.attachment-item[data-id="${id}"]`);
-        if (item) item.remove();
+        // Note: Storage deletion could be added here if needed
+        document.querySelector(`.attachment-item[data-id="${id}"]`).remove();
+        showToast('Attachment removed');
     }
 };
 
 async function renderNews() {
-    const { data: news, error } = await supabase.from('news').select('*').order('published_at', { ascending: false });
+    const { data: news } = await supabase.from('news').select('*').order('published_at', { ascending: false });
 
     let html = `
         <div class="content-card">
@@ -726,11 +867,10 @@ async function renderNews() {
 
     if (news && news.length > 0) {
         news.forEach(item => {
-            const date = new Date(item.published_at).toLocaleDateString();
             html += `
                 <tr>
                     <td>${item.title}</td>
-                    <td>${date}</td>
+                    <td>${new Date(item.published_at).toLocaleDateString()}</td>
                     <td><span class="status-badge ${item.is_published ? 'status-published' : 'status-draft'}">${item.is_published ? 'Published' : 'Draft'}</span></td>
                     <td><span class="status-badge ${item.is_featured ? 'status-published' : 'status-draft'}">${item.is_featured ? 'Yes' : 'No'}</span></td>
                     <td class="actions">
@@ -754,174 +894,6 @@ async function renderNews() {
     document.getElementById('add-news-btn').addEventListener('click', () => showNewsForm());
 }
 
-async function renderMessages(filter = 'all') {
-    let query = supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
-
-    if (filter === 'unread') query = query.eq('is_read', false);
-    if (filter === 'read') query = query.eq('is_read', true);
-
-    const { data: messages, error } = await query;
-
-    let html = `
-        <div class="content-card">
-            <div class="card-header" style="justify-content: space-between; align-items: center;">
-                <h3>Contact Inbox</h3>
-                <div class="filter-group">
-                    <select id="message-filter" class="btn-icon" style="width: auto;">
-                        <option value="all" ${filter === 'all' ? 'selected' : ''}>All Messages</option>
-                        <option value="unread" ${filter === 'unread' ? 'selected' : ''}>Unread</option>
-                        <option value="read" ${filter === 'read' ? 'selected' : ''}>Read</option>
-                    </select>
-                </div>
-            </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Status</th>
-                        <th>Date</th>
-                        <th>Sender</th>
-                        <th>Subject</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-
-    if (messages && messages.length > 0) {
-        messages.forEach(msg => {
-            const date = new Date(msg.created_at).toLocaleString();
-            html += `
-                <tr class="${msg.is_read ? '' : 'unread-row'}" style="${msg.is_read ? '' : 'background: #f0fdf4; font-weight: 600;'}">
-                    <td>
-                        <span class="status-badge ${msg.is_read ? 'status-draft' : 'status-published'}">
-                            ${msg.is_read ? 'Read' : 'New'}
-                        </span>
-                    </td>
-                    <td>${date}</td>
-                    <td><strong>${msg.name}</strong><br><small>${msg.email}</small></td>
-                    <td>${msg.subject || '-'}</td>
-                    <td class="actions">
-                        <button class="btn-icon btn-edit" onclick="viewMessage('${msg.id}')">View</button>
-                        <button class="btn-icon btn-delete" onclick="deleteMessage('${msg.id}')">Delete</button>
-                    </td>
-                </tr>
-            `;
-        });
-    } else {
-        html += '<tr><td colspan="5">No messages found.</td></tr>';
-    }
-
-    html += `
-                </tbody>
-            </table>
-        </div>
-    `;
-
-    contentArea.innerHTML = html;
-
-    document.getElementById('message-filter').addEventListener('change', (e) => {
-        renderMessages(e.target.value);
-    });
-}
-
-window.viewMessage = async (id) => {
-    const { data: msg } = await supabase.from('contact_messages').select('*').eq('id', id).single();
-    if (!msg) return;
-
-    // Mark as read
-    if (!msg.is_read) {
-        await supabase.from('contact_messages').update({ is_read: true }).eq('id', id);
-        // We don't re-render immediately to keep the modal open, but we update the background row if needed
-    }
-
-    const modal = document.createElement('div');
-    modal.className = 'admin-modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
-                <div>
-                    <h3 style="margin-bottom: 0.5rem;">Message from ${msg.name}</h3>
-                    <p style="color: #64748b;">${new Date(msg.created_at).toLocaleString()}</p>
-                </div>
-                <button class="btn-icon" onclick="toggleReadStatus('${msg.id}', ${msg.is_read})">
-                    Mark as ${msg.is_read ? 'Unread' : 'Read'}
-                </button>
-            </div>
-            
-            <div class="admin-form">
-                <div class="form-group">
-                    <label>Email</label>
-                    <p>${msg.email}</p>
-                </div>
-                <div class="form-group">
-                    <label>Subject</label>
-                    <p>${msg.subject || 'No Subject'}</p>
-                </div>
-                <div class="form-group">
-                    <label>Message Content</label>
-                    <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; line-height: 1.6;">
-                        ${msg.message.replace(/\n/g, '<br>')}
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-actions">
-                <button type="button" class="btn btn-primary" onclick="closeModal(); renderMessages();">Close</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-};
-
-window.toggleReadStatus = async (id, currentStatus) => {
-    await supabase.from('contact_messages').update({ is_read: !currentStatus }).eq('id', id);
-    closeModal();
-    renderMessages();
-    showToast('Message status updated');
-};
-
-async function renderSubscribers() {
-    const { data: subscribers, error } = await supabase.from('newsletter_subscribers').select('*').order('created_at', { ascending: false });
-
-    let html = `
-        <div class="content-card">
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Email Address</th>
-                        <th>Subscription Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-
-    if (subscribers && subscribers.length > 0) {
-        subscribers.forEach(sub => {
-            const date = new Date(sub.created_at).toLocaleString();
-            html += `
-                <tr>
-                    <td>${sub.email}</td>
-                    <td>${date}</td>
-                    <td class="actions">
-                        <button class="btn-icon btn-delete" onclick="deleteSubscriber('${sub.id}')">Delete</button>
-                    </td>
-                </tr>
-            `;
-        });
-    } else {
-        html += '<tr><td colspan="3">No subscribers found.</td></tr>';
-    }
-
-    html += `
-                </tbody>
-            </table>
-        </div>
-    `;
-
-    contentArea.innerHTML = html;
-}
-
 async function showTeamForm(id = null) {
     let member = { name: '', role: '', bio: '', sort_order: 0 };
     if (id) {
@@ -941,19 +913,19 @@ async function showTeamForm(id = null) {
                 </div>
                 <div class="form-group">
                     <label>Role</label>
-                    <input type="text" name="role" value="${member.role || ''}">
+                    <input type="text" name="role" value="${member.role}" required>
                 </div>
                 <div class="form-group">
                     <label>Bio</label>
-                    <textarea name="bio">${member.bio || ''}</textarea>
+                    <textarea name="bio" rows="4">${member.bio || ''}</textarea>
                 </div>
                 <div class="form-group">
-                    <label>Image</label>
+                    <label>Photo</label>
                     <input type="file" id="team-image-input" accept="image/*">
                     ${member.image_url ? `<img src="${member.image_url}" class="preview-img">` : ''}
                 </div>
                 <div class="form-group">
-                    <label>Sort Order</label>
+                    <label>Sort Order (Lower numbers appear first)</label>
                     <input type="number" name="sort_order" value="${member.sort_order}">
                 </div>
                 <div class="modal-actions">
@@ -973,24 +945,23 @@ async function showTeamForm(id = null) {
 
         try {
             const formData = new FormData(e.target);
-            const teamData = Object.fromEntries(formData.entries());
+            const memberData = Object.fromEntries(formData.entries());
 
             const imageFile = document.getElementById('team-image-input').files[0];
             if (imageFile) {
                 const imageUrl = await uploadImage('team', imageFile);
-                if (imageUrl) teamData.image_url = imageUrl;
+                if (imageUrl) memberData.image_url = imageUrl;
             }
 
             if (id) {
-                await supabase.from('team_members').update(teamData).eq('id', id);
-                await logAction('Updated', 'Team Member', id, { name: teamData.name });
-                showToast('Team member updated');
+                await supabase.from('team_members').update(memberData).eq('id', id);
+                await logAction('Updated', 'Team Member', id, { name: memberData.name });
             } else {
-                const { data } = await supabase.from('team_members').insert([teamData]).select();
-                if (data) await logAction('Added', 'Team Member', data[0].id, { name: teamData.name });
-                showToast('Team member added');
+                const { data } = await supabase.from('team_members').insert([memberData]).select();
+                if (data) await logAction('Created', 'Team Member', data[0].id, { name: memberData.name });
             }
 
+            showToast('Team member saved successfully');
             closeModal();
             renderTeam();
         } catch (error) {
@@ -1003,7 +974,7 @@ async function showTeamForm(id = null) {
 }
 
 async function renderTeam() {
-    const { data: team, error } = await supabase.from('team_members').select('*').order('sort_order', { ascending: true });
+    const { data: team } = await supabase.from('team_members').select('*').order('sort_order');
 
     let html = `
         <div class="content-card">
@@ -1013,8 +984,10 @@ async function renderTeam() {
             <table class="admin-table">
                 <thead>
                     <tr>
+                        <th>Photo</th>
                         <th>Name</th>
                         <th>Role</th>
+                        <th>Order</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -1025,8 +998,10 @@ async function renderTeam() {
         team.forEach(member => {
             html += `
                 <tr>
+                    <td><img src="${member.image_url || '../assets/placeholder.png'}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
                     <td>${member.name}</td>
-                    <td>${member.role || '-'}</td>
+                    <td>${member.role}</td>
+                    <td>${member.sort_order}</td>
                     <td class="actions">
                         <button class="btn-icon btn-edit" onclick="editTeam('${member.id}')">Edit</button>
                         <button class="btn-icon btn-delete" onclick="deleteTeam('${member.id}')">Delete</button>
@@ -1035,7 +1010,7 @@ async function renderTeam() {
             `;
         });
     } else {
-        html += '<tr><td colspan="3">No team members found.</td></tr>';
+        html += '<tr><td colspan="5">No team members found.</td></tr>';
     }
 
     html += `
@@ -1048,34 +1023,218 @@ async function renderTeam() {
     document.getElementById('add-team-btn').addEventListener('click', () => showTeamForm());
 }
 
-async function renderSettings() {
-    const { data: settings, error } = await supabase.from('site_settings').select('*');
+async function renderMessages() {
+    const filter = document.getElementById('message-filter')?.value || 'all';
+    let query = supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
+
+    if (filter === 'unread') query = query.eq('is_read', false);
+    if (filter === 'read') query = query.eq('is_read', true);
+
+    const { data: messages } = await query;
 
     let html = `
         <div class="content-card">
-            <form id="settings-form" class="admin-form">
-                <div class="settings-grid">
+            <div class="card-header" style="justify-content: space-between;">
+                <h3>Inquiries</h3>
+                <div class="filter-group">
+                    <select id="message-filter" onchange="renderMessages()">
+                        <option value="all" ${filter === 'all' ? 'selected' : ''}>All Messages</option>
+                        <option value="unread" ${filter === 'unread' ? 'selected' : ''}>Unread</option>
+                        <option value="read" ${filter === 'read' ? 'selected' : ''}>Read</option>
+                    </select>
+                </div>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Sender</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
     `;
 
-    if (settings) {
-        settings.forEach(setting => {
+    if (messages && messages.length > 0) {
+        messages.forEach(msg => {
             html += `
-                <div class="form-group">
-                    <label for="setting-${setting.id}">${setting.key.replace(/_/g, ' ').toUpperCase()}</label>
-                    <input type="text" id="setting-${setting.id}" value="${setting.value || ''}" data-id="${setting.id}">
-                </div>
+                <tr class="${!msg.is_read ? 'unread-row' : ''}">
+                    <td><span class="status-badge ${msg.is_read ? 'status-draft' : 'status-published'}">${msg.is_read ? 'Read' : 'New'}</span></td>
+                    <td>
+                        <strong>${msg.name}</strong><br>
+                        <small>${msg.email}</small>
+                    </td>
+                    <td>${msg.subject}</td>
+                    <td>${new Date(msg.created_at).toLocaleDateString()}</td>
+                    <td class="actions">
+                        <button class="btn-icon btn-edit" onclick="viewMessage('${msg.id}')">View</button>
+                        <button class="btn-icon btn-delete" onclick="deleteMessage('${msg.id}')">Delete</button>
+                    </td>
+                </tr>
             `;
         });
+    } else {
+        html += '<tr><td colspan="5">No messages found.</td></tr>';
     }
 
     html += `
-                </div>
-                <button type="submit" class="btn btn-primary">Save All Settings</button>
-            </form>
+                </tbody>
+            </table>
         </div>
     `;
 
     contentArea.innerHTML = html;
+}
+
+window.viewMessage = async (id) => {
+    const { data: msg } = await supabase.from('contact_messages').select('*').eq('id', id).single();
+    if (!msg) return;
+
+    // Mark as read if unread
+    if (!msg.is_read) {
+        await supabase.from('contact_messages').update({ is_read: true }).eq('id', id);
+        renderMessages();
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'admin-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                <div>
+                    <h3 style="margin-bottom: 0.5rem;">Message from ${msg.name}</h3>
+                    <p style="color: #64748b;">${msg.email} • ${new Date(msg.created_at).toLocaleString()}</p>
+                </div>
+                <span class="status-badge ${msg.is_read ? 'status-draft' : 'status-published'}">${msg.is_read ? 'Read' : 'New'}</span>
+            </div>
+            
+            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                <h4 style="margin-bottom: 1rem; color: #1e293b;">Subject: ${msg.subject}</h4>
+                <p style="white-space: pre-wrap; line-height: 1.6;">${msg.message}</p>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="toggleReadStatus('${msg.id}', ${!msg.is_read})">Mark as ${msg.is_read ? 'Unread' : 'Read'}</button>
+                <button class="btn btn-primary" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+};
+
+window.toggleReadStatus = async (id, status) => {
+    await supabase.from('contact_messages').update({ is_read: status }).eq('id', id);
+    showToast(`Message marked as ${status ? 'read' : 'unread'}`);
+    closeModal();
+    renderMessages();
+};
+
+async function renderSubscribers() {
+    const { data: subs } = await supabase.from('newsletter_subscribers').select('*').order('created_at', { ascending: false });
+
+    let html = `
+        <div class="content-card">
+            <div class="card-header">
+                <h3>Newsletter Subscribers</h3>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Joined Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    if (subs && subs.length > 0) {
+        subs.forEach(sub => {
+            html += `
+                <tr>
+                    <td>${sub.email}</td>
+                    <td>${new Date(sub.created_at).toLocaleDateString()}</td>
+                    <td class="actions">
+                        <button class="btn-icon btn-delete" onclick="deleteSubscriber('${sub.id}')">Remove</button>
+                    </td>
+                </tr>
+            `;
+        });
+    } else {
+        html += '<tr><td colspan="3">No subscribers found.</td></tr>';
+    }
+
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    contentArea.innerHTML = html;
+}
+
+async function renderSettings() {
+    const { data: settings } = await supabase.from('site_settings').select('*');
+    const s = {};
+    settings.forEach(item => s[item.key] = item.value);
+
+    contentArea.innerHTML = `
+        <div class="content-card">
+            <form id="settings-form" class="admin-form">
+                <div class="form-grid">
+                    <div class="form-main">
+                        <h3>Contact Information</h3>
+                        <div class="form-group">
+                            <label>Official Email</label>
+                            <input type="email" name="contact_email" value="${s.contact_email || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" name="contact_phone" value="${s.contact_phone || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label>Physical Address</label>
+                            <textarea name="contact_address">${s.contact_address || ''}</textarea>
+                        </div>
+
+                        <h3 style="margin-top: 2rem;">Social Media Links</h3>
+                        <div class="form-group">
+                            <label>Facebook URL</label>
+                            <input type="url" name="social_facebook" value="${s.social_facebook || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label>Twitter/X URL</label>
+                            <input type="url" name="social_twitter" value="${s.social_twitter || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label>LinkedIn URL</label>
+                            <input type="url" name="social_linkedin" value="${s.social_linkedin || ''}">
+                        </div>
+                    </div>
+                    <div class="form-sidebar">
+                        <h3>Impact Stats</h3>
+                        <div class="form-group">
+                            <label>Farmers Trained</label>
+                            <input type="text" name="stat_farmers" value="${s.stat_farmers || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label>Hectares Covered</label>
+                            <input type="text" name="stat_hectares" value="${s.stat_hectares || ''}">
+                        </div>
+                        <div class="form-group">
+                            <label>Youth Empowered</label>
+                            <input type="text" name="stat_youth" value="${s.stat_youth || ''}">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions" style="margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary">Save All Settings</button>
+                </div>
+            </form>
+        </div>
+    `;
 
     document.getElementById('settings-form').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -1084,18 +1243,12 @@ async function renderSettings() {
         setLoading(submitBtn, true);
 
         try {
-            const inputs = e.target.querySelectorAll('input');
-            const updates = Array.from(inputs).map(input => ({
-                id: input.getAttribute('data-id'),
-                value: input.value
-            }));
-
-            for (const update of updates) {
-                await supabase.from('site_settings').update({ value: update.value }).eq('id', update.id);
+            const formData = new FormData(e.target);
+            for (const [key, value] of formData.entries()) {
+                await supabase.from('site_settings').upsert({ key, value });
             }
-
-            await logAction('Updated', 'Site Settings', 'global');
             showToast('Settings saved successfully');
+            await logAction('Updated', 'Site Settings', 'global');
         } catch (error) {
             console.error('Error saving settings:', error);
             showToast('Error saving settings', 'error');
@@ -1207,70 +1360,170 @@ window.editPage = async (id) => {
     const { data: page } = await supabase.from('pages').select('*, sections(*)').eq('id', id).single();
     if (!page) return;
 
+    const { data: allPages } = await supabase.from('pages').select('title, slug');
+
     const modal = document.createElement('div');
     modal.className = 'admin-modal';
 
-    // Defensive mapping to handle potential nesting or missing fields
-    const sectionsHtml = (page.sections || []).map(s => {
-        const section = s.sections && typeof s.sections === 'object' ? s.sections : s;
-        const identifier = section.section_name || section.identifier || section.key || section.slug || 'no-id';
-        const name = section.name || section.title || section.label || identifier.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        const sectionId = section.id;
-
-        let content = section.content;
-        if (content === null || content === undefined) {
-            content = '';
-        } else if (typeof content === 'object') {
-            content = content.html || content.text || JSON.stringify(content, null, 2);
-        }
-
-        return `
-            <div class="form-group">
-                <label>${name} (<code>${identifier}</code>)</label>
-                <textarea name="section_${sectionId}" rows="5">${content}</textarea>
-            </div>
-        `;
-    }).join('');
+    const structure = PAGE_STRUCTURE[page.slug] || [];
 
     modal.innerHTML = `
         <div class="modal-content modal-large">
-            <h3>Edit Page: ${page.title || 'Untitled'}</h3>
-            <form id="page-content-form" class="admin-form">
-                <div class="form-grid">
-                    <div class="form-main">
-                        ${sectionsHtml || '<p>No editable sections found for this page.</p>'}
-                    </div>
-                    <div class="form-sidebar">
-                        <div class="form-group">
-                            <label>Hero Image</label>
-                            <input type="file" id="hero-image-input" accept="image/*">
-                            <div id="hero-preview-container">
-                                ${page.hero_image_url ? `<img src="${page.hero_image_url}" class="preview-img">` : '<p class="helper-text">No hero image set.</p>'}
-                            </div>
-                        </div>
-                    </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div>
+                    <h3 style="margin-bottom: 0.25rem;">Editing: ${page.title}</h3>
+                    <p class="helper-text">Changes will be live once you click "Save & Update Website"</p>
                 </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button class="page-preview-btn" onclick="previewPage('${page.slug}')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    Preview Page
+                </button>
+            </div>
+            
+            <form id="visual-editor-form" class="admin-form">
+                <div id="editor-sections-container">
+                    <!-- Sections will be injected here -->
+                </div>
+
+                <div class="modal-actions" style="position: sticky; bottom: -3rem; background: white; padding: 1.5rem 0; border-top: 1px solid #e2e8f0; margin-top: 3rem; z-index: 10;">
+                    <button type="button" class="btn btn-outline" onclick="closeModal()">Discard Changes</button>
+                    <button type="submit" class="btn btn-primary">Save & Update Website</button>
                 </div>
             </form>
         </div>
     `;
     document.body.appendChild(modal);
 
-    document.getElementById('page-content-form').addEventListener('submit', async (e) => {
+    const container = document.getElementById('editor-sections-container');
+    const richEditors = [];
+    const repeatableBlocks = [];
+
+    // Inject Sections
+    structure.forEach(group => {
+        const sectionCard = document.createElement('div');
+        sectionCard.className = 'editor-section-card';
+
+        sectionCard.innerHTML = `
+            <div class="editor-section-header">
+                <span class="editor-section-title">${group.label}</span>
+            </div>
+            ${group.description ? `<p class="editor-section-desc">${group.description}</p>` : ''}
+            <div class="section-fields"></div>
+        `;
+
+        const fieldsContainer = sectionCard.querySelector('.section-fields');
+
+        if (group.hasHeroImage) {
+            const heroGroup = document.createElement('div');
+            heroGroup.className = 'form-group';
+            heroGroup.innerHTML = `
+                <label>Top Page Image</label>
+                <p class="helper-text" style="margin-bottom: 1rem;">This is the large image at the very top of the page.</p>
+                <input type="file" id="hero-image-input" accept="image/*" style="margin-bottom: 1rem;">
+                <div id="hero-preview-container">
+                    ${page.hero_image_url ? `<img src="${page.hero_image_url}" class="preview-img" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">` : '<p class="helper-text">No image set.</p>'}
+                </div>
+            `;
+            fieldsContainer.appendChild(heroGroup);
+
+            // Preview handler
+            heroGroup.querySelector('input').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (re) => {
+                        heroGroup.querySelector('#hero-preview-container').innerHTML = `<img src="${re.target.result}" class="preview-img" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        if (group.isRepeatable) {
+            const section = page.sections.find(s => s.section_name === group.key);
+            let stats = [];
+            try {
+                stats = section?.content?.stats || [];
+            } catch (e) { }
+
+            const statsList = document.createElement('div');
+            statsList.className = 'stats-list';
+
+            const addStatBlock = (label = '', number = '') => {
+                const block = document.createElement('div');
+                block.className = 'stat-block';
+                block.innerHTML = `
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="text" placeholder="Label (e.g. People Trained)" value="${label}" class="stat-label-input">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="text" placeholder="Number" value="${number}" class="stat-number-input">
+                    </div>
+                    <button type="button" class="btn-remove-attach" onclick="this.parentElement.remove()">×</button>
+                `;
+                statsList.appendChild(block);
+            };
+
+            stats.forEach(s => addStatBlock(s.label, s.number));
+
+            const addBtn = document.createElement('button');
+            addBtn.type = 'button';
+            addBtn.className = 'btn-add-block';
+            addBtn.textContent = '+ Add another impact number';
+            addBtn.onclick = () => addStatBlock();
+
+            fieldsContainer.appendChild(statsList);
+            fieldsContainer.appendChild(addBtn);
+
+            repeatableBlocks.push({ key: group.key, container: statsList, sectionId: section?.id });
+        }
+
+        if (group.fields) {
+            group.fields.forEach(field => {
+                const section = page.sections.find(s => s.section_name === field.key);
+                if (!section) return;
+
+                const fieldGroup = document.createElement('div');
+                fieldGroup.className = 'form-group';
+                fieldGroup.innerHTML = `<label>${field.label}</label>`;
+
+                let content = section.content?.html || section.content || '';
+
+                if (field.type === 'rich') {
+                    const editor = createRichEditor(fieldGroup, content);
+                    richEditors.push({ id: section.id, editor });
+                } else if (field.type === 'page') {
+                    const select = document.createElement('select');
+                    select.className = 'visual-field-input';
+                    select.dataset.sectionId = section.id;
+                    select.innerHTML = `<option value="">Select a page...</option>` +
+                        allPages.map(p => `<option value="${p.slug}" ${content === p.slug ? 'selected' : ''}>${p.title}</option>`).join('');
+                    fieldGroup.appendChild(select);
+                } else {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = content;
+                    input.dataset.sectionId = section.id;
+                    input.className = 'visual-field-input';
+                    fieldGroup.appendChild(input);
+                }
+                fieldsContainer.appendChild(fieldGroup);
+            });
+        }
+
+        container.appendChild(sectionCard);
+    });
+
+    // Handle Form Submit
+    document.getElementById('visual-editor-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = e.target.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
         setLoading(submitBtn, true);
 
         try {
-            const formData = new FormData(e.target);
-            const updates = {};
-
-            // Handle Hero Image Upload
-            const heroFile = document.getElementById('hero-image-input').files[0];
+            // 1. Handle Hero Image
+            const heroFile = document.getElementById('hero-image-input')?.files[0];
             if (heroFile) {
                 const heroUrl = await uploadImage('heroes', heroFile);
                 if (heroUrl) {
@@ -1278,24 +1531,59 @@ window.editPage = async (id) => {
                 }
             }
 
-            for (const [key, value] of formData.entries()) {
-                if (key.startsWith('section_')) {
-                    const sectionId = key.replace('section_', '');
+            // 2. Handle Text Fields & Selects
+            const inputs = e.target.querySelectorAll('.visual-field-input');
+            for (const input of inputs) {
+                const sectionId = input.dataset.sectionId;
+                await supabase.from('sections').update({
+                    content: { html: input.value }
+                }).eq('id', sectionId);
+            }
+
+            // 3. Handle Rich Editors
+            for (const item of richEditors) {
+                await supabase.from('sections').update({
+                    content: { html: item.editor.innerHTML }
+                }).eq('id', item.id);
+            }
+
+            // 4. Handle Repeatable Blocks (Stats)
+            for (const block of repeatableBlocks) {
+                const stats = [];
+                const items = block.container.querySelectorAll('.stat-block');
+                items.forEach(item => {
+                    const label = item.querySelector('.stat-label-input').value;
+                    const number = item.querySelector('.stat-number-input').value;
+                    if (label || number) stats.push({ label, number });
+                });
+
+                if (block.sectionId) {
                     await supabase.from('sections').update({
-                        content: { html: value }
-                    }).eq('id', sectionId);
+                        content: { stats }
+                    }).eq('id', block.sectionId);
+                } else {
+                    // Create section if missing
+                    await supabase.from('sections').insert({
+                        page_id: id,
+                        section_name: block.key,
+                        content: { stats }
+                    });
                 }
             }
 
-            await logAction('Updated', 'Page Content', id);
-            showToast('Page content updated successfully');
+            await logAction('Updated', 'Page Content', id, { title: page.title });
+            showToast('Website updated successfully!');
             closeModal();
             renderPages();
         } catch (error) {
-            console.error('Error updating page content:', error);
-            showToast('Error updating page content', 'error');
+            console.error('Save failed:', error);
+            showToast('Failed to save changes', 'error');
         } finally {
             setLoading(submitBtn, false, originalText);
         }
     });
+};
+
+window.previewPage = (slug) => {
+    window.open(`../${slug}`, '_blank');
 };
