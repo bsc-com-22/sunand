@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -45,349 +47,15 @@
     <section class="hero small-hero hero-projects">
         <div class="hero-overlay"></div>
         <div class="container hero-content">
-            <h1>Our Projects Portfolio</h1>
-            <p class="hero-subheading">Making a tangible difference through solar irrigation and training.</p>
+            <h1 data-cms-block="hero_title">Our Projects Portfolio</h1>
+            <p class="hero-subheading" data-cms-block="hero_subtitle">Making a tangible difference through solar irrigation and training.</p>
         </div>
     </section>
 
-    <!-- Solar Irrigation Projects -->
-    <section class="section-padding">
-        <div class="container">
-            <div class="section-header">
-                <h2>Solar Irrigation Installation Projects</h2>
-                <div class="underline"></div>
-            </div>
-            
-            <div class="portfolio-grid">
-                <!-- Project 1 -->
-                <div class="portfolio-card">
-                    <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1530507629858-e4977d30e9e0?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="portfolio-content">
-                        <h3>Solar Irrigation – Rice Farming</h3>
-                        <div class="portfolio-details">
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Nkhata Bay</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Beneficiaries</span>
-                                    <span class="detail-value">2 farmers</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Technology</span>
-                                    <span class="detail-value">180W solar pumps</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Crops Supported</span>
-                                    <span class="detail-value">Rice</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-outcomes">
-                            <h4>Key Outcomes</h4>
-                            <p>Improved flooding consistency, increased yields</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="portfolio-card">
-                    <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1592982537447-7440770cbfc9?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="portfolio-content">
-                        <h3>Solar Irrigation – Mixed Crops</h3>
-                        <div class="portfolio-details">
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Nkhata Bay</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Beneficiaries</span>
-                                    <span class="detail-value">3 farmers</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Technology</span>
-                                    <span class="detail-value">180W pumps</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Crops Supported</span>
-                                    <span class="detail-value">Maize, vegetables, cassava</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-outcomes">
-                            <h4>Key Outcomes</h4>
-                            <p>Year-round production, reduced labour</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="portfolio-card">
-                    <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1551009175-15bdf9dcb580?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="portfolio-content">
-                        <h3>Solar Irrigation – Large-Scale Maize</h3>
-                        <div class="portfolio-details">
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Jenda, Mzimba</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Beneficiaries</span>
-                                    <span class="detail-value">1 farmer</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Technology</span>
-                                    <span class="detail-value">250W pumps</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Crops Supported</span>
-                                    <span class="detail-value">Maize</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-outcomes">
-                            <h4>Key Outcomes</h4>
-                            <p>Year-round production, reduced labour</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 4 -->
-                <div class="portfolio-card">
-                    <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="portfolio-content">
-                        <h3>Solar Irrigation – Horticulture</h3>
-                        <div class="portfolio-details">
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Mzuzu</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Beneficiaries</span>
-                                    <span class="detail-value">1 farmer</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Technology</span>
-                                    <span class="detail-value">1000W pump</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Crops Supported</span>
-                                    <span class="detail-value">Vegetables, potatoes</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-outcomes">
-                            <h4>Key Outcomes</h4>
-                            <p>Stable income, improved nutrition</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 5 -->
-                <div class="portfolio-card">
-                    <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1622383529357-37030343573f?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="portfolio-content">
-                        <h3>Solar Irrigation – Mixed Systems</h3>
-                        <div class="portfolio-details">
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Lilongwe</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Beneficiaries</span>
-                                    <span class="detail-value">3 farmers</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Technology</span>
-                                    <span class="detail-value">180W pump, 250W pumps</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Crops Supported</span>
-                                    <span class="detail-value">Maize, rice</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-outcomes">
-                            <h4>Key Outcomes</h4>
-                            <p>Reliable irrigation, higher yields</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Training Projects -->
-    <section class="section-padding bg-light">
-        <div class="container">
-            <div class="section-header">
-                <h2>Capacity Building & Training Projects</h2>
-                <div class="underline"></div>
-            </div>
-            
-            <div class="portfolio-grid">
-                <!-- Training 1 -->
-                <div class="portfolio-card">
-                    <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1593113598332-cd288d649433?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="portfolio-content">
-                        <h3>Women's Livelihood Training</h3>
-                        <div class="portfolio-details">
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Nkhotakota</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Participants</span>
-                                    <span class="detail-value">40</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Target Group</span>
-                                    <span class="detail-value">Women</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-outcomes">
-                            <h4>Key Result</h4>
-                            <p>Commercial mindset, financial confidence</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Training 2 -->
-                <div class="portfolio-card">
-                    <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="portfolio-content">
-                        <h3>Youth Agribusiness Training</h3>
-                        <div class="portfolio-details">
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Nkhotakota</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Participants</span>
-                                    <span class="detail-value">15</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Target Group</span>
-                                    <span class="detail-value">Youth</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-outcomes">
-                            <h4>Key Result</h4>
-                            <p>Income for education, skills development</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Training 3 -->
-                <div class="portfolio-card">
-                    <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="portfolio-content">
-                        <h3>Farmer Technical Training</h3>
-                        <div class="portfolio-details">
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Location</span>
-                                    <span class="detail-value">Mzuzu, Nkhata Bay</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Participants</span>
-                                    <span class="detail-value">30</span>
-                                </div>
-                            </div>
-                            <div class="detail-row">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
-                                <div class="detail-content">
-                                    <span class="detail-label">Target Group</span>
-                                    <span class="detail-value">Farmers</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="portfolio-outcomes">
-                            <h4>Key Result</h4>
-                            <p>Sustainable system use, higher yields</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Dynamic Projects Container -->
+    <div id="projects-container">
+        <!-- Program sections will be loaded here dynamically -->
+    </div>
 
     <!-- Footer -->
     <footer id="contact">
@@ -417,27 +85,12 @@
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h3>Contact Info</h3>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg> 
-                        Kaphiri, Area 36, Lilongwe, Malawi
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg> 
-                        sunandsoilfoundation@gmail.com
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg> 
-                        +265 995 856 237
-                    </p>
+                    <h3>Newsletter</h3>
+                    <p>Stay updated with our latest impact and news.</p>
+                    <form id="newsletter-form" class="newsletter-form-footer">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -452,6 +105,9 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="js/projects-loader.js"></script>
+    <script type="module" src="js/forms-handler.js"></script>
+    <script type="module" src="js/content-loader.js"></script>
 </body>
 </html>

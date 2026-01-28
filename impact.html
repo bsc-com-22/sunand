@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -45,8 +47,8 @@
     <section class="hero small-hero hero-impact">
         <div class="hero-overlay"></div>
         <div class="container hero-content">
-            <h1>Alignment & Impact</h1>
-            <p class="hero-subheading">Driving national and global goals through local action.</p>
+            <h1 data-cms-block="impact_hero_title">Alignment & Impact</h1>
+            <p class="hero-subheading" data-cms-block="impact_hero_subtitle">Driving national and global goals through local action.</p>
         </div>
     </section>
 
@@ -85,17 +87,17 @@
                 <h2>Sustainable Development Goals</h2>
                 <div class="underline"></div>
             </div>
-            <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem;">Sun & Soil Foundation directly advances the following SDGs:</p>
+            <p class="sdg-lead">Sun & Soil Foundation directly advances the following SDGs:</p>
             <div class="sdg-grid">
-                <div class="sdg-item">SDG 1: Poverty Reduction</div>
-                <div class="sdg-item">SDG 2: Zero Hunger</div>
-                <div class="sdg-item">SDG 5: Gender Equality</div>
-                <div class="sdg-item">SDG 7: Clean Energy Adoption</div>
-                <div class="sdg-item">SDG 8: Decent Work & Economic Growth</div>
-                <div class="sdg-item">SDG 10: Reduced Inequalities</div>
-                <div class="sdg-item">SDG 12: Responsible Production</div>
-                <div class="sdg-item">SDG 13: Climate Action</div>
-                <div class="sdg-item">SDG 15: Life on Land</div>
+                <div class="sdg-item"><span>SDG 1: Poverty Reduction</span></div>
+                <div class="sdg-item"><span>SDG 2: Zero Hunger</span></div>
+                <div class="sdg-item"><span>SDG 5: Gender Equality</span></div>
+                <div class="sdg-item"><span>SDG 7: Clean Energy Adoption</span></div>
+                <div class="sdg-item"><span>SDG 8: Decent Work & Economic Growth</span></div>
+                <div class="sdg-item"><span>SDG 10: Reduced Inequalities</span></div>
+                <div class="sdg-item"><span>SDG 12: Responsible Production</span></div>
+                <div class="sdg-item"><span>SDG 13: Climate Action</span></div>
+                <div class="sdg-item"><span>SDG 15: Life on Land</span></div>
             </div>
         </div>
     </section>
@@ -128,37 +130,37 @@
     <section class="scaling section-padding bg-dark text-white">
         <div class="container">
             <div class="section-header">
-                <h2 style="color: white;">Scaling Forward (2025–2030)</h2>
+                <h2 style="color: white;" data-cms-block="impact_scaling_title">Scaling Forward (2025–2030)</h2>
                 <div class="underline" style="background-color: var(--color-accent-yellow);"></div>
             </div>
-            <div class="scaling-content" style="text-align: center;">
-                <h3 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--color-accent-yellow);">50,000 Farmers</h3>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Our commitment to reach 50,000 farmers in 5 years (2026-2030), benefiting 10,000 farmers each year.</p>
+            <div class="scaling-content">
+                <h3 class="scaling-target" data-cms-block="impact_scaling_target">50,000 Farmers</h3>
+                <p class="scaling-subtext" data-cms-block="impact_scaling_subtext">Our commitment to reach 50,000 farmers in 5 years (2026-2030), benefiting 10,000 farmers each year.</p>
                 
-                <div class="scaling-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; text-align: left; max-width: 900px; margin: 0 auto;">
+                <div class="scaling-list">
                     <div class="scale-item">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
-                        Expand solar irrigation installations
+                        <span>Expand solar irrigation installations</span>
                     </div>
                     <div class="scale-item">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
-                        Scale training programmes
+                        <span>Scale training programmes</span>
                     </div>
                     <div class="scale-item">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
-                        Establish climate-smart agriculture hubs
+                        <span>Establish climate-smart agriculture hubs</span>
                     </div>
                     <div class="scale-item">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
-                        Strengthen women and youth-led enterprises
+                        <span>Strengthen women and youth-led enterprises</span>
                     </div>
                 </div>
             </div>
@@ -193,27 +195,12 @@
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h3>Contact Info</h3>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg> 
-                        Kaphiri, Area 36, Lilongwe, Malawi
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg> 
-                        sunandsoilfoundation@gmail.com
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg> 
-                        +265 995 856 237
-                    </p>
+                    <h3>Newsletter</h3>
+                    <p>Stay updated with our latest impact and news.</p>
+                    <form id="newsletter-form" class="newsletter-form-footer">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -228,6 +215,8 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="js/forms-handler.js"></script>
+    <script type="module" src="js/content-loader.js"></script>
 </body>
 </html>

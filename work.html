@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -45,8 +47,8 @@
     <section class="hero small-hero hero-work">
         <div class="hero-overlay"></div>
         <div class="container hero-content">
-            <h1>Our Approach & Programs</h1>
-            <p class="hero-subheading">An integrated model ensuring technology, skills, and sustainability advance together.</p>
+            <h1 data-cms-block="work_hero_title">Our Approach & Programs</h1>
+            <p class="hero-subheading" data-cms-block="work_hero_subtitle">An integrated model ensuring technology, skills, and sustainability advance together.</p>
         </div>
     </section>
 
@@ -54,11 +56,11 @@
     <section class="section-padding">
         <div class="container">
             <div class="section-header">
-                <h2>Our Integrated Model</h2>
+                <h2 data-cms-block="work_model_title">Our Integrated Model</h2>
                 <div class="underline"></div>
             </div>
-            <div class="text-content" style="max-width: 800px; margin: 0 auto; text-align: center;">
-                <p style="font-size: 1.2rem;">
+            <div class="model-intro" data-cms-block="work_model_content">
+                <p>
                     Sun & Soil Foundation applies an integrated delivery model that ensures technology, skills, and sustainability advance together. We don't just provide equipment; we build the ecosystem for long-term success.
                 </p>
             </div>
@@ -159,27 +161,12 @@
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h3>Contact Info</h3>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg> 
-                        Kaphiri, Area 36, Lilongwe, Malawi
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg> 
-                        sunandsoilfoundation@gmail.com
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg> 
-                        +265 995 856 237
-                    </p>
+                    <h3>Newsletter</h3>
+                    <p>Stay updated with our latest impact and news.</p>
+                    <form id="newsletter-form" class="newsletter-form-footer">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -194,6 +181,8 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="js/forms-handler.js"></script>
+    <script type="module" src="js/content-loader.js"></script>
 </body>
 </html>

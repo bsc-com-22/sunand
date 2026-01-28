@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -45,8 +47,8 @@
     <section class="hero small-hero hero-news">
         <div class="hero-overlay"></div>
         <div class="container hero-content">
-            <h1>Latest News & Updates</h1>
-            <p class="hero-subheading">Stories of impact, innovation, and community resilience from across Malawi.</p>
+            <h1 data-cms-block="hero_title">Latest News & Updates</h1>
+            <p class="hero-subheading" data-cms-block="hero_subtitle">Stories of impact, innovation, and community resilience from across Malawi.</p>
         </div>
     </section>
 
@@ -54,71 +56,7 @@
     <section class="news-page section-padding">
         <div class="container">
             <div class="news-grid">
-                <!-- Article 1 -->
-                <article class="news-card">
-                    <div class="news-image news-img-1"></div>
-                    <div class="news-content">
-                        <p class="news-date">January 15, 2026</p>
-                        <h3>10 Solar Irrigation Systems Installed Across Malawi</h3>
-                        <p class="news-excerpt">We are proud to announce the successful installation of 10 new solar-powered irrigation systems, providing year-round water access to over 200 smallholder farmers.</p>
-                        <a href="#" class="read-more">Read Full Story</a>
-                    </div>
-                </article>
-
-                <!-- Article 2 -->
-                <article class="news-card">
-                    <div class="news-image news-img-2"></div>
-                    <div class="news-content">
-                        <p class="news-date">December 10, 2025</p>
-                        <h3>85 Participants Complete Agricultural Training Programs</h3>
-                        <p class="news-excerpt">Our latest cohort of women and youth farmers have graduated from our intensive climate-smart agriculture workshop in Lilongwe.</p>
-                        <a href="#" class="read-more">Read Full Story</a>
-                    </div>
-                </article>
-
-                <!-- Article 3 -->
-                <article class="news-card">
-                    <div class="news-image news-img-3"></div>
-                    <div class="news-content">
-                        <p class="news-date">November 22, 2025</p>
-                        <h3>Scaling to Reach 50,000 Farmers by 2030</h3>
-                        <p class="news-excerpt">Sun & Soil Foundation unveils its ambitious 5-year strategic plan to expand operations and impact across all regions of Malawi.</p>
-                        <a href="#" class="read-more">Read Full Story</a>
-                    </div>
-                </article>
-
-                <!-- Article 4 -->
-                <article class="news-card">
-                    <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1590682680695-43b964a3ae17?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="news-content">
-                        <p class="news-date">October 05, 2025</p>
-                        <h3>New Partnership with Global Green Fund</h3>
-                        <p class="news-excerpt">A new collaboration aimed at accelerating the adoption of renewable energy in rural Malawian agribusinesses.</p>
-                        <a href="#" class="read-more">Read Full Story</a>
-                    </div>
-                </article>
-
-                <!-- Article 5 -->
-                <article class="news-card">
-                    <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="news-content">
-                        <p class="news-date">September 12, 2025</p>
-                        <h3>Youth Entrepreneurs Leading the Way</h3>
-                        <p class="news-excerpt">Meet the young innovators who are transforming their family farms into profitable, sustainable enterprises using our training.</p>
-                        <a href="#" class="read-more">Read Full Story</a>
-                    </div>
-                </article>
-
-                <!-- Article 6 -->
-                <article class="news-card">
-                    <div class="news-image" style="background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=800&auto=format&fit=crop');"></div>
-                    <div class="news-content">
-                        <p class="news-date">August 28, 2025</p>
-                        <h3>Impact Report: 2024 Year in Review</h3>
-                        <p class="news-excerpt">Our annual report highlights the significant progress made in empowering women and youth through agribusiness and clean energy.</p>
-                        <a href="#" class="read-more">Read Full Story</a>
-                    </div>
-                </article>
+                <!-- News will be loaded from Supabase -->
             </div>
 
             <!-- Pagination -->
@@ -140,7 +78,7 @@
                     <h2>Subscribe to Our Newsletter</h2>
                     <p>Get the latest updates and stories delivered straight to your inbox.</p>
                 </div>
-                <form class="newsletter-form">
+                <form id="newsletter-form" class="newsletter-form">
                     <input type="email" placeholder="Your email address" required>
                     <button type="submit" class="btn btn-primary">Subscribe</button>
                 </form>
@@ -176,27 +114,12 @@
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h3>Contact Info</h3>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg> 
-                        Kaphiri, Area 36, Lilongwe, Malawi
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg> 
-                        sunandsoilfoundation@gmail.com
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg> 
-                        +265 995 856 237
-                    </p>
+                    <h3>Newsletter</h3>
+                    <p>Stay updated with our latest impact and news.</p>
+                    <form id="newsletter-form-footer" class="newsletter-form-footer">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -211,6 +134,9 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="js/news-loader.js"></script>
+    <script type="module" src="js/forms-handler.js"></script>
+    <script type="module" src="js/content-loader.js"></script>
 </body>
 </html>
