@@ -63,12 +63,40 @@ async function loadSingleNews(id) {
         .eq('id', id)
         .single();
 
+    // Fetch attachments
+    const { data: attachments } = await supabase.from('news_attachments')
+        .select('*')
+        .eq('news_id', id);
+
     const container = document.querySelector('.container');
     if (container && item) {
         const date = new Date(item.published_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
         // Update page title
         document.title = `${item.title} - Sun & Soil News`;
+
+        let attachmentsHtml = '';
+        if (attachments && attachments.length > 0) {
+            attachmentsHtml = `
+                <div class="news-attachments">
+                    <h3>Downloads & Resources</h3>
+                    <div class="attachments-grid">
+                        ${attachments.map(a => {
+                const size = a.file_size ? `(${(a.file_size / 1024 / 1024).toFixed(2)} MB)` : '';
+                return `
+                                <a href="${a.file_url}" target="_blank" class="attachment-link">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                    <span class="file-info">
+                                        <span class="file-name">${a.file_name}</span>
+                                        <span class="file-meta">${a.file_type.split('/').pop().toUpperCase()} ${size}</span>
+                                    </span>
+                                </a>
+                            `;
+            }).join('')}
+                    </div>
+                </div>
+            `;
+        }
 
         container.innerHTML = `
             <div class="news-detail">
@@ -85,6 +113,7 @@ async function loadSingleNews(id) {
                     <p class="news-excerpt"><strong>${item.excerpt || ''}</strong></p>
                     <div class="full-content">${item.content || ''}</div>
                 </div>
+                ${attachmentsHtml}
             </div>
         `;
     }

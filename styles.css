@@ -32,6 +32,7 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    overflow-x: hidden;
 }
 
 body {
@@ -39,6 +40,7 @@ body {
     color: var(--color-text-dark);
     line-height: 1.6;
     background-color: #fcfcfc;
+    overflow-x: hidden;
 }
 
 ul {
@@ -145,10 +147,20 @@ img {
 }
 
 .logo a {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--color-dark-green);
-    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+    .nav-logo {
+        height: 40px;
+    }
 }
 
 .nav-links {
@@ -1021,6 +1033,13 @@ footer {
         gap: 3rem;
         margin-bottom: 4rem;
     }
+}
+
+.footer-logo {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 1.5rem;
 }
 
 .footer-col h3 {
@@ -2455,4 +2474,139 @@ footer {
     .news-detail-header h1 {
         font-size: 2rem;
     }
+}
+
+/* News Attachments Section */
+.news-attachments {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid #e8ede9;
+}
+
+.news-attachments h3 {
+    font-size: 1.5rem;
+    color: var(--color-dark-green);
+    margin-bottom: 2rem;
+    font-weight: 800;
+}
+
+.attachments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.attachment-link {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 1.5rem;
+    background: var(--color-white);
+    border: 2px solid #e8ede9;
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+}
+
+.attachment-link:hover {
+    border-color: var(--color-primary-green);
+    background: rgba(33, 104, 37, 0.05);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft);
+}
+
+.attachment-link svg {
+    color: var(--color-primary-green);
+    flex-shrink: 0;
+}
+
+.file-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    overflow: hidden;
+}
+
+.file-name {
+    font-weight: 700;
+    color: var(--color-text-dark);
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-meta {
+    font-size: 0.75rem;
+    color: var(--color-text-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Admin Attachment Styles */
+.attachments-manager {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.attachment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 0.85rem;
+}
+
+.attachment-item .file-name {
+    font-weight: 600;
+    color: var(--color-text-dark);
+}
+
+.btn-remove-attach {
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: var(--transition);
+}
+
+.btn-remove-attach:hover {
+    background: #ef4444;
+    color: var(--color-white);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+}
+
+@media (max-width: 992px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.modal-large {
+    max-width: 1000px !important;
+}
+
+.form-sidebar {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
 }
