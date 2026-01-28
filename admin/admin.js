@@ -230,6 +230,22 @@ function setLoading(button, isLoading, originalText = 'Save') {
 const navItems = document.querySelectorAll('.nav-item');
 const sectionTitle = document.getElementById('section-title');
 const contentArea = document.getElementById('content-area');
+const sidebar = document.querySelector('.admin-sidebar');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+
+function toggleSidebar() {
+    sidebar.classList.toggle('active');
+    sidebarOverlay.classList.toggle('active');
+}
+
+if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', toggleSidebar);
+}
+
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', toggleSidebar);
+}
 
 navItems.forEach(item => {
     item.addEventListener('click', (e) => {
@@ -243,6 +259,11 @@ navItems.forEach(item => {
         // Update title and load content
         sectionTitle.textContent = item.textContent.trim();
         loadSection(section);
+
+        // Close sidebar on mobile after selection
+        if (window.innerWidth <= 768) {
+            toggleSidebar();
+        }
     });
 });
 
