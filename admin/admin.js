@@ -341,9 +341,9 @@ async function showProjectForm(id = null) {
                 </div>
                 <div class="form-group">
                     <label>Program</label>
-                    <select name="program_id" required>
+                    <select name="program_id" id="program-select" required>
                         <option value="">Select a Program</option>
-                        ${programs ? programs.map(p => `<option value="${p.id}" ${project.program_id === p.id ? 'selected' : ''}>${p.name}</option>`).join('') : ''}
+                        ${programs ? programs.map(p => `<option value="${p.id}" data-name="${p.name}" ${project.program_id === p.id ? 'selected' : ''}>${p.name}</option>`).join('') : ''}
                     </select>
                 </div>
                 <div class="form-group">
@@ -354,9 +354,10 @@ async function showProjectForm(id = null) {
                     <label>Number of Beneficiaries</label>
                     <input type="text" name="beneficiaries" value="${project.beneficiaries || ''}">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="tech-field-group">
                     <label>Technology Used</label>
                     <input type="text" name="technologies" value="${project.technologies || ''}">
+                    <small class="helper-text">Only applicable for Irrigation and Climate-smart programs.</small>
                 </div>
                 <div class="form-group">
                     <label>Short Summary</label>
@@ -380,6 +381,28 @@ async function showProjectForm(id = null) {
     `;
     document.body.appendChild(modal);
 
+    const programSelect = document.getElementById('program-select');
+    const techGroup = document.getElementById('tech-field-group');
+
+    const updateTechVisibility = () => {
+        const selectedOption = programSelect.options[programSelect.selectedIndex];
+        const programName = selectedOption ? selectedOption.getAttribute('data-name') : '';
+
+        // Rules: Show for Irrigation and Climate-smart
+        const showTech = programName && (
+            programName.includes('Irrigation') ||
+            programName.includes('Climate-smart')
+        );
+
+        techGroup.style.display = showTech ? 'block' : 'none';
+        if (!showTech) {
+            techGroup.querySelector('input').value = ''; // Clear if hidden
+        }
+    };
+
+    programSelect.addEventListener('change', updateTechVisibility);
+    updateTechVisibility(); // Initial check
+
     document.getElementById('project-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -390,6 +413,13 @@ async function showProjectForm(id = null) {
             const formData = new FormData(e.target);
             const projectData = Object.fromEntries(formData.entries());
             projectData.is_featured = formData.has('is_featured');
+
+            // Ensure technology is cleared if not applicable
+            const selectedOption = programSelect.options[programSelect.selectedIndex];
+            const programName = selectedOption.getAttribute('data-name');
+            if (!(programName.includes('Irrigation') || programName.includes('Climate-smart'))) {
+                projectData.technologies = '';
+            }
 
             const imageFile = document.getElementById('project-image-input').files[0];
             if (imageFile) {
@@ -724,18 +754,33 @@ async function renderNews() {
     document.getElementById('add-news-btn').addEventListener('click', () => showNewsForm());
 }
 
-async function renderMessages() {
-    const { data: messages, error } = await supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
+async function renderMessages(filter = 'all') {
+    let query = supabase.from('contact_messages').select('*').order('created_at', { ascending: false });
+
+    if (filter === 'unread') query = query.eq('is_read', false);
+    if (filter === 'read') query = query.eq('is_read', true);
+
+    const { data: messages, error } = await query;
 
     let html = `
         <div class="content-card">
+            <div class="card-header" style="justify-content: space-between; align-items: center;">
+                <h3>Contact Inbox</h3>
+                <div class="filter-group">
+                    <select id="message-filter" class="btn-icon" style="width: auto;">
+                        <option value="all" ${filter === 'all' ? 'selected' : ''}>All Messages</option>
+                        <option value="unread" ${filter === 'unread' ? 'selected' : ''}>Unread</option>
+                        <option value="read" ${filter === 'read' ? 'selected' : ''}>Read</option>
+                    </select>
+                </div>
+            </div>
             <table class="admin-table">
                 <thead>
                     <tr>
+                        <th>Status</th>
                         <th>Date</th>
                         <th>Sender</th>
                         <th>Subject</th>
-                        <th>Message</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -746,12 +791,17 @@ async function renderMessages() {
         messages.forEach(msg => {
             const date = new Date(msg.created_at).toLocaleString();
             html += `
-                <tr>
+                <tr class="${msg.is_read ? '' : 'unread-row'}" style="${msg.is_read ? '' : 'background: #f0fdf4; font-weight: 600;'}">
+                    <td>
+                        <span class="status-badge ${msg.is_read ? 'status-draft' : 'status-published'}">
+                            ${msg.is_read ? 'Read' : 'New'}
+                        </span>
+                    </td>
                     <td>${date}</td>
                     <td><strong>${msg.name}</strong><br><small>${msg.email}</small></td>
                     <td>${msg.subject || '-'}</td>
-                    <td><div class="msg-preview">${msg.message}</div></td>
                     <td class="actions">
+                        <button class="btn-icon btn-edit" onclick="viewMessage('${msg.id}')">View</button>
                         <button class="btn-icon btn-delete" onclick="deleteMessage('${msg.id}')">Delete</button>
                     </td>
                 </tr>
@@ -768,7 +818,67 @@ async function renderMessages() {
     `;
 
     contentArea.innerHTML = html;
+
+    document.getElementById('message-filter').addEventListener('change', (e) => {
+        renderMessages(e.target.value);
+    });
 }
+
+window.viewMessage = async (id) => {
+    const { data: msg } = await supabase.from('contact_messages').select('*').eq('id', id).single();
+    if (!msg) return;
+
+    // Mark as read
+    if (!msg.is_read) {
+        await supabase.from('contact_messages').update({ is_read: true }).eq('id', id);
+        // We don't re-render immediately to keep the modal open, but we update the background row if needed
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'admin-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+                <div>
+                    <h3 style="margin-bottom: 0.5rem;">Message from ${msg.name}</h3>
+                    <p style="color: #64748b;">${new Date(msg.created_at).toLocaleString()}</p>
+                </div>
+                <button class="btn-icon" onclick="toggleReadStatus('${msg.id}', ${msg.is_read})">
+                    Mark as ${msg.is_read ? 'Unread' : 'Read'}
+                </button>
+            </div>
+            
+            <div class="admin-form">
+                <div class="form-group">
+                    <label>Email</label>
+                    <p>${msg.email}</p>
+                </div>
+                <div class="form-group">
+                    <label>Subject</label>
+                    <p>${msg.subject || 'No Subject'}</p>
+                </div>
+                <div class="form-group">
+                    <label>Message Content</label>
+                    <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; line-height: 1.6;">
+                        ${msg.message.replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-primary" onclick="closeModal(); renderMessages();">Close</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+};
+
+window.toggleReadStatus = async (id, currentStatus) => {
+    await supabase.from('contact_messages').update({ is_read: !currentStatus }).eq('id', id);
+    closeModal();
+    renderMessages();
+    showToast('Message status updated');
+};
 
 async function renderSubscribers() {
     const { data: subscribers, error } = await supabase.from('newsletter_subscribers').select('*').order('created_at', { ascending: false });
@@ -1056,6 +1166,7 @@ async function renderPages() {
                     <tr>
                         <th>Title</th>
                         <th>Slug</th>
+                        <th>Hero Image</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -1068,6 +1179,11 @@ async function renderPages() {
                 <tr>
                     <td>${page.title}</td>
                     <td><code>${page.slug}</code></td>
+                    <td>
+                        ${page.hero_image_url ?
+                    `<img src="${page.hero_image_url}" style="width: 50px; height: 30px; object-fit: cover; border-radius: 4px;">` :
+                    '<span class="status-badge status-draft">No Image</span>'}
+                    </td>
                     <td class="actions">
                         <button class="btn-icon btn-edit" onclick="editPage('${page.id}')">Edit Content</button>
                     </td>
@@ -1075,7 +1191,7 @@ async function renderPages() {
             `;
         });
     } else {
-        html += '<tr><td colspan="3">No pages found.</td></tr>';
+        html += '<tr><td colspan="4">No pages found.</td></tr>';
     }
 
     html += `
@@ -1096,20 +1212,15 @@ window.editPage = async (id) => {
 
     // Defensive mapping to handle potential nesting or missing fields
     const sectionsHtml = (page.sections || []).map(s => {
-        // Handle potential nesting from Supabase joins
         const section = s.sections && typeof s.sections === 'object' ? s.sections : s;
-
-        // Field fallbacks for robustness
         const identifier = section.section_name || section.identifier || section.key || section.slug || 'no-id';
         const name = section.name || section.title || section.label || identifier.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         const sectionId = section.id;
 
-        // Handle content that might be an object (JSONB)
         let content = section.content;
         if (content === null || content === undefined) {
             content = '';
         } else if (typeof content === 'object') {
-            // If it's our standard {html: "..."}, just show the HTML
             content = content.html || content.text || JSON.stringify(content, null, 2);
         }
 
@@ -1125,7 +1236,20 @@ window.editPage = async (id) => {
         <div class="modal-content modal-large">
             <h3>Edit Page: ${page.title || 'Untitled'}</h3>
             <form id="page-content-form" class="admin-form">
-                ${sectionsHtml || '<p>No editable sections found for this page.</p>'}
+                <div class="form-grid">
+                    <div class="form-main">
+                        ${sectionsHtml || '<p>No editable sections found for this page.</p>'}
+                    </div>
+                    <div class="form-sidebar">
+                        <div class="form-group">
+                            <label>Hero Image</label>
+                            <input type="file" id="hero-image-input" accept="image/*">
+                            <div id="hero-preview-container">
+                                ${page.hero_image_url ? `<img src="${page.hero_image_url}" class="preview-img">` : '<p class="helper-text">No hero image set.</p>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="modal-actions">
                     <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -1143,11 +1267,20 @@ window.editPage = async (id) => {
 
         try {
             const formData = new FormData(e.target);
+            const updates = {};
+
+            // Handle Hero Image Upload
+            const heroFile = document.getElementById('hero-image-input').files[0];
+            if (heroFile) {
+                const heroUrl = await uploadImage('heroes', heroFile);
+                if (heroUrl) {
+                    await supabase.from('pages').update({ hero_image_url: heroUrl }).eq('id', id);
+                }
+            }
 
             for (const [key, value] of formData.entries()) {
                 if (key.startsWith('section_')) {
                     const sectionId = key.replace('section_', '');
-                    // Save as a JSON object with an 'html' key for consistency
                     await supabase.from('sections').update({
                         content: { html: value }
                     }).eq('id', sectionId);
@@ -1157,6 +1290,7 @@ window.editPage = async (id) => {
             await logAction('Updated', 'Page Content', id);
             showToast('Page content updated successfully');
             closeModal();
+            renderPages();
         } catch (error) {
             console.error('Error updating page content:', error);
             showToast('Error updating page content', 'error');

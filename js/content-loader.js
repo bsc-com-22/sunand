@@ -140,20 +140,33 @@ async function loadPageContent() {
         .eq('slug', pageName)
         .single();
 
-    if (page && page.sections) {
-        page.sections.forEach(section => {
-            const identifier = section.section_name || section.identifier || section.slug;
-            if (!identifier) return;
+    if (page) {
+        // Load Hero Image
+        if (page.hero_image_url) {
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                heroSection.style.backgroundImage = `url('${page.hero_image_url}')`;
+                // Ensure overlay is still visible if it's a background image
+                heroSection.style.backgroundSize = 'cover';
+                heroSection.style.backgroundPosition = 'center';
+            }
+        }
 
-            const elements = document.querySelectorAll(`[data-cms-block="${identifier}"]`);
-            elements.forEach(el => {
-                // If content is an object (JSONB), try to get 'html' or 'text' property
-                let htmlContent = section.content;
-                if (htmlContent && typeof htmlContent === 'object') {
-                    htmlContent = htmlContent.html || htmlContent.text || JSON.stringify(htmlContent);
-                }
-                el.innerHTML = htmlContent || '';
+        if (page.sections) {
+            page.sections.forEach(section => {
+                const identifier = section.section_name || section.identifier || section.slug;
+                if (!identifier) return;
+
+                const elements = document.querySelectorAll(`[data-cms-block="${identifier}"]`);
+                elements.forEach(el => {
+                    // If content is an object (JSONB), try to get 'html' or 'text' property
+                    let htmlContent = section.content;
+                    if (htmlContent && typeof htmlContent === 'object') {
+                        htmlContent = htmlContent.html || htmlContent.text || JSON.stringify(htmlContent);
+                    }
+                    el.innerHTML = htmlContent || '';
+                });
             });
-        });
+        }
     }
 }

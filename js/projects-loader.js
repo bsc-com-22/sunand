@@ -65,13 +65,15 @@ async function loadProgramBasedProjects() {
                                                     <span class="detail-value">${project.beneficiaries || '-'}</span>
                                                 </div>
                                             </div>
+                                            ${project.technologies ? `
                                             <div class="detail-row">
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
                                                 <div class="detail-content">
                                                     <span class="detail-label">Technology</span>
-                                                    <span class="detail-value">${project.technologies || '-'}</span>
+                                                    <span class="detail-value">${project.technologies}</span>
                                                 </div>
                                             </div>
+                                            ` : ''}
                                         </div>
                                         <div class="portfolio-outcomes">
                                             <h4>Summary</h4>

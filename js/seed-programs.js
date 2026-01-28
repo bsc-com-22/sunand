@@ -2,28 +2,28 @@ import { supabase } from './supabase-client.js';
 
 const programs = [
     {
-        name: 'Solar-Powered Irrigation Technology',
-        description: 'Enabling year-round production and resilience against climate-induced droughts.',
+        name: 'Solar-powered Irrigation',
+        description: 'Reliable, clean energy enabling year-round agricultural production and reduced dependence on rainfall.',
         sort_order: 1
     },
     {
-        name: 'Climate-Smart Agricultural Practices',
-        description: 'Training farmers in techniques that increase productivity while protecting the environment.',
+        name: 'Climate-smart Agriculture',
+        description: 'Practices that improve soil health, increase yields, and strengthen resilience to climate variability.',
         sort_order: 2
     },
     {
-        name: 'Capacity Building and Technical Training',
-        description: 'Providing the knowledge and skills necessary for modern, efficient agribusiness management.',
+        name: 'Capacity Building',
+        description: 'Practical training that transforms beneficiaries from subsistence farmers into market-oriented producers.',
         sort_order: 3
     },
     {
-        name: 'Women and Youth Enterprise Development',
+        name: 'Women & Youth Enterprise',
         description: 'Empowering women and youth as drivers of inclusive growth and community-level economic resilience.',
         sort_order: 4
     },
     {
-        name: 'Sustainable Financing and Reinvestment',
-        description: 'Ensuring long-term viability through reinvestment and sustainable financial models for community projects.',
+        name: 'Sustainable Financing',
+        description: 'Ensuring long-term viability through reinvestment and sustainable financial models.',
         sort_order: 5
     }
 ];
