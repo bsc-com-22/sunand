@@ -13,6 +13,29 @@ async function checkAuth() {
         if (count === 0) {
             await seedPrograms();
         }
+
+        // Log login if not already logged in this session
+        if (!sessionStorage.getItem('login_logged')) {
+            await logAction('Login', 'Auth', user.id);
+            sessionStorage.setItem('login_logged', 'true');
+        }
+    }
+}
+
+// Audit Logging Helper
+async function logAction(action, type, id, details = {}) {
+    try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        await supabase.rpc('log_admin_action', {
+            action_text: action,
+            e_type: type,
+            e_id: id,
+            extra_details: details
+        });
+    } catch (err) {
+        console.error('Logging failed:', err);
     }
 }
 
@@ -109,35 +132,191 @@ async function loadSection(section) {
 async function renderOverview() {
     contentArea.innerHTML = `
         <div class="overview-grid">
+            <div class="stat-card skeleton-card skeleton"></div>
+            <div class="stat-card skeleton-card skeleton"></div>
+            <div class="stat-card skeleton-card skeleton"></div>
+            <div class="stat-card skeleton-card skeleton"></div>
+        </div>
+        <div class="dashboard-row">
             <div class="content-card">
-                <h3>Quick Stats</h3>
-                <div class="stats-row">
-                    <div class="stat-item">
-                        <span class="stat-label">Total Projects</span>
-                        <span class="stat-value" id="total-projects">-</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">News Posts</span>
-                        <span class="stat-value" id="total-news">-</span>
-                    </div>
-                </div>
+                <div class="skeleton skeleton-text" style="width: 200px; height: 24px; margin-bottom: 2rem;"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
             </div>
             <div class="content-card">
-                <h3>Recent Activity</h3>
-                <p>Coming soon...</p>
+                <div class="skeleton skeleton-text" style="width: 150px; height: 24px; margin-bottom: 2rem;"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
             </div>
         </div>
     `;
 
-    // Fetch counts
-    const { count: projectCount } = await supabase.from('projects').select('*', { count: 'exact', head: true });
-    const { count: newsCount } = await supabase.from('news').select('*', { count: 'exact', head: true });
+    try {
+        // Fetch all metrics in parallel
+        const [
+            projects,
+            news,
+            messages,
+            subscribers,
+            auditLogs,
+            storageStats,
+            programs
+        ] = await Promise.all([
+            supabase.from('projects').select('id, is_featured, created_at, program_id'),
+            supabase.from('news').select('id, is_published, published_at'),
+            supabase.from('contact_messages').select('id, created_at'),
+            supabase.from('newsletter_subscribers').select('id, created_at'),
+            supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(10),
+            getStorageStats(),
+            supabase.from('programs').select('id, name')
+        ]);
 
-    const totalProjectsEl = document.getElementById('total-projects');
-    const totalNewsEl = document.getElementById('total-news');
+        const now = new Date();
+        const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
+        const thisMonth = now.getMonth();
+        const thisYear = now.getFullYear();
 
-    if (totalProjectsEl) totalProjectsEl.textContent = projectCount || 0;
-    if (totalNewsEl) totalNewsEl.textContent = newsCount || 0;
+        // Content Metrics
+        const totalProjects = projects.data?.length || 0;
+        const featuredProjects = projects.data?.filter(p => p.is_featured).length || 0;
+        const newsThisMonth = news.data?.filter(n => {
+            const d = new Date(n.published_at);
+            return d.getMonth() === thisMonth && d.getFullYear() === thisYear;
+        }).length || 0;
+
+        // Interaction Metrics
+        const totalMessages = messages.data?.length || 0;
+        const newMessages = messages.data?.filter(m => new Date(m.created_at) > thirtyDaysAgo).length || 0;
+        const totalSubs = subscribers.data?.length || 0;
+        const subsThisMonth = subscribers.data?.filter(s => {
+            const d = new Date(s.created_at);
+            return d.getMonth() === thisMonth && d.getFullYear() === thisYear;
+        }).length || 0;
+
+        contentArea.innerHTML = `
+            <div class="overview-grid">
+                <div class="stat-card" onclick="loadSection('projects')">
+                    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> Projects</h3>
+                    <div class="stat-main">
+                        <span class="stat-number">${totalProjects}</span>
+                        <span class="stat-trend trend-up">${featuredProjects} Featured</span>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="loadSection('news')">
+                    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> News Posts</h3>
+                    <div class="stat-main">
+                        <span class="stat-number">${news.data?.length || 0}</span>
+                        <span class="stat-trend trend-up">+${newsThisMonth} this month</span>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="loadSection('messages')">
+                    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Messages</h3>
+                    <div class="stat-main">
+                        <span class="stat-number">${totalMessages}</span>
+                        <span class="stat-trend ${newMessages > 0 ? 'trend-up' : ''}">${newMessages} new (30d)</span>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="loadSection('subscribers')">
+                    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Subscribers</h3>
+                    <div class="stat-main">
+                        <span class="stat-number">${totalSubs}</span>
+                        <span class="stat-trend trend-up">+${subsThisMonth} this month</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-row">
+                <div class="content-card">
+                    <div class="card-header" style="justify-content: flex-start; margin-bottom: 1.5rem;">
+                        <h3>Recent Admin Activity</h3>
+                    </div>
+                    <div class="activity-list">
+                        ${auditLogs.data?.length > 0 ? auditLogs.data.map(log => `
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                </div>
+                                <div class="activity-content">
+                                    <strong>${log.admin_email}</strong> ${log.action} ${log.entity_type ? `on ${log.entity_type}` : ''}
+                                    <div class="activity-time">${new Date(log.created_at).toLocaleString()}</div>
+                                </div>
+                            </div>
+                        `).join('') : '<p>No recent activity found.</p>'}
+                    </div>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header" style="justify-content: flex-start; margin-bottom: 1.5rem;">
+                        <h3>System Health</h3>
+                    </div>
+                    <div class="health-grid">
+                        <div class="health-item">
+                            <span>CMS Status</span>
+                            <div class="health-status status-online"></div>
+                        </div>
+                        <div class="health-item">
+                            <span>Database</span>
+                            <div class="health-status status-online"></div>
+                        </div>
+                        <div class="health-item">
+                            <span>Storage</span>
+                            <div class="health-status status-online"></div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <h4>Media Usage</h4>
+                        <p style="font-size: 0.875rem; color: #64748b; margin-top: 0.5rem;">
+                            Total Files: ${storageStats.totalFiles}<br>
+                            Estimated Size: ${(storageStats.totalSize / (1024 * 1024)).toFixed(2)} MB
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Quick Actions</h2>
+                <div class="overview-grid">
+                    <div class="stat-card" onclick="loadSection('news')">
+                        <h3>Drafts Needing Review</h3>
+                        <div class="stat-number">${news.data?.filter(n => !n.is_published).length || 0}</div>
+                    </div>
+                    <div class="stat-card" onclick="loadSection('pages')">
+                        <h3>Stale Pages (>6mo)</h3>
+                        <div class="stat-number" id="stale-pages-count">0</div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Check for stale pages
+        const { data: stalePages } = await supabase.from('sections').select('page_id, updated_at');
+        const staleCount = new Set(stalePages?.filter(s => new Date(s.updated_at) < new Date(now.getTime() - (180 * 24 * 60 * 60 * 1000))).map(s => s.page_id)).size;
+        const staleEl = document.getElementById('stale-pages-count');
+        if (staleEl) staleEl.textContent = staleCount;
+
+    } catch (err) {
+        console.error('Dashboard load failed:', err);
+        showToast('Failed to load dashboard metrics', 'error');
+    }
+}
+
+async function getStorageStats() {
+    const buckets = ['projects', 'news', 'team', 'news_attachments'];
+    let totalFiles = 0;
+    let totalSize = 0;
+
+    for (const bucket of buckets) {
+        const { data, error } = await supabase.storage.from(bucket).list();
+        if (data) {
+            totalFiles += data.length;
+            data.forEach(file => {
+                totalSize += file.metadata?.size || 0;
+            });
+        }
+    }
+
+    return { totalFiles, totalSize };
 }
 
 async function showProjectForm(id = null) {
@@ -220,9 +399,11 @@ async function showProjectForm(id = null) {
 
             if (id) {
                 await supabase.from('projects').update(projectData).eq('id', id);
+                await logAction('Updated', 'Project', id, { title: projectData.title });
                 showToast('Project updated successfully');
             } else {
-                await supabase.from('projects').insert([projectData]);
+                const { data } = await supabase.from('projects').insert([projectData]).select();
+                if (data) await logAction('Created', 'Project', data[0].id, { title: projectData.title });
                 showToast('Project created successfully');
             }
 
@@ -433,9 +614,13 @@ async function showNewsForm(id = null) {
             let newsId = id;
             if (id) {
                 await supabase.from('news').update(newsData).eq('id', id);
+                await logAction('Updated', 'News Post', id, { title: newsData.title });
             } else {
                 const { data, error } = await supabase.from('news').insert([newsData]).select();
-                if (data) newsId = data[0].id;
+                if (data) {
+                    newsId = data[0].id;
+                    await logAction('Created', 'News Post', newsId, { title: newsData.title });
+                }
             }
 
             // Handle document uploads
@@ -688,9 +873,11 @@ async function showTeamForm(id = null) {
 
             if (id) {
                 await supabase.from('team_members').update(teamData).eq('id', id);
+                await logAction('Updated', 'Team Member', id, { name: teamData.name });
                 showToast('Team member updated');
             } else {
-                await supabase.from('team_members').insert([teamData]);
+                const { data } = await supabase.from('team_members').insert([teamData]).select();
+                if (data) await logAction('Added', 'Team Member', data[0].id, { name: teamData.name });
                 showToast('Team member added');
             }
 
@@ -797,6 +984,7 @@ async function renderSettings() {
                 await supabase.from('site_settings').update({ value: update.value }).eq('id', update.id);
             }
 
+            await logAction('Updated', 'Site Settings', 'global');
             showToast('Settings saved successfully');
         } catch (error) {
             console.error('Error saving settings:', error);
@@ -812,7 +1000,10 @@ window.deleteProject = async (id) => {
     if (confirm('Are you sure you want to delete this project?')) {
         const { error } = await supabase.from('projects').delete().eq('id', id);
         if (error) alert(error.message);
-        else renderProjects();
+        else {
+            await logAction('Deleted', 'Project', id);
+            renderProjects();
+        }
     }
 };
 
@@ -820,6 +1011,7 @@ window.editNews = (id) => showNewsForm(id);
 window.deleteNews = async (id) => {
     if (confirm('Delete this news post?')) {
         await supabase.from('news').delete().eq('id', id);
+        await logAction('Deleted', 'News Post', id);
         renderNews();
     }
 };
@@ -828,6 +1020,7 @@ window.editTeam = (id) => showTeamForm(id);
 window.deleteTeam = async (id) => {
     if (confirm('Delete this team member?')) {
         await supabase.from('team_members').delete().eq('id', id);
+        await logAction('Deleted', 'Team Member', id);
         renderTeam();
     }
 };
@@ -961,6 +1154,7 @@ window.editPage = async (id) => {
                 }
             }
 
+            await logAction('Updated', 'Page Content', id);
             showToast('Page content updated successfully');
             closeModal();
         } catch (error) {
