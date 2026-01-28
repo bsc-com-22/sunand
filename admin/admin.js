@@ -16,6 +16,38 @@ async function checkAuth() {
     }
 }
 
+// UI Helpers
+function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `
+        ${type === 'success' ? '✅' : '❌'}
+        <span>${message}</span>
+    `;
+    document.body.appendChild(toast);
+
+    // Trigger animation
+    setTimeout(() => toast.classList.add('show'), 100);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+function setLoading(button, isLoading, originalText = 'Save') {
+    if (isLoading) {
+        button.disabled = true;
+        button.classList.add('btn-loading');
+        button.innerHTML = `<span class="spinner"></span> Saving...`;
+    } else {
+        button.disabled = false;
+        button.classList.remove('btn-loading');
+        button.innerHTML = originalText;
+    }
+}
+
 // Navigation handling
 const navItems = document.querySelectorAll('.nav-item');
 const sectionTitle = document.getElementById('section-title');
@@ -171,24 +203,37 @@ async function showProjectForm(id = null) {
 
     document.getElementById('project-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        const projectData = Object.fromEntries(formData.entries());
-        projectData.is_featured = formData.has('is_featured');
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        setLoading(submitBtn, true);
 
-        const imageFile = document.getElementById('project-image-input').files[0];
-        if (imageFile) {
-            const imageUrl = await uploadImage('projects', imageFile);
-            if (imageUrl) projectData.image_url = imageUrl;
+        try {
+            const formData = new FormData(e.target);
+            const projectData = Object.fromEntries(formData.entries());
+            projectData.is_featured = formData.has('is_featured');
+
+            const imageFile = document.getElementById('project-image-input').files[0];
+            if (imageFile) {
+                const imageUrl = await uploadImage('projects', imageFile);
+                if (imageUrl) projectData.image_url = imageUrl;
+            }
+
+            if (id) {
+                await supabase.from('projects').update(projectData).eq('id', id);
+                showToast('Project updated successfully');
+            } else {
+                await supabase.from('projects').insert([projectData]);
+                showToast('Project created successfully');
+            }
+
+            closeModal();
+            renderProjects();
+        } catch (error) {
+            console.error('Error saving project:', error);
+            showToast('Error saving project', 'error');
+        } finally {
+            setLoading(submitBtn, false, originalText);
         }
-
-        if (id) {
-            await supabase.from('projects').update(projectData).eq('id', id);
-        } else {
-            await supabase.from('projects').insert([projectData]);
-        }
-
-        closeModal();
-        renderProjects();
     });
 }
 
@@ -368,45 +413,57 @@ async function showNewsForm(id = null) {
 
     document.getElementById('news-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        const newsData = Object.fromEntries(formData.entries());
-        newsData.is_published = formData.has('is_published');
-        newsData.is_featured = formData.has('is_featured');
-        if (!id) newsData.published_at = new Date().toISOString();
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        setLoading(submitBtn, true);
 
-        const imageFile = document.getElementById('news-image-input').files[0];
-        if (imageFile) {
-            const imageUrl = await uploadImage('news', imageFile);
-            if (imageUrl) newsData.image_url = imageUrl;
-        }
+        try {
+            const formData = new FormData(e.target);
+            const newsData = Object.fromEntries(formData.entries());
+            newsData.is_published = formData.has('is_published');
+            newsData.is_featured = formData.has('is_featured');
+            if (!id) newsData.published_at = new Date().toISOString();
 
-        let newsId = id;
-        if (id) {
-            await supabase.from('news').update(newsData).eq('id', id);
-        } else {
-            const { data, error } = await supabase.from('news').insert([newsData]).select();
-            if (data) newsId = data[0].id;
-        }
+            const imageFile = document.getElementById('news-image-input').files[0];
+            if (imageFile) {
+                const imageUrl = await uploadImage('news', imageFile);
+                if (imageUrl) newsData.image_url = imageUrl;
+            }
 
-        // Handle document uploads
-        const docFiles = document.getElementById('news-docs-input').files;
-        if (docFiles.length > 0 && newsId) {
-            for (const file of docFiles) {
-                const docData = await uploadDocument(file);
-                if (docData) {
-                    await supabase.from('news_attachments').insert([{
-                        news_id: newsId,
-                        file_url: docData.url,
-                        file_name: docData.name,
-                        file_type: docData.type,
-                        file_size: docData.size
-                    }]);
+            let newsId = id;
+            if (id) {
+                await supabase.from('news').update(newsData).eq('id', id);
+            } else {
+                const { data, error } = await supabase.from('news').insert([newsData]).select();
+                if (data) newsId = data[0].id;
+            }
+
+            // Handle document uploads
+            const docFiles = document.getElementById('news-docs-input').files;
+            if (docFiles.length > 0 && newsId) {
+                for (const file of docFiles) {
+                    const docData = await uploadDocument(file);
+                    if (docData) {
+                        await supabase.from('news_attachments').insert([{
+                            news_id: newsId,
+                            file_url: docData.url,
+                            file_name: docData.name,
+                            file_type: docData.type,
+                            file_size: docData.size
+                        }]);
+                    }
                 }
             }
-        }
 
-        closeModal();
-        renderNews();
+            showToast(id ? 'News post updated' : 'News post created');
+            closeModal();
+            renderNews();
+        } catch (error) {
+            console.error('Error saving news:', error);
+            showToast('Error saving news post', 'error');
+        } finally {
+            setLoading(submitBtn, false, originalText);
+        }
     });
 }
 
@@ -615,23 +672,36 @@ async function showTeamForm(id = null) {
 
     document.getElementById('team-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        const teamData = Object.fromEntries(formData.entries());
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        setLoading(submitBtn, true);
 
-        const imageFile = document.getElementById('team-image-input').files[0];
-        if (imageFile) {
-            const imageUrl = await uploadImage('team', imageFile);
-            if (imageUrl) teamData.image_url = imageUrl;
+        try {
+            const formData = new FormData(e.target);
+            const teamData = Object.fromEntries(formData.entries());
+
+            const imageFile = document.getElementById('team-image-input').files[0];
+            if (imageFile) {
+                const imageUrl = await uploadImage('team', imageFile);
+                if (imageUrl) teamData.image_url = imageUrl;
+            }
+
+            if (id) {
+                await supabase.from('team_members').update(teamData).eq('id', id);
+                showToast('Team member updated');
+            } else {
+                await supabase.from('team_members').insert([teamData]);
+                showToast('Team member added');
+            }
+
+            closeModal();
+            renderTeam();
+        } catch (error) {
+            console.error('Error saving team member:', error);
+            showToast('Error saving team member', 'error');
+        } finally {
+            setLoading(submitBtn, false, originalText);
         }
-
-        if (id) {
-            await supabase.from('team_members').update(teamData).eq('id', id);
-        } else {
-            await supabase.from('team_members').insert([teamData]);
-        }
-
-        closeModal();
-        renderTeam();
     });
 }
 
@@ -712,17 +782,28 @@ async function renderSettings() {
 
     document.getElementById('settings-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const inputs = e.target.querySelectorAll('input');
-        const updates = Array.from(inputs).map(input => ({
-            id: input.getAttribute('data-id'),
-            value: input.value
-        }));
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        setLoading(submitBtn, true);
 
-        for (const update of updates) {
-            await supabase.from('site_settings').update({ value: update.value }).eq('id', update.id);
+        try {
+            const inputs = e.target.querySelectorAll('input');
+            const updates = Array.from(inputs).map(input => ({
+                id: input.getAttribute('data-id'),
+                value: input.value
+            }));
+
+            for (const update of updates) {
+                await supabase.from('site_settings').update({ value: update.value }).eq('id', update.id);
+            }
+
+            showToast('Settings saved successfully');
+        } catch (error) {
+            console.error('Error saving settings:', error);
+            showToast('Error saving settings', 'error');
+        } finally {
+            setLoading(submitBtn, false, originalText);
         }
-
-        alert('Settings updated successfully!');
     });
 }
 
@@ -863,19 +944,30 @@ window.editPage = async (id) => {
 
     document.getElementById('page-content-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        setLoading(submitBtn, true);
 
-        for (const [key, value] of formData.entries()) {
-            if (key.startsWith('section_')) {
-                const sectionId = key.replace('section_', '');
-                // Save as a JSON object with an 'html' key for consistency
-                await supabase.from('sections').update({
-                    content: { html: value }
-                }).eq('id', sectionId);
+        try {
+            const formData = new FormData(e.target);
+
+            for (const [key, value] of formData.entries()) {
+                if (key.startsWith('section_')) {
+                    const sectionId = key.replace('section_', '');
+                    // Save as a JSON object with an 'html' key for consistency
+                    await supabase.from('sections').update({
+                        content: { html: value }
+                    }).eq('id', sectionId);
+                }
             }
-        }
 
-        closeModal();
-        alert('Page content updated successfully!');
+            showToast('Page content updated successfully');
+            closeModal();
+        } catch (error) {
+            console.error('Error updating page content:', error);
+            showToast('Error updating page content', 'error');
+        } finally {
+            setLoading(submitBtn, false, originalText);
+        }
     });
 };
