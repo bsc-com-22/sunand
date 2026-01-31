@@ -1328,7 +1328,7 @@ footer {
 
 .newsletter-form-footer input {
     padding: 0.8rem 1.2rem;
-    border-radius: var(--radius-md);
+    border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     background: rgba(255, 255, 255, 0.05);
     color: var(--color-white);
@@ -1493,12 +1493,16 @@ footer {
 .form-group select,
 .form-group textarea {
     padding: 1.2rem;
-    border-radius: var(--radius-md);
+    border-radius: 50px;
     border: 2px solid #e8ede9;
     background: #fcfdfc;
     font-family: inherit;
     font-size: 1rem;
     transition: var(--transition);
+}
+
+.form-group textarea {
+    border-radius: 24px;
 }
 
 .form-group input:focus,
@@ -1565,7 +1569,7 @@ footer {
     height: 45px;
     background: var(--color-white);
     border: 2px solid #e8ede9;
-    border-radius: 12px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;

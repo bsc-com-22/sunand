@@ -55,6 +55,17 @@ async function loadAllNews() {
         console.error('Error loading news:', error);
         container.innerHTML = '<div class="error">Error loading news. Please try again later.</div>';
     }
+
+    // Pagination Logic
+    const pagination = document.querySelector('.pagination');
+    if (pagination) {
+        const newsCards = container.querySelectorAll('.news-card');
+        if (newsCards.length <= 6) {
+            pagination.style.display = 'none';
+        } else {
+            pagination.style.display = 'flex';
+        }
+    }
 }
 
 async function loadSingleNews(id) {

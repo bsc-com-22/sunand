@@ -177,8 +177,8 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
 
             const paychanguLinks = {
-                'USD': 'https://give.paychangu.com/dc-8nu2ur',
-                'MWK': 'https://give.paychangu.com/dc-CMO2D4'
+                'USD': (window.siteSettings && window.siteSettings.donation_link_usd) || 'https://give.paychangu.com/dc-8nu2ur',
+                'MWK': (window.siteSettings && window.siteSettings.donation_link_mwk) || 'https://give.paychangu.com/dc-CMO2D4'
             };
 
             const redirectUrl = paychanguLinks[selectedCurrency];

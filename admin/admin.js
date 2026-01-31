@@ -176,11 +176,24 @@ function createRichEditor(container, initialValue) {
     toolbar.className = 'editor-toolbar';
     toolbar.style.display = 'flex';
     toolbar.style.gap = '0.5rem';
-    toolbar.style.marginBottom = '0.5rem';
+    toolbar.style.marginBottom = '1rem';
+    toolbar.style.padding = '0.5rem';
+    toolbar.style.background = '#f8fafc';
+    toolbar.style.borderRadius = '12px';
+    toolbar.style.border = '1px solid #e2e8f0';
     toolbar.innerHTML = `
-        <button type="button" class="btn-icon" onclick="document.execCommand('bold', false, null)"><b>B</b></button>
-        <button type="button" class="btn-icon" onclick="document.execCommand('italic', false, null)"><i>I</i></button>
-        <button type="button" class="btn-icon" onclick="document.execCommand('insertUnorderedList', false, null)">• List</button>
+        <button type="button" class="btn-icon" onclick="document.execCommand('bold', false, null)" title="Bold">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path></svg>
+        </button>
+        <button type="button" class="btn-icon" onclick="document.execCommand('italic', false, null)" title="Italic">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="4" x2="10" y2="4"></line><line x1="14" y1="20" x2="5" y2="20"></line><line x1="15" y1="4" x2="9" y2="20"></line></svg>
+        </button>
+        <button type="button" class="btn-icon" onclick="document.execCommand('insertUnorderedList', false, null)" title="List">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        </button>
+        <button type="button" class="btn-icon" onclick="document.execCommand('createLink', false, prompt('Enter URL:'))" title="Link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+        </button>
     `;
 
     const editor = document.createElement('div');
@@ -199,7 +212,11 @@ function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     toast.innerHTML = `
-        ${type === 'success' ? '✅' : '❌'}
+        <div class="toast-icon">
+            ${type === 'success' ?
+            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' :
+            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'}
+        </div>
         <span>${message}</span>
     `;
     document.body.appendChild(toast);
@@ -218,7 +235,7 @@ function setLoading(button, isLoading, originalText = 'Save') {
     if (isLoading) {
         button.disabled = true;
         button.classList.add('btn-loading');
-        button.innerHTML = `<span class="spinner"></span> Saving...`;
+        button.innerHTML = `<span class="spinner"></span> <span>Saving...</span>`;
     } else {
         button.disabled = false;
         button.classList.remove('btn-loading');
@@ -305,6 +322,115 @@ async function loadSection(section) {
     }
 }
 
+async function renderSettings() {
+    contentArea.innerHTML = '<div class="content-card"><p>Loading settings...</p></div>';
+
+    try {
+        const { data: settings } = await supabase.from('site_settings').select('*');
+        const settingsMap = {};
+        if (settings) {
+            settings.forEach(s => settingsMap[s.key] = s.value);
+        }
+
+        const getVal = (key) => settingsMap[key] || '';
+
+        contentArea.innerHTML = `
+            <div class="content-card">
+                <div class="card-header">
+                    <h3>Site Configuration & Donation Settings</h3>
+                </div>
+                <form id="settings-form" class="admin-form">
+                    <div class="settings-grid">
+                        
+                        <!-- Contact Information -->
+                        <div class="settings-section">
+                            <h4>Contact Information</h4>
+                            <div class="form-group">
+                                <label>Primary Phone Number</label>
+                                <input type="text" name="contact_phone" value="${getVal('contact_phone')}" placeholder="+265 999 123 456">
+                            </div>
+                            <div class="form-group">
+                                <label>Secondary Phone Number (Optional)</label>
+                                <input type="text" name="contact_phone_secondary" value="${getVal('contact_phone_secondary')}" placeholder="+265 888 123 456">
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" name="contact_email" value="${getVal('contact_email')}" placeholder="info@sunandsoil.org">
+                            </div>
+                            <div class="form-group">
+                                <label>Physical Address</label>
+                                <textarea name="contact_address" rows="2">${getVal('contact_address')}</textarea>
+                            </div>
+                        </div>
+
+                        <!-- Donation Links -->
+                        <div class="settings-section">
+                            <h4>Donation Setup</h4>
+                            <div class="form-group">
+                                <label>Malawian Kwacha (MWK) Donation Link</label>
+                                <input type="url" name="donation_link_mwk" value="${getVal('donation_link_mwk')}" placeholder="https://paychangu.com/...">
+                                <small class="helper-text">Direct payment link for local donations.</small>
+                            </div>
+                            <div class="form-group">
+                                <label>US Dollar (USD) Donation Link</label>
+                                <input type="url" name="donation_link_usd" value="${getVal('donation_link_usd')}" placeholder="https://paypal.com/...">
+                                <small class="helper-text">International payment link.</small>
+                            </div>
+                        </div>
+
+                        <!-- Maps & Social -->
+                        <div class="settings-section">
+                            <h4>Google Map Location</h4>
+                            <div class="form-group">
+                                <label>Google Maps Embed Src URL</label>
+                                <input type="text" name="contact_map_link" value="${getVal('contact_map_link')}" placeholder="https://www.google.com/maps/embed?...">
+                                <small class="helper-text">Paste the 'src' attribute from the Google Maps Embed code.</small>
+                            </div>
+                        </div>
+
+                        <div style="text-align: right;">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        `;
+
+        document.getElementById('settings-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            setLoading(btn, true);
+
+            const formData = new FormData(e.target);
+            const updates = [];
+
+            for (const [key, value] of formData.entries()) {
+                // Upsert loading: verify if key exists, if so update, else insert
+                // Actually supabase upsert works well if we have a unique constraint on key
+                updates.push({ key, value });
+            }
+
+            try {
+                const { error } = await supabase.from('site_settings').upsert(updates, { onConflict: 'key' });
+
+                if (error) throw error;
+
+                await logAction('Updated', 'Settings', 'Global');
+                showToast('Settings updated successfully');
+            } catch (err) {
+                console.error('Error saving settings:', err);
+                showToast('Failed to save settings', 'error');
+            } finally {
+                setLoading(btn, false, 'Save Changes');
+            }
+        });
+
+    } catch (err) {
+        console.error('Error loading settings:', err);
+        contentArea.innerHTML = '<div class="content-card"><p class="text-error">Error loading settings.</p></div>';
+    }
+}
+
 async function renderOverview() {
     contentArea.innerHTML = `
         <div class="overview-grid">
@@ -336,16 +462,14 @@ async function renderOverview() {
             messages,
             subscribers,
             auditLogs,
-            storageStats,
-            programs
+            storageStats
         ] = await Promise.all([
-            supabase.from('projects').select('id, is_featured, created_at, program_id'),
+            supabase.from('projects').select('id, is_featured, created_at'),
             supabase.from('news').select('id, is_published, published_at'),
             supabase.from('contact_messages').select('id, created_at'),
             supabase.from('newsletter_subscribers').select('id, created_at'),
-            supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(10),
-            getStorageStats(),
-            supabase.from('programs').select('id, name')
+            supabase.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(8),
+            getStorageStats()
         ]);
 
         const now = new Date();
@@ -373,28 +497,40 @@ async function renderOverview() {
         contentArea.innerHTML = `
             <div class="overview-grid">
                 <div class="stat-card" onclick="loadSection('projects')">
-                    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg> Projects</h3>
+                    <h3>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                        Projects
+                    </h3>
                     <div class="stat-main">
                         <span class="stat-number">${totalProjects}</span>
                         <span class="stat-trend trend-up">${featuredProjects} Featured</span>
                     </div>
                 </div>
                 <div class="stat-card" onclick="loadSection('news')">
-                    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> News Posts</h3>
+                    <h3>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        News Posts
+                    </h3>
                     <div class="stat-main">
                         <span class="stat-number">${news.data?.length || 0}</span>
                         <span class="stat-trend trend-up">+${newsThisMonth} this month</span>
                     </div>
                 </div>
                 <div class="stat-card" onclick="loadSection('messages')">
-                    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Messages</h3>
+                    <h3>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        Messages
+                    </h3>
                     <div class="stat-main">
                         <span class="stat-number">${totalMessages}</span>
-                        <span class="stat-trend ${newMessages > 0 ? 'trend-up' : ''}">${newMessages} new (30d)</span>
+                        <span class="stat-trend ${newMessages > 0 ? 'trend-up' : ''}">${newMessages} new</span>
                     </div>
                 </div>
                 <div class="stat-card" onclick="loadSection('subscribers')">
-                    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> Subscribers</h3>
+                    <h3>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Subscribers
+                    </h3>
                     <div class="stat-main">
                         <span class="stat-number">${totalSubs}</span>
                         <span class="stat-trend trend-up">+${subsThisMonth} this month</span>
@@ -404,61 +540,69 @@ async function renderOverview() {
 
             <div class="dashboard-row">
                 <div class="content-card">
-                    <div class="card-header" style="justify-content: flex-start; margin-bottom: 1.5rem;">
-                        <h3>Recent Admin Activity</h3>
+                    <div class="card-header" style="justify-content: flex-start; margin-bottom: 2rem;">
+                        <h3>Recent Activity</h3>
                     </div>
                     <div class="activity-list">
                         ${auditLogs.data?.length > 0 ? auditLogs.data.map(log => `
                             <div class="activity-item">
                                 <div class="activity-icon">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                                 </div>
                                 <div class="activity-content">
-                                    <strong>${log.admin_email}</strong> ${log.action} ${log.entity_type ? `on ${log.entity_type}` : ''}
-                                    <div class="activity-time">${new Date(log.created_at).toLocaleString()}</div>
+                                    <div style="margin-bottom: 0.25rem;">
+                                        <strong style="color: var(--primary-dark)">${log.admin_email.split('@')[0]}</strong> 
+                                        <span style="color: var(--text-main)">${log.action}</span> 
+                                        <span style="color: var(--text-muted)">${log.entity_type ? `on ${log.entity_type}` : ''}</span>
+                                    </div>
+                                    <div class="activity-time">${new Date(log.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
                                 </div>
                             </div>
-                        `).join('') : '<p>No recent activity found.</p>'}
+                        `).join('') : '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">No recent activity found.</p>'}
                     </div>
                 </div>
 
                 <div class="content-card">
-                    <div class="card-header" style="justify-content: flex-start; margin-bottom: 1.5rem;">
-                        <h3>System Health</h3>
+                    <div class="card-header" style="justify-content: flex-start; margin-bottom: 2rem;">
+                        <h3>System Status</h3>
                     </div>
                     <div class="health-grid">
                         <div class="health-item">
-                            <span>CMS Status</span>
+                            <span style="font-weight: 600;">Database</span>
                             <div class="health-status status-online"></div>
                         </div>
                         <div class="health-item">
-                            <span>Database</span>
+                            <span style="font-weight: 600;">Storage</span>
                             <div class="health-status status-online"></div>
                         </div>
                         <div class="health-item">
-                            <span>Storage</span>
+                            <span style="font-weight: 600;">Auth Service</span>
                             <div class="health-status status-online"></div>
                         </div>
                     </div>
-                    <div style="margin-top: 2rem;">
-                        <h4>Media Usage</h4>
-                        <p style="font-size: 0.875rem; color: #64748b; margin-top: 0.5rem;">
-                            Total Files: ${storageStats.totalFiles}<br>
-                            Estimated Size: ${(storageStats.totalSize / (1024 * 1024)).toFixed(2)} MB
-                        </p>
+                    <div style="margin-top: 2.5rem; padding: 1.5rem; background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0;">
+                        <h4 style="font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Media Usage</h4>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 600;">Total Files</span>
+                            <span>${storageStats.totalFiles}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="font-weight: 600;">Storage Used</span>
+                            <span>${(storageStats.totalSize / (1024 * 1024)).toFixed(2)} MB</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="dashboard-section">
-                <h2>Quick Actions</h2>
+            <div class="dashboard-section" style="margin-top: 3rem;">
+                <h2 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Quick Insights</h2>
                 <div class="overview-grid">
                     <div class="stat-card" onclick="loadSection('news')">
-                        <h3>Drafts Needing Review</h3>
+                        <h3>Drafts Pending</h3>
                         <div class="stat-number">${news.data?.filter(n => !n.is_published).length || 0}</div>
                     </div>
                     <div class="stat-card" onclick="loadSection('pages')">
-                        <h3>Stale Pages (>6mo)</h3>
+                        <h3>Stale Pages</h3>
                         <div class="stat-number" id="stale-pages-count">0</div>
                     </div>
                 </div>
@@ -508,49 +652,81 @@ async function showProjectForm(id = null) {
     const modal = document.createElement('div');
     modal.className = 'admin-modal';
     modal.innerHTML = `
-        <div class="modal-content">
-            <h3>${id ? 'Edit' : 'Add'} Project</h3>
+        <div class="modal-content modal-large">
+            <h3 style="padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+                ${id ? 'Edit Project Details' : 'Add New Project'}
+            </h3>
             <form id="project-form" class="admin-form">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" name="title" value="${project.title}" required>
+                <div class="form-grid">
+                    <!-- Main Content Column -->
+                    <div class="form-main">
+                        <h4 style="font-size: 0.95rem; color: var(--primary-dark); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.5px;">Basic Information</h4>
+                        
+                        <div class="form-group">
+                            <label>Project Title</label>
+                            <input type="text" name="title" value="${project.title}" required placeholder="e.g. Solar Irrigation in Salima" style="font-size: 1.1rem; padding: 0.8rem;">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Project Summary</label>
+                            <textarea name="summary" rows="5" placeholder="Briefly describe the project impact, goals, and outcomes..." style="line-height: 1.6;">${project.summary || ''}</textarea>
+                        </div>
+
+                        <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 2rem;">
+                            <h4 style="font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-secondary);">Project Details</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div class="form-group">
+                                    <label>Program Area</label>
+                                    <select name="program_id" id="program-select" required>
+                                        <option value="">Select a Program</option>
+                                        ${programs ? programs.map(p => `<option value="${p.id}" data-name="${p.name}" ${project.program_id === p.id ? 'selected' : ''}>${p.name}</option>`).join('') : ''}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Location</label>
+                                    <input type="text" name="location" value="${project.location || ''}" placeholder="e.g. Salima, Malawi">
+                                </div>
+                                <div class="form-group">
+                                    <label>Beneficiaries</label>
+                                    <input type="text" name="beneficiaries" value="${project.beneficiaries || ''}" placeholder="e.g. 500+ Farmers">
+                                </div>
+                                <div class="form-group" id="tech-field-group">
+                                    <label>Technology Used</label>
+                                    <input type="text" name="technologies" value="${project.technologies || ''}" placeholder="e.g. Solar Pumps">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Column -->
+                    <div class="form-sidebar">
+                        <div class="form-group">
+                            <label>Featured Image</label>
+                            <div style="background: #f8fafc; padding: 1rem; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center;">
+                                ${project.image_url ?
+            `<img src="${project.image_url}" class="preview-img" style="margin-bottom: 1rem; max-height: 200px;">` :
+            '<div style="height: 150px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 0.9rem; border: 2px dashed #cbd5e1; border-radius: 8px; margin-bottom: 1rem;">No Image Selected</div>'
+        }
+                                <input type="file" id="project-image-input" accept="image/*" style="font-size: 0.85rem;">
+                            </div>
+                        </div>
+
+                        <div class="form-group checkbox-group" style="background: #fff; padding: 1rem; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: var(--shadow-sm);">
+                            <input type="checkbox" name="is_featured" id="is_featured" ${project.is_featured ? 'checked' : ''} style="width: 1.2rem; height: 1.2rem;">
+                            <label for="is_featured" style="margin-bottom: 0; cursor: pointer; user-select: none;">
+                                <span style="display: block; font-weight: 600; color: var(--primary-dark);">Featured Project</span>
+                                <span style="display: block; font-size: 0.8rem; color: var(--text-muted); font-weight: 400;">Display prominently on home</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Program</label>
-                    <select name="program_id" id="program-select" required>
-                        <option value="">Select a Program</option>
-                        ${programs ? programs.map(p => `<option value="${p.id}" data-name="${p.name}" ${project.program_id === p.id ? 'selected' : ''}>${p.name}</option>`).join('') : ''}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Location</label>
-                    <input type="text" name="location" value="${project.location || ''}">
-                </div>
-                <div class="form-group">
-                    <label>Number of Beneficiaries</label>
-                    <input type="text" name="beneficiaries" value="${project.beneficiaries || ''}">
-                </div>
-                <div class="form-group" id="tech-field-group">
-                    <label>Technology Used</label>
-                    <input type="text" name="technologies" value="${project.technologies || ''}">
-                    <small class="helper-text">Only applicable for Irrigation and Climate-smart programs.</small>
-                </div>
-                <div class="form-group">
-                    <label>Short Summary</label>
-                    <textarea name="summary">${project.summary || ''}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>Featured Image</label>
-                    <input type="file" id="project-image-input" accept="image/*">
-                    ${project.image_url ? `<img src="${project.image_url}" class="preview-img">` : ''}
-                </div>
-                <div class="form-group checkbox-group">
-                    <input type="checkbox" name="is_featured" ${project.is_featured ? 'checked' : ''}>
-                    <label>Featured (Display on Homepage)</label>
-                </div>
+
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Project</button>
+                    <button type="button" class="btn" style="background: #f1f5f9; color: #64748b;" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        Save Project
+                    </button>
                 </div>
             </form>
         </div>
@@ -564,20 +740,16 @@ async function showProjectForm(id = null) {
         const selectedOption = programSelect.options[programSelect.selectedIndex];
         const programName = selectedOption ? selectedOption.getAttribute('data-name') : '';
 
-        // Rules: Show for Irrigation and Climate-smart
         const showTech = programName && (
             programName.includes('Irrigation') ||
             programName.includes('Climate-smart')
         );
 
         techGroup.style.display = showTech ? 'block' : 'none';
-        if (!showTech) {
-            techGroup.querySelector('input').value = ''; // Clear if hidden
-        }
     };
 
     programSelect.addEventListener('change', updateTechVisibility);
-    updateTechVisibility(); // Initial check
+    updateTechVisibility();
 
     document.getElementById('project-form').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -589,13 +761,6 @@ async function showProjectForm(id = null) {
             const formData = new FormData(e.target);
             const projectData = Object.fromEntries(formData.entries());
             projectData.is_featured = formData.has('is_featured');
-
-            // Ensure technology is cleared if not applicable
-            const selectedOption = programSelect.options[programSelect.selectedIndex];
-            const programName = selectedOption.getAttribute('data-name');
-            if (!(programName.includes('Irrigation') || programName.includes('Climate-smart'))) {
-                projectData.technologies = '';
-            }
 
             const imageFile = document.getElementById('project-image-input').files[0];
             if (imageFile) {
@@ -742,33 +907,33 @@ async function showNewsForm(id = null) {
     modal.className = 'admin-modal';
     modal.innerHTML = `
         <div class="modal-content modal-large">
-            <h3>${id ? 'Edit' : 'Add'} News Post</h3>
+            <h3>${id ? 'Edit News Post' : 'Create News Post'}</h3>
             <form id="news-form" class="admin-form">
                 <div class="form-grid">
                     <div class="form-main">
                         <div class="form-group">
-                            <label>Title</label>
-                            <input type="text" name="title" value="${item.title}" required>
+                            <label>Article Title</label>
+                            <input type="text" name="title" value="${item.title}" required placeholder="e.g. New Partnership for Sustainable Farming">
                         </div>
                         <div class="form-group">
-                            <label>Short Summary (Homepage)</label>
-                            <textarea name="excerpt" rows="3">${item.excerpt || ''}</textarea>
+                            <label>Short Excerpt</label>
+                            <textarea name="excerpt" rows="3" placeholder="A brief summary for the news list...">${item.excerpt || ''}</textarea>
                         </div>
                         <div class="form-group">
-                            <label>Full Story Content</label>
-                            <textarea name="content" rows="15">${item.content || ''}</textarea>
+                            <label>Full Article Content</label>
+                            <div id="news-editor-container"></div>
                         </div>
                     </div>
                     <div class="form-sidebar">
                         <div class="form-group">
                             <label>Featured Image</label>
                             <input type="file" id="news-image-input" accept="image/*">
-                            ${item.image_url ? `<img src="${item.image_url}" class="preview-img">` : ''}
+                            ${item.image_url ? `<img src="${item.image_url}" class="preview-img" style="width: 100%; height: auto; margin-top: 1rem;">` : ''}
                         </div>
                         
                         <div class="form-group">
-                            <label>Attachments (PDF, DOCX)</label>
-                            <input type="file" id="news-docs-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx">
+                            <label>Attachments</label>
+                            <input type="file" id="news-docs-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx" style="font-size: 0.8rem;">
                             <div id="attachments-list" class="attachments-manager">
                                 ${attachments.map(a => `
                                     <div class="attachment-item" data-id="${a.id}">
@@ -779,24 +944,29 @@ async function showNewsForm(id = null) {
                             </div>
                         </div>
 
-                        <div class="form-group checkbox-group">
-                            <input type="checkbox" name="is_published" ${item.is_published ? 'checked' : ''}>
-                            <label>Published</label>
+                        <div class="form-group checkbox-group" style="background: #f8fafc; padding: 1rem; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 1rem;">
+                            <input type="checkbox" name="is_published" id="is_published" ${item.is_published ? 'checked' : ''}>
+                            <label for="is_published" style="margin-bottom: 0; cursor: pointer;">Published</label>
                         </div>
-                        <div class="form-group checkbox-group">
-                            <input type="checkbox" name="is_featured" ${item.is_featured ? 'checked' : ''}>
-                            <label>Featured (Homepage)</label>
+                        <div class="form-group checkbox-group" style="background: #f8fafc; padding: 1rem; border-radius: 12px; border: 1px solid #e2e8f0;">
+                            <input type="checkbox" name="is_featured" id="is_featured" ${item.is_featured ? 'checked' : ''}>
+                            <label for="is_featured" style="margin-bottom: 0; cursor: pointer;">Feature on Homepage</label>
                         </div>
                     </div>
                 </div>
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Post</button>
+                    <button type="button" class="btn" style="background: #f1f5f9; color: #475569;" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        Save Article
+                    </button>
                 </div>
             </form>
         </div>
     `;
     document.body.appendChild(modal);
+
+    const editor = createRichEditor(document.getElementById('news-editor-container'), item.content || '');
 
     document.getElementById('news-form').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -871,43 +1041,53 @@ async function renderNews() {
     let html = `
         <div class="content-card">
             <div class="card-header">
-                <button class="btn btn-primary" id="add-news-btn">+ Add News Post</button>
+                <h3>News & Updates</h3>
+                <button class="btn btn-primary" id="add-news-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add News Post
+                </button>
             </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Featured</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Article Title</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Featured</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     `;
 
     if (news && news.length > 0) {
         news.forEach(item => {
             html += `
                 <tr>
-                    <td>${item.title}</td>
-                    <td>${new Date(item.published_at).toLocaleDateString()}</td>
+                    <td style="font-weight: 600; color: var(--primary-dark)">${item.title}</td>
+                    <td>${new Date(item.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                     <td><span class="status-badge ${item.is_published ? 'status-published' : 'status-draft'}">${item.is_published ? 'Published' : 'Draft'}</span></td>
                     <td><span class="status-badge ${item.is_featured ? 'status-published' : 'status-draft'}">${item.is_featured ? 'Yes' : 'No'}</span></td>
                     <td class="actions">
-                        <button class="btn-icon btn-edit" onclick="editNews('${item.id}')">Edit</button>
-                        <button class="btn-icon btn-delete" onclick="deleteNews('${item.id}')">Delete</button>
+                        <button class="btn-icon btn-edit" onclick="editNews('${item.id}')" title="Edit">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button class="btn-icon btn-delete" onclick="deleteNews('${item.id}')" title="Delete">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
                     </td>
                 </tr>
             `;
         });
     } else {
-        html += '<tr><td colspan="5">No news posts found.</td></tr>';
+        html += '<tr><td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted)">No news posts found. Click "Add News Post" to start writing.</td></tr>';
     }
 
     html += `
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     `;
 
@@ -925,33 +1105,53 @@ async function showTeamForm(id = null) {
     const modal = document.createElement('div');
     modal.className = 'admin-modal';
     modal.innerHTML = `
-        <div class="modal-content">
-            <h3>${id ? 'Edit' : 'Add'} Team Member</h3>
+        <div class="modal-content modal-large">
+            <h3 style="padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem;">
+                ${id ? 'Edit Team Member' : 'Add Team Member'}
+            </h3>
             <form id="team-form" class="admin-form">
-                <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" name="name" value="${member.name}" required>
+                <div class="form-grid">
+                    <div class="form-main">
+                        <h4 style="font-size: 0.95rem; color: var(--primary-dark); margin-bottom: 1rem; text-transform: uppercase;">Profile Details</h4>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" name="name" value="${member.name}" required placeholder="e.g. John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Role / Position</label>
+                            <input type="text" name="role" value="${member.role}" required placeholder="e.g. Executive Director">
+                        </div>
+                        <div class="form-group">
+                            <label>Short Bio</label>
+                            <textarea name="bio" rows="6" placeholder="Brief professional background..." style="line-height: 1.6;">${member.bio || ''}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-sidebar">
+                        <div class="form-group">
+                            <label>Profile Photo</label>
+                            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; border: 1px solid #e2e8f0; text-align: center;">
+                                ${member.image_url ?
+            `<img src="${member.image_url}" class="preview-img" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">` :
+            '<div style="width: 100px; height: 100px; background: #e2e8f0; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>'
+        }
+                                <input type="file" id="team-image-input" accept="image/*" style="font-size: 0.85rem; width: 100%;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Display Order</label>
+                            <input type="number" name="sort_order" value="${member.sort_order}" placeholder="0">
+                            <small class="helper-text">Lower numbers appear first.</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Role</label>
-                    <input type="text" name="role" value="${member.role}" required>
-                </div>
-                <div class="form-group">
-                    <label>Bio</label>
-                    <textarea name="bio" rows="4">${member.bio || ''}</textarea>
-                </div>
-                <div class="form-group">
-                    <label>Photo</label>
-                    <input type="file" id="team-image-input" accept="image/*">
-                    ${member.image_url ? `<img src="${member.image_url}" class="preview-img">` : ''}
-                </div>
-                <div class="form-group">
-                    <label>Sort Order (Lower numbers appear first)</label>
-                    <input type="number" name="sort_order" value="${member.sort_order}">
-                </div>
+
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Member</button>
+                    <button type="button" class="btn" style="background: #f1f5f9; color: #64748b;" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                        Save Member
+                    </button>
                 </div>
             </form>
         </div>
@@ -1000,43 +1200,53 @@ async function renderTeam() {
     let html = `
         <div class="content-card">
             <div class="card-header">
-                <button class="btn btn-primary" id="add-team-btn">+ Add Team Member</button>
+                <h3>Team Members</h3>
+                <button class="btn btn-primary" id="add-team-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Team Member
+                </button>
             </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Photo</th>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Order</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Order</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     `;
 
     if (team && team.length > 0) {
         team.forEach(member => {
             html += `
                 <tr>
-                    <td><img src="${member.image_url || '../assets/placeholder.png'}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
-                    <td>${member.name}</td>
+                    <td><img src="${member.image_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.name) + '&background=216825&color=fff'}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-light);"></td>
+                    <td style="font-weight: 600; color: var(--primary-dark)">${member.name}</td>
                     <td>${member.role}</td>
-                    <td>${member.sort_order}</td>
+                    <td><span class="status-badge status-draft">${member.sort_order}</span></td>
                     <td class="actions">
-                        <button class="btn-icon btn-edit" onclick="editTeam('${member.id}')">Edit</button>
-                        <button class="btn-icon btn-delete" onclick="deleteTeam('${member.id}')">Delete</button>
+                        <button class="btn-icon btn-edit" onclick="editTeam('${member.id}')" title="Edit">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button class="btn-icon btn-delete" onclick="deleteTeam('${member.id}')" title="Delete">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
                     </td>
                 </tr>
             `;
         });
     } else {
-        html += '<tr><td colspan="5">No team members found.</td></tr>';
+        html += '<tr><td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted)">No team members found. Click "Add Team Member" to start building your team.</td></tr>';
     }
 
     html += `
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     `;
 
@@ -1055,27 +1265,28 @@ async function renderMessages() {
 
     let html = `
         <div class="content-card">
-            <div class="card-header" style="justify-content: space-between;">
-                <h3>Inquiries</h3>
+            <div class="card-header">
+                <h3>Inquiries & Messages</h3>
                 <div class="filter-group">
-                    <select id="message-filter" onchange="renderMessages()">
+                    <select id="message-filter" onchange="renderMessages()" style="padding: 0.5rem 1rem; border-radius: 12px; border: 1px solid #e2e8f0; font-family: inherit; font-weight: 600;">
                         <option value="all" ${filter === 'all' ? 'selected' : ''}>All Messages</option>
-                        <option value="unread" ${filter === 'unread' ? 'selected' : ''}>Unread</option>
-                        <option value="read" ${filter === 'read' ? 'selected' : ''}>Read</option>
+                        <option value="unread" ${filter === 'unread' ? 'selected' : ''}>Unread Only</option>
+                        <option value="read" ${filter === 'read' ? 'selected' : ''}>Read Only</option>
                     </select>
                 </div>
             </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Status</th>
-                        <th>Sender</th>
-                        <th>Subject</th>
-                        <th>Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Sender</th>
+                            <th>Subject</th>
+                            <th>Received</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     `;
 
     if (messages && messages.length > 0) {
@@ -1084,25 +1295,30 @@ async function renderMessages() {
                 <tr class="${!msg.is_read ? 'unread-row' : ''}">
                     <td><span class="status-badge ${msg.is_read ? 'status-draft' : 'status-published'}">${msg.is_read ? 'Read' : 'New'}</span></td>
                     <td>
-                        <strong>${msg.name}</strong><br>
-                        <small>${msg.email}</small>
+                        <div style="font-weight: 600; color: var(--primary-dark)">${msg.name}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted)">${msg.email}</div>
                     </td>
                     <td>${msg.subject}</td>
-                    <td>${new Date(msg.created_at).toLocaleDateString()}</td>
+                    <td>${new Date(msg.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
                     <td class="actions">
-                        <button class="btn-icon btn-edit" onclick="viewMessage('${msg.id}')">View</button>
-                        <button class="btn-icon btn-delete" onclick="deleteMessage('${msg.id}')">Delete</button>
+                        <button class="btn-icon btn-edit" onclick="viewMessage('${msg.id}')" title="View">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                        <button class="btn-icon btn-delete" onclick="deleteMessage('${msg.id}')" title="Delete">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
                     </td>
                 </tr>
             `;
         });
     } else {
-        html += '<tr><td colspan="5">No messages found.</td></tr>';
+        html += '<tr><td colspan="5" style="text-align: center; padding: 3rem; color: var(--text-muted)">No messages found.</td></tr>';
     }
 
     html += `
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     `;
 
@@ -1123,22 +1339,27 @@ window.viewMessage = async (id) => {
     modal.className = 'admin-modal';
     modal.innerHTML = `
         <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2.5rem;">
                 <div>
                     <h3 style="margin-bottom: 0.5rem;">Message from ${msg.name}</h3>
-                    <p style="color: #64748b;">${msg.email} • ${new Date(msg.created_at).toLocaleString()}</p>
+                    <p style="color: var(--text-muted); font-weight: 500;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        ${msg.email} • ${new Date(msg.created_at).toLocaleString()}
+                    </p>
                 </div>
                 <span class="status-badge ${msg.is_read ? 'status-draft' : 'status-published'}">${msg.is_read ? 'Read' : 'New'}</span>
             </div>
             
-            <div style="background: #f8fafc; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
-                <h4 style="margin-bottom: 1rem; color: #1e293b;">Subject: ${msg.subject}</h4>
-                <p style="white-space: pre-wrap; line-height: 1.6;">${msg.message}</p>
+            <div style="background: #f8fafc; padding: 2rem; border-radius: 20px; border: 1px solid #e2e8f0; margin-bottom: 2.5rem;">
+                <h4 style="margin-bottom: 1.25rem; color: var(--primary-dark); font-size: 1.1rem;">Subject: ${msg.subject}</h4>
+                <p style="white-space: pre-wrap; line-height: 1.8; color: var(--text-main); font-size: 1.05rem;">${msg.message}</p>
             </div>
 
             <div class="modal-actions">
-                <button class="btn btn-outline" onclick="toggleReadStatus('${msg.id}', ${!msg.is_read})">Mark as ${msg.is_read ? 'Unread' : 'Read'}</button>
-                <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                <button class="btn" style="background: #f1f5f9; color: #475569;" onclick="toggleReadStatus('${msg.id}', ${!msg.is_read})">
+                    Mark as ${msg.is_read ? 'Unread' : 'Read'}
+                </button>
+                <button class="btn btn-primary" onclick="closeModal()">Close Message</button>
             </div>
         </div>
     `;
@@ -1158,126 +1379,52 @@ async function renderSubscribers() {
     let html = `
         <div class="content-card">
             <div class="card-header">
-                <h3>Newsletter Subscribers</h3>
+                <h3>Newsletter Community</h3>
+                <div style="font-size: 0.9rem; color: var(--text-muted); font-weight: 600;">
+                    Total: ${subs?.length || 0} Subscribers
+                </div>
             </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Joined Date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Email Address</th>
+                            <th>Subscription Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     `;
 
     if (subs && subs.length > 0) {
         subs.forEach(sub => {
             html += `
                 <tr>
-                    <td>${sub.email}</td>
-                    <td>${new Date(sub.created_at).toLocaleDateString()}</td>
+                    <td style="font-weight: 600; color: var(--primary-dark)">${sub.email}</td>
+                    <td>${new Date(sub.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</td>
                     <td class="actions">
-                        <button class="btn-icon btn-delete" onclick="deleteSubscriber('${sub.id}')">Remove</button>
+                        <button class="btn-icon btn-delete" onclick="deleteSubscriber('${sub.id}')" title="Remove Subscriber">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>
+                        </button>
                     </td>
                 </tr>
             `;
         });
     } else {
-        html += '<tr><td colspan="3">No subscribers found.</td></tr>';
+        html += '<tr><td colspan="3" style="text-align: center; padding: 3rem; color: var(--text-muted)">No subscribers yet.</td></tr>';
     }
 
     html += `
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     `;
 
     contentArea.innerHTML = html;
 }
 
-async function renderSettings() {
-    const { data: settings } = await supabase.from('site_settings').select('*');
-    const s = {};
-    settings.forEach(item => s[item.key] = item.value);
 
-    contentArea.innerHTML = `
-        <div class="content-card">
-            <form id="settings-form" class="admin-form">
-                <div class="form-grid">
-                    <div class="form-main">
-                        <h3>Contact Information</h3>
-                        <div class="form-group">
-                            <label>Official Email</label>
-                            <input type="email" name="contact_email" value="${s.contact_email || ''}">
-                        </div>
-                        <div class="form-group">
-                            <label>Phone Number</label>
-                            <input type="text" name="contact_phone" value="${s.contact_phone || ''}">
-                        </div>
-                        <div class="form-group">
-                            <label>Physical Address</label>
-                            <textarea name="contact_address">${s.contact_address || ''}</textarea>
-                        </div>
-
-                        <h3 style="margin-top: 2rem;">Social Media Links</h3>
-                        <div class="form-group">
-                            <label>Facebook URL</label>
-                            <input type="url" name="social_facebook" value="${s.social_facebook || ''}">
-                        </div>
-                        <div class="form-group">
-                            <label>Twitter/X URL</label>
-                            <input type="url" name="social_twitter" value="${s.social_twitter || ''}">
-                        </div>
-                        <div class="form-group">
-                            <label>LinkedIn URL</label>
-                            <input type="url" name="social_linkedin" value="${s.social_linkedin || ''}">
-                        </div>
-                    </div>
-                    <div class="form-sidebar">
-                        <h3>Impact Stats</h3>
-                        <div class="form-group">
-                            <label>Farmers Trained</label>
-                            <input type="text" name="stat_farmers" value="${s.stat_farmers || ''}">
-                        </div>
-                        <div class="form-group">
-                            <label>Hectares Covered</label>
-                            <input type="text" name="stat_hectares" value="${s.stat_hectares || ''}">
-                        </div>
-                        <div class="form-group">
-                            <label>Youth Empowered</label>
-                            <input type="text" name="stat_youth" value="${s.stat_youth || ''}">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-actions" style="margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary">Save All Settings</button>
-                </div>
-            </form>
-        </div>
-    `;
-
-    document.getElementById('settings-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        setLoading(submitBtn, true);
-
-        try {
-            const formData = new FormData(e.target);
-            for (const [key, value] of formData.entries()) {
-                await supabase.from('site_settings').upsert({ key, value });
-            }
-            showToast('Settings saved successfully');
-            await logAction('Updated', 'Site Settings', 'global');
-        } catch (error) {
-            console.error('Error saving settings:', error);
-            showToast('Error saving settings', 'error');
-        } finally {
-            setLoading(submitBtn, false, originalText);
-        }
-    });
-}
 
 // Global functions for actions (attached to window for onclick)
 window.deleteProject = async (id) => {
@@ -1331,47 +1478,53 @@ async function renderPages() {
     const { data: pages } = await supabase.from('pages').select('*').order('title');
 
     let html = `
-        <div class="content-card">
+    < div class="content-card" >
             <div class="card-header">
-                <h3>Website Pages</h3>
+                <h3>Website Content Management</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">Select a page to edit its visual content and hero images.</p>
             </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Slug</th>
-                        <th>Hero Image</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="admin-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Page Name</th>
+                            <th>URL Path</th>
+                            <th>Hero Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
     `;
 
     if (pages && pages.length > 0) {
         pages.forEach(page => {
             html += `
                 <tr>
-                    <td>${page.title}</td>
-                    <td><code>${page.slug}</code></td>
+                    <td style="font-weight: 600; color: var(--primary-dark)">${page.title}</td>
+                    <td><code>/${page.slug}</code></td>
                     <td>
                         ${page.hero_image_url ?
-                    `<img src="${page.hero_image_url}" style="width: 50px; height: 30px; object-fit: cover; border-radius: 4px;">` :
+                    '<span class="status-badge status-published">Image Set</span>' :
                     '<span class="status-badge status-draft">No Image</span>'}
                     </td>
                     <td class="actions">
-                        <button class="btn-icon btn-edit" onclick="editPage('${page.id}')">Edit Content</button>
+                        <button class="btn btn-primary" onclick="editPage('${page.id}')" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            Edit Page Content
+                        </button>
                     </td>
                 </tr>
             `;
         });
     } else {
-        html += '<tr><td colspan="4">No pages found.</td></tr>';
+        html += '<tr><td colspan="4" style="text-align: center; padding: 3rem; color: var(--text-muted)">No pages found.</td></tr>';
     }
 
     html += `
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
+        </div >
     `;
 
     contentArea.innerHTML = html;
@@ -1390,25 +1543,25 @@ window.editPage = async (id) => {
 
     modal.innerHTML = `
         <div class="modal-content modal-large">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <div>
-                    <h3 style="margin-bottom: 0.25rem;">Editing: ${page.title}</h3>
-                    <p class="helper-text">Changes will be live once you click "Save & Update Website"</p>
-                </div>
-                <button class="page-preview-btn" onclick="previewPage('${page.slug}')">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                    Preview Page
+            <h3 style="padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                <span>Content Editor: <span style="color: var(--text-secondary); font-weight: 400;">${page.title}</span></span>
+                <button class="btn" style="background: #f1f5f9; color: var(--primary-dark); font-size: 0.85rem; padding: 0.5rem 1rem;" onclick="window.open('../${page.slug}', '_blank')">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    Live Preview
                 </button>
-            </div>
+            </h3>
             
             <form id="visual-editor-form" class="admin-form">
                 <div id="editor-sections-container">
                     <!-- Sections will be injected here -->
                 </div>
 
-                <div class="modal-actions" style="position: sticky; bottom: -3rem; background: white; padding: 1.5rem 0; border-top: 1px solid #e2e8f0; margin-top: 3rem; z-index: 10;">
-                    <button type="button" class="btn btn-outline" onclick="closeModal()">Discard Changes</button>
-                    <button type="submit" class="btn btn-primary">Save & Update Website</button>
+                <div class="modal-actions" style="margin-top: 3rem;">
+                    <button type="button" class="btn" style="background: #f1f5f9; color: #64748b;" onclick="closeModal()">Close Editor</button>
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        Save & Update Website
+                    </button>
                 </div>
             </form>
         </div>
@@ -1422,13 +1575,16 @@ window.editPage = async (id) => {
     // Inject Sections
     structure.forEach(group => {
         const sectionCard = document.createElement('div');
-        sectionCard.className = 'editor-section-card';
+        sectionCard.className = 'content-card';
+        sectionCard.style.marginBottom = '2rem';
+        sectionCard.style.border = '1px solid #e2e8f0';
+        sectionCard.style.boxShadow = 'none';
 
         sectionCard.innerHTML = `
-            <div class="editor-section-header">
-                <span class="editor-section-title">${group.label}</span>
+            <div style="margin-bottom: 1.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem;">
+                <h4 style="font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 0.25rem;">${group.label}</h4>
+                ${group.description ? `<p style="color: var(--text-muted); font-size: 0.9rem;">${group.description}</p>` : ''}
             </div>
-            ${group.description ? `<p class="editor-section-desc">${group.description}</p>` : ''}
             <div class="section-fields"></div>
         `;
 
@@ -1438,22 +1594,28 @@ window.editPage = async (id) => {
             const heroGroup = document.createElement('div');
             heroGroup.className = 'form-group';
             heroGroup.innerHTML = `
-                <label>Top Page Image</label>
-                <p class="helper-text" style="margin-bottom: 1rem;">This is the large image at the very top of the page.</p>
-                <input type="file" id="hero-image-input" accept="image/*" style="margin-bottom: 1rem;">
-                <div id="hero-preview-container">
-                    ${page.hero_image_url ? `<img src="${page.hero_image_url}" class="preview-img" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">` : '<p class="helper-text">No image set.</p>'}
+                <div style="display: grid; grid-template-columns: 1fr 250px; gap: 2rem; align-items: start;">
+                    <div>
+                        <label style="margin-bottom: 1rem; display: block;">Banner Image Upload</label>
+                        <input type="file" id="hero-image-input" accept="image/*" class="form-control">
+                        <p class="helper-text" style="margin-top: 0.5rem;">Recommended size: 1920x600px. High quality JPG or WebP.</p>
+                    </div>
+                    <div id="hero-preview-container" style="background: #f8fafc; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0;">
+                        ${page.hero_image_url ?
+                    `<img src="${page.hero_image_url}" style="width: 100%; height: 140px; object-fit: cover;">` :
+                    '<div style="width: 100%; height: 140px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-weight: 500; font-size: 0.85rem;">No Image Set</div>'
+                }
+                    </div>
                 </div>
             `;
             fieldsContainer.appendChild(heroGroup);
 
-            // Preview handler
             heroGroup.querySelector('input').addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = (re) => {
-                        heroGroup.querySelector('#hero-preview-container').innerHTML = `<img src="${re.target.result}" class="preview-img" style="width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px;">`;
+                        heroGroup.querySelector('#hero-preview-container').innerHTML = `<img src="${re.target.result}" style="width: 100%; height: 140px; object-fit: cover;">`;
                     };
                     reader.readAsDataURL(file);
                 }
@@ -1469,18 +1631,32 @@ window.editPage = async (id) => {
 
             const statsList = document.createElement('div');
             statsList.className = 'stats-list';
+            statsList.style.display = 'grid';
+            statsList.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+            statsList.style.gap = '1rem';
+            statsList.style.marginBottom = '1.5rem';
 
             const addStatBlock = (label = '', number = '') => {
                 const block = document.createElement('div');
                 block.className = 'stat-block';
+                block.style.background = '#f8fafc';
+                block.style.padding = '1rem';
+                block.style.borderRadius = '8px';
+                block.style.border = '1px solid #e2e8f0';
+                block.style.position = 'relative';
+
                 block.innerHTML = `
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <input type="text" placeholder="Label (e.g. People Trained)" value="${label}" class="stat-label-input">
+                    <button type="button" class="btn-icon" onclick="this.parentElement.remove()" style="position: absolute; top: 0.5rem; right: 0.5rem; color: #ef4444; padding: 0.25rem;">
+                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                    <div class="form-group" style="margin-bottom: 0.75rem;">
+                        <label style="font-size: 0.75rem;">Label</label>
+                        <input type="text" placeholder="e.g. Farmers" value="${label}" class="stat-label-input" style="padding: 0.5rem; font-size: 0.9rem;">
                     </div>
                     <div class="form-group" style="margin-bottom: 0;">
-                        <input type="text" placeholder="Number" value="${number}" class="stat-number-input">
+                        <label style="font-size: 0.75rem;">Value</label>
+                        <input type="text" placeholder="e.g. 5,000" value="${number}" class="stat-number-input" style="padding: 0.5rem; font-size: 0.9rem;">
                     </div>
-                    <button type="button" class="btn-remove-attach" onclick="this.parentElement.remove()">×</button>
                 `;
                 statsList.appendChild(block);
             };
@@ -1489,8 +1665,13 @@ window.editPage = async (id) => {
 
             const addBtn = document.createElement('button');
             addBtn.type = 'button';
-            addBtn.className = 'btn-add-block';
-            addBtn.textContent = '+ Add another impact number';
+            addBtn.className = 'btn btn-secondary';
+            addBtn.style.width = '100%';
+            addBtn.style.borderStyle = 'dashed';
+            addBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add Impact Metric
+            `;
             addBtn.onclick = () => addStatBlock();
 
             fieldsContainer.appendChild(statsList);
@@ -1535,7 +1716,6 @@ window.editPage = async (id) => {
         container.appendChild(sectionCard);
     });
 
-    // Handle Form Submit
     document.getElementById('visual-editor-form').addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -1543,7 +1723,6 @@ window.editPage = async (id) => {
         setLoading(submitBtn, true);
 
         try {
-            // 1. Handle Hero Image
             const heroFile = document.getElementById('hero-image-input')?.files[0];
             if (heroFile) {
                 const heroUrl = await uploadImage('heroes', heroFile);
@@ -1552,7 +1731,6 @@ window.editPage = async (id) => {
                 }
             }
 
-            // 2. Handle Text Fields & Selects
             const inputs = e.target.querySelectorAll('.visual-field-input');
             for (const input of inputs) {
                 const sectionId = input.dataset.sectionId;
@@ -1561,50 +1739,36 @@ window.editPage = async (id) => {
                 }).eq('id', sectionId);
             }
 
-            // 3. Handle Rich Editors
             for (const item of richEditors) {
                 await supabase.from('sections').update({
                     content: { html: item.editor.innerHTML }
                 }).eq('id', item.id);
             }
 
-            // 4. Handle Repeatable Blocks (Stats)
             for (const block of repeatableBlocks) {
                 const stats = [];
-                const items = block.container.querySelectorAll('.stat-block');
-                items.forEach(item => {
-                    const label = item.querySelector('.stat-label-input').value;
-                    const number = item.querySelector('.stat-number-input').value;
-                    if (label || number) stats.push({ label, number });
-                });
-
-                if (block.sectionId) {
-                    await supabase.from('sections').update({
-                        content: { stats }
-                    }).eq('id', block.sectionId);
-                } else {
-                    // Create section if missing
-                    await supabase.from('sections').insert({
-                        page_id: id,
-                        section_name: block.key,
-                        content: { stats }
+                block.container.querySelectorAll('.stat-block').forEach(b => {
+                    stats.push({
+                        label: b.querySelector('.stat-label-input').value,
+                        number: b.querySelector('.stat-number-input').value
                     });
-                }
+                });
+                await supabase.from('sections').update({
+                    content: { stats }
+                }).eq('id', block.sectionId);
             }
 
-            await logAction('Updated', 'Page Content', id, { title: page.title });
-            showToast('Website updated successfully!');
+            showToast('Page content updated successfully');
+            await logAction('Updated', 'Page Content', page.title);
             closeModal();
             renderPages();
         } catch (error) {
-            console.error('Save failed:', error);
-            showToast('Failed to save changes', 'error');
+            console.error('Error updating page:', error);
+            showToast('Error updating page content', 'error');
         } finally {
             setLoading(submitBtn, false, originalText);
         }
     });
 };
 
-window.previewPage = (slug) => {
-    window.open(`../${slug}`, '_blank');
-};
+

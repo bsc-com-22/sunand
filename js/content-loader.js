@@ -10,8 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadGlobalSettings() {
     const { data: settings } = await supabase.from('site_settings').select('*');
+    window.siteSettings = {}; // Store for other scripts
+
     if (settings) {
         settings.forEach(setting => {
+            window.siteSettings[setting.key] = setting.value;
+
             const elements = document.querySelectorAll(`[data-setting="${setting.key}"]`);
             elements.forEach(el => {
                 if (el.tagName === 'A' && setting.key.includes('email')) {
@@ -20,11 +24,17 @@ async function loadGlobalSettings() {
                 } else if (el.tagName === 'A' && setting.key.includes('phone')) {
                     el.href = `tel:${setting.value}`;
                     el.textContent = setting.value;
+                } else if (el.tagName === 'IFRAME' || (el.tagName === 'DIV' && setting.key.includes('map'))) {
+                    // Handle Map Embeds
+                    if (el.tagName === 'IFRAME') el.src = setting.value;
                 } else {
                     el.textContent = setting.value;
                 }
             });
         });
+
+        // Dispatch event for other scripts that depend on settings
+        window.dispatchEvent(new CustomEvent('settingsLoaded', { detail: window.siteSettings }));
     }
 }
 
