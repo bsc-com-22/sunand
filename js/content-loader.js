@@ -1,15 +1,98 @@
 import { supabase } from './supabase-client.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadGlobalSettings();
-    loadImpactMetrics();
-    loadFeaturedProjects();
-    loadFeaturedNews();
-    loadPageContent();
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // 1. Fetch all data in parallel
+        const [settings, stats, projects, news, page] = await Promise.all([
+            fetchGlobalSettings(),
+            fetchImpactMetrics(),
+            fetchFeaturedProjects(),
+            fetchFeaturedNews(),
+            fetchPageContent()
+        ]);
+
+        // 2. Render all data (synchronous DOM updates)
+        renderGlobalSettings(settings);
+        renderImpactMetrics(stats);
+        renderFeaturedProjects(projects);
+        renderFeaturedNews(news);
+        renderPageContent(page);
+
+    } catch (error) {
+        console.error("Error loading content:", error);
+    } finally {
+        // 3. Remove skeleton state (reveal content)
+        // Small timeout to ensure DOM paints complete
+        requestAnimationFrame(() => {
+            document.body.classList.remove('skeleton-loading');
+        });
+    }
 });
 
-async function loadGlobalSettings() {
+// --- Fetch Functions ---
+
+async function fetchGlobalSettings() {
     const { data: settings } = await supabase.from('site_settings').select('*');
+    return settings;
+}
+
+async function fetchImpactMetrics() {
+    const { data: stats } = await supabase.from('site_settings').select('*').filter('key', 'like', 'stat_%');
+    return stats;
+}
+
+async function fetchFeaturedProjects() {
+    const { data: projects } = await supabase.from('projects')
+        .select('*')
+        .eq('is_featured', true)
+        .order('created_at', { ascending: false })
+        .limit(3);
+    return projects;
+}
+
+async function fetchFeaturedNews() {
+    // Fetch featured news first, then fill with latest if needed
+    let { data: featured } = await supabase.from('news')
+        .select('*')
+        .eq('is_published', true)
+        .eq('is_featured', true)
+        .order('published_at', { ascending: false })
+        .limit(3);
+
+    let news = featured || [];
+
+    // If less than 3 featured, get latest non-featured to fill
+    if (news.length < 3) {
+        const { data: latest } = await supabase.from('news')
+            .select('*')
+            .eq('is_published', true)
+            .eq('is_featured', false)
+            .order('published_at', { ascending: false })
+            .limit(3 - news.length);
+
+        if (latest) {
+            news = [...news, ...latest];
+        }
+    }
+    return news;
+}
+
+async function fetchPageContent() {
+    const path = window.location.pathname;
+    const pageName = path.split('/').pop() || 'index.html';
+
+    // Fetch page and its sections
+    const { data: page } = await supabase
+        .from('pages')
+        .select('*, sections(*)')
+        .eq('slug', pageName)
+        .single();
+    return page;
+}
+
+// --- Render Functions ---
+
+function renderGlobalSettings(settings) {
     window.siteSettings = {}; // Store for other scripts
 
     if (settings) {
@@ -38,9 +121,7 @@ async function loadGlobalSettings() {
     }
 }
 
-async function loadImpactMetrics() {
-    // This function now handles both the old site_settings stats and the new home_stats section
-    const { data: stats } = await supabase.from('site_settings').select('*').filter('key', 'like', 'stat_%');
+function renderImpactMetrics(stats) {
     if (stats) {
         stats.forEach(stat => {
             const el = document.getElementById(stat.key);
@@ -51,13 +132,7 @@ async function loadImpactMetrics() {
     }
 }
 
-async function loadFeaturedProjects() {
-    const { data: projects } = await supabase.from('projects')
-        .select('*')
-        .eq('is_featured', true)
-        .order('created_at', { ascending: false })
-        .limit(3);
-
+function renderFeaturedProjects(projects) {
     const container = document.querySelector('.projects-grid');
     if (!container) return;
 
@@ -87,29 +162,7 @@ async function loadFeaturedProjects() {
     }
 }
 
-async function loadFeaturedNews() {
-    // Fetch featured news first, then fill with latest if needed
-    let { data: news } = await supabase.from('news')
-        .select('*')
-        .eq('is_published', true)
-        .eq('is_featured', true)
-        .order('published_at', { ascending: false })
-        .limit(3);
-
-    // If less than 3 featured, get latest non-featured to fill
-    if (!news || news.length < 3) {
-        const { data: latest } = await supabase.from('news')
-            .select('*')
-            .eq('is_published', true)
-            .eq('is_featured', false)
-            .order('published_at', { ascending: false })
-            .limit(3 - (news ? news.length : 0));
-
-        if (latest) {
-            news = [...(news || []), ...latest];
-        }
-    }
-
+function renderFeaturedNews(news) {
     const container = document.querySelector('.news-grid');
     if (!container) return;
 
@@ -140,17 +193,7 @@ async function loadFeaturedNews() {
     }
 }
 
-async function loadPageContent() {
-    const path = window.location.pathname;
-    const pageName = path.split('/').pop() || 'index.html';
-
-    // Fetch page and its sections
-    const { data: page } = await supabase
-        .from('pages')
-        .select('*, sections(*)')
-        .eq('slug', pageName)
-        .single();
-
+function renderPageContent(page) {
     if (page) {
         // Load Hero Image
         if (page.hero_image_url) {

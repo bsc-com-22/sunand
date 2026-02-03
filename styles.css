@@ -330,7 +330,102 @@ body {
     }
 }
 
-/* Page Specific Hero Backgrounds */
+
+/* Skeleton Loading Animation */
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeleton-loading .skeleton {
+    background: #f0f0f0;
+    background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    color: transparent !important;
+    border-color: transparent !important;
+    user-select: none;
+    pointer-events: none;
+    border-radius: 4px;
+}
+
+/* Text Skeletons */
+.skeleton-loading h1[data-cms-block],
+.skeleton-loading h2[data-cms-block],
+.skeleton-loading h3,
+.skeleton-loading p[data-cms-block],
+.skeleton-loading .hero-subheading,
+.skeleton-loading .btn {
+    background: #e0e0e0;
+    color: transparent !important;
+    border-radius: 4px;
+    background-image: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Ensure buttons don't have borders/shadows in skeleton mode */
+.skeleton-loading .btn {
+    box-shadow: none;
+    border: none;
+}
+
+/* Skeleton Card Structure for Grids */
+.skeleton-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.skeleton-image {
+    height: 200px;
+    width: 100%;
+    background: #e0e0e0;
+    background-image: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-content {
+    padding: 1.5rem;
+}
+
+.skeleton-title {
+    height: 1.8rem;
+    width: 80%;
+    margin-bottom: 1rem;
+    background: #e0e0e0;
+    background-image: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+.skeleton-text {
+    height: 1rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    background: #e0e0e0;
+    background-image: linear-gradient(90deg, #e0e0e0 25%, #d0d0d0 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+.skeleton-text:last-child {
+    width: 60%;
+}
+
+/* Hide real content when body has loading class if needed, 
+   but specific skeleton overrides above should handle it */
+
 .hero-about {
     background-image: url('https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?q=80&w=1920&auto=format&fit=crop');
 }
