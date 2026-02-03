@@ -24,6 +24,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Close button logic
+    const closeBtn = document.querySelector('.mobile-close-btn'); // Note: This selects one, but since we have one menu it's fine. 
+    // However, since the close btn is dynamically added or static in HTML, wait.
+    // It will be static in HTML.
+
+    // We need to use event delegation or select it here.
+    // Since I'm adding it to HTML, we can select it.
+    // BUT since I am adding it as an LI inside .nav-links, verify selector.
+    // I haven't added it to HTML yet. But I will.
+
+    // Actually, let's use event delegation on navLinks just in case, or just select it safely.
+    // Better to select inside the loop if I had multiple, but here specific selection is fine.
+
+    if (navLinks) {
+        navLinks.addEventListener('click', (e) => {
+            if (e.target.closest('.mobile-close-btn')) {
+                navLinks.classList.remove('active');
+                if (hamburger) hamburger.classList.remove('toggle');
+                links.forEach(link => {
+                    link.style.animation = '';
+                });
+            }
+        });
+    }
+
     // Close mobile menu when a link is clicked
     links.forEach(link => {
         link.addEventListener('click', () => {

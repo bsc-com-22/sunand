@@ -247,6 +247,25 @@ body {
     transform: rotate(90deg);
 }
 
+.mobile-close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    cursor: pointer;
+    color: var(--color-dark-green);
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: var(--transition);
+    display: block;
+    opacity: 1 !important;
+    /* Override default li opacity */
+}
+
+.mobile-close-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: rotate(90deg);
+}
+
 @media (min-width: 992px) {
     .nav-links {
         position: static;
@@ -271,6 +290,10 @@ body {
     }
 
     .hamburger {
+        display: none;
+    }
+
+    .mobile-close-btn {
         display: none;
     }
 }
