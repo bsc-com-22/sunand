@@ -1,15 +1,92 @@
 import { supabase } from './supabase-client.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Ensure modal structure exists
+    ensureModalExists();
+
     const urlParams = new URLSearchParams(window.location.search);
     const newsId = urlParams.get('id');
 
+    // Always load the background grid
+    await loadAllNews();
+
+    // If there's an ID, open the modal
     if (newsId) {
         loadSingleNews(newsId);
-    } else {
-        loadAllNews();
     }
+
+    // Handle Back/Forward browser buttons
+    window.addEventListener('popstate', (e) => {
+        const newParams = new URLSearchParams(window.location.search);
+        const newId = newParams.get('id');
+        if (newId) {
+            loadSingleNews(newId);
+        } else {
+            closeModal();
+        }
+    });
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
 });
+
+function ensureModalExists() {
+    if (!document.querySelector('.news-modal-overlay')) {
+        const modalHtml = `
+            <div class="news-modal-overlay">
+                <div class="news-modal-container">
+                    <div class="news-modal-header">
+                        <div class="header-logo" style="width: 40px; opacity: 0.5;">
+                            <!-- Optional logo icon or simplified header -->
+                        </div>
+                        <button class="news-modal-close" aria-label="Close">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="news-modal-body">
+                        <!-- Content injected here -->
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+        // Bind close events
+        const overlay = document.querySelector('.news-modal-overlay');
+        const closeBtn = document.querySelector('.news-modal-close');
+
+        closeBtn.addEventListener('click', closeModal);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeModal();
+        });
+    }
+}
+
+function closeModal() {
+    const overlay = document.querySelector('.news-modal-overlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+
+        // Update URL without functionality reload
+        const url = new URL(window.location);
+        url.searchParams.delete('id');
+        window.history.pushState({}, '', url);
+
+        // Optional: clear content after delay
+        setTimeout(() => {
+            const body = overlay.querySelector('.news-modal-body');
+            if (body) body.innerHTML = '';
+        }, 300);
+    }
+}
 
 async function loadAllNews() {
     const container = document.querySelector('.news-grid');
@@ -43,11 +120,22 @@ async function loadAllNews() {
                         </div>
                         <h3>${item.title}</h3>
                         <p>${item.excerpt || ''}</p>
-                        <a href="news.html?id=${item.id}" class="read-more">Read Full Story</a>
+                        <a href="news.html?id=${item.id}" class="read-more" data-id="${item.id}">Read Full Story</a>
                     </div>
                 `;
                 container.appendChild(article);
             });
+
+            // Bind click events to read more buttons
+            const readMoreBtns = container.querySelectorAll('.read-more');
+            readMoreBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const id = btn.getAttribute('data-id');
+                    loadSingleNews(id);
+                });
+            });
+
         } else {
             container.innerHTML = '<div class="no-results">No news articles available at the moment.</div>';
         }
@@ -69,6 +157,21 @@ async function loadAllNews() {
 }
 
 async function loadSingleNews(id) {
+    // Show modal immediately with loading state if needed, or wait for fetch
+    const overlay = document.querySelector('.news-modal-overlay');
+    const modalBody = overlay.querySelector('.news-modal-body');
+
+    // Update URL
+    const url = new URL(window.location);
+    url.searchParams.set('id', id);
+    window.history.pushState({}, '', url);
+
+    // Lock Scroll & Show Overlay
+    document.body.classList.add('no-scroll');
+    overlay.classList.add('active');
+
+    modalBody.innerHTML = '<div class="loading">Loading story...</div>';
+
     const { data: item, error } = await supabase.from('news')
         .select('*')
         .eq('id', id)
@@ -79,11 +182,9 @@ async function loadSingleNews(id) {
         .select('*')
         .eq('news_id', id);
 
-    const container = document.querySelector('.container');
-    if (container && item) {
+    if (item) {
         const date = new Date(item.published_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-        // Update page title
         document.title = `${item.title} - Sun & Soil News`;
 
         let attachmentsHtml = '';
@@ -109,9 +210,8 @@ async function loadSingleNews(id) {
             `;
         }
 
-        container.innerHTML = `
+        modalBody.innerHTML = `
             <div class="news-detail">
-                <a href="news.html" class="back-link">← Back to News</a>
                 <div class="news-detail-header">
                     <div class="news-meta">
                         <span class="news-date">${date}</span>
@@ -127,5 +227,7 @@ async function loadSingleNews(id) {
                 ${attachmentsHtml}
             </div>
         `;
+    } else {
+        modalBody.innerHTML = '<div class="error">News article not found.</div>';
     }
 }

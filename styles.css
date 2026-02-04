@@ -2745,3 +2745,135 @@ footer {
     border-radius: 12px;
     border: 1px solid #e2e8f0;
 }
+
+/* --- News Modal Styles --- */
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+    /* Prevent scrolling on mobile */
+}
+
+.news-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    /* Above header */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Center vertically on desktop */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 1rem;
+    /* Padding for mobile */
+}
+
+.news-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.news-modal-container {
+    background: var(--color-white);
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    /* Limits height to viewport */
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Contains the scrollable area */
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.news-modal-overlay.active .news-modal-container {
+    transform: translateY(0);
+}
+
+.news-modal-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e8ede9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-white);
+    z-index: 10;
+}
+
+.news-modal-close {
+    background: transparent;
+    border: none;
+    color: var(--color-text-light);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.news-modal-close:hover {
+    background: #f1f5f9;
+    color: var(--color-dark-green);
+    transform: rotate(90deg);
+}
+
+.news-modal-body {
+    overflow-y: auto;
+    /* Independent scrolling */
+    padding: 2rem;
+    overscroll-behavior: contain;
+    /* Prevents scroll chaining to body */
+}
+
+/* Adjust detail view styles for modal context */
+.news-modal-body .news-detail {
+    padding: 0;
+    margin: 0;
+    max-width: none;
+}
+
+.news-modal-body .news-detail-header {
+    margin-bottom: 2rem;
+}
+
+.news-modal-body .news-detail-image {
+    height: 400px;
+    margin-bottom: 2rem;
+}
+
+.news-modal-body .back-link {
+    display: none;
+    /* Hide back link in modal */
+}
+
+@media (max-width: 768px) {
+    .news-modal-overlay {
+        align-items: flex-end;
+        /* Sheet-like on mobile optional, or center */
+        padding: 0;
+    }
+
+    .news-modal-container {
+        height: 100%;
+        /* Full screen on mobile */
+        max-height: 100%;
+        border-radius: 0;
+        max-width: 100%;
+    }
+
+    .news-modal-body .news-detail-image {
+        height: 250px;
+    }
+}
