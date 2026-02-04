@@ -977,6 +977,7 @@ async function showNewsForm(id = null) {
         try {
             const formData = new FormData(e.target);
             const newsData = Object.fromEntries(formData.entries());
+            newsData.content = editor.innerHTML; // Capture rich text content
             newsData.is_published = formData.has('is_published');
             newsData.is_featured = formData.has('is_featured');
             if (!id) newsData.published_at = new Date().toISOString();
