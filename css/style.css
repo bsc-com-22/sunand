@@ -1,0 +1,279 @@
+:root {
+  --radius: 0.75rem;
+  --brand-dark: oklch(0.36 0.10 145);
+  /* #1b5e20 */
+  --brand: oklch(0.41 0.11 145);
+  /* #216825 */
+  --brand-soft: oklch(0.96 0.03 145);
+  --sun: oklch(0.83 0.16 86);
+  /* #fbc02d */
+  --sun-soft: oklch(0.97 0.06 92);
+  --earth: oklch(0.32 0.04 60);
+
+  --background: oklch(0.995 0.005 95);
+  --foreground: oklch(0.22 0.03 150);
+
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--foreground);
+
+  --primary: var(--brand-dark);
+  --primary-foreground: oklch(0.99 0.01 95);
+
+  --secondary: var(--brand-soft);
+  --secondary-foreground: var(--brand-dark);
+
+  --muted: oklch(0.97 0.01 100);
+  --muted-foreground: oklch(0.45 0.02 150);
+
+  --accent: var(--sun);
+  --accent-foreground: oklch(0.22 0.04 80);
+
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+
+  --border: oklch(0.91 0.015 130);
+  --input: oklch(0.91 0.015 130);
+  --ring: var(--brand);
+
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-soft: 0 1px 2px oklch(0.2 0.05 150 / 0.04), 0 8px 24px oklch(0.2 0.05 150 / 0.06);
+  --shadow-lift: 0 10px 30px -10px oklch(0.3 0.08 150 / 0.25);
+}
+
+.dark {
+  --background: oklch(0.16 0.02 150);
+  --foreground: oklch(0.97 0.01 95);
+  --card: oklch(0.22 0.03 150);
+  --card-foreground: oklch(0.97 0.01 95);
+  --popover: oklch(0.22 0.03 150);
+  --popover-foreground: oklch(0.97 0.01 95);
+  --primary: var(--sun);
+  --primary-foreground: oklch(0.22 0.05 80);
+  --secondary: oklch(0.28 0.04 150);
+  --secondary-foreground: oklch(0.97 0.01 95);
+  --muted: oklch(0.28 0.04 150);
+  --muted-foreground: oklch(0.75 0.02 100);
+  --accent: var(--sun);
+  --accent-foreground: oklch(0.22 0.04 80);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: var(--sun);
+}
+
+/* Base Styles */
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Utilities (Transpiled from Tailwind v4 Custom Utilities) */
+.section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.container-narrow {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.is-visible {
+  animation: reveal-up 0.7s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Additional Tailwind-like Utility Mapping for Pure CSS */
+.bg-brand {
+  background-color: var(--brand);
+}
+
+.bg-brand-dark {
+  background-color: var(--brand-dark);
+}
+
+.bg-sun {
+  background-color: var(--sun);
+}
+
+.text-brand {
+  color: var(--brand);
+}
+
+.text-brand-dark {
+  color: var(--brand-dark);
+}
+
+.text-sun {
+  color: var(--sun);
+}
+
+.border-brand {
+  border-color: var(--brand);
+}
+
+/* Sticky Header with Backdrop Blur */
+header.scrolled {
+  background-color: color-mix(in oklch, var(--background), transparent 15%);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Homepage Transparent Header */
+header.home-transparent:not(.scrolled) {
+  background-color: transparent;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+header.home-transparent:not(.scrolled) .nav-link {
+  color: white;
+}
+
+header.home-transparent:not(.scrolled) .logo-text-primary {
+  color: white;
+}
+
+header.home-transparent:not(.scrolled) .logo-text-secondary {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+header.home-transparent:not(.scrolled) .mobile-menu-btn {
+  color: white;
+}
+
+.logo-container img {
+  height: 2.5rem;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-logo img {
+  height: 3rem;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Mobile Menu — viewport lock (fixes scroll-blocked-behind issue) */
+html.menu-open,
+html.menu-open body {
+  overflow: hidden;
+  height: 100%;
+  /* Prevent iOS rubber-band scroll from bleeding through */
+  overscroll-behavior: none;
+}
+
+#mobile-menu {
+  /* Force viewport-relative positioning regardless of scroll */
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 9999 !important;
+}
+
+#mobile-menu .absolute.right-0 {
+  /* Ensure the drawer panel is always fully visible */
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  /* Dynamic viewport height for mobile browsers */
+  overflow-y: auto;
+}
+
+/* Donation amount button selection */
+.donation-btn.selected {
+  background-color: var(--brand);
+  color: white;
+  border-color: var(--brand);
+}

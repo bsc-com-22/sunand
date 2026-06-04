@@ -1,235 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Donate - Sun & Soil Foundation</title>
-    <meta name="description" content="Support Sun & Soil Foundation. Your donation helps empower Malawian farmers through solar irrigation and sustainable agribusiness.">
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-    <link rel="stylesheet" href="styles.css">
-    <!-- Google Fonts -->
+    <title>Support Our Mission — Sun & Soil Foundation</title>
+    <meta name="description"
+        content="Support Sun & Soil Foundation. Your donation helps us provide solar-powered irrigation and climate-smart training to rural farmers in Malawi.">
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Supabase SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { DEFAULT: '#216825', dark: '#1b5e20', soft: '#f1f8f1' },
+                        sun: { DEFAULT: '#fbc02d', soft: '#fff9e6' },
+                        background: '#fcfdfc',
+                        foreground: '#1a241a',
+                        border: '#e4e9e4',
+                        muted: { DEFAULT: '#f5f7f5', foreground: '#6b7a6b' },
+                        card: '#ffffff',
+                        secondary: '#f1f8f1',
+                    },
+                    fontFamily: { display: ['Plus Jakarta Sans', 'sans-serif'], sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
 
-    <!-- Navigation -->
-    <header id="main-header">
-        <div class="container nav-container">
-            <div class="logo">
-                <a href="index.html">
-                    <img src="assets/SUN AND SOIL LOGO.png" alt="Sun And Soil Logo" class="nav-logo">
+<body>
+    <!-- HEADER -->
+    <header class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+        <div class="container-narrow flex items-center justify-between h-16 md:h-20 px-5 md:px-8">
+            <a href="index.html" class="flex items-center gap-2.5 group" aria-label="Sun & Soil Foundation home">
+                <div class="logo-container">
+                    <img src="assets/logo.png" alt="Sun & Soil Foundation Logo" class="h-10 w-auto">
+                </div>
+                <span class="flex flex-col leading-tight">
+                    <span
+                        class="font-display text-base font-semibold logo-text-primary text-foreground transition-colors">Sun
+                        &amp; Soil</span>
+                    <span
+                        class="text-[10px] uppercase tracking-[0.18em] logo-text-secondary opacity-70 text-foreground transition-colors">Foundation</span>
+                </span>
+            </a>
+
+            <nav class="hidden lg:flex items-center gap-8" aria-label="Primary">
+                <a href="index.html"
+                    class="text-sm font-medium text-foreground/80 hover:text-brand transition-colors">Home</a>
+                <a href="about.html"
+                    class="text-sm font-medium text-foreground/80 hover:text-brand transition-colors">About</a>
+                <a href="programs.html"
+                    class="text-sm font-medium text-foreground/80 hover:text-brand transition-colors">Programs</a>
+                <a href="projects.html"
+                    class="text-sm font-medium text-foreground/80 hover:text-brand transition-colors">Projects &
+                    Impact</a>
+                <a href="news.html"
+                    class="text-sm font-medium text-foreground/80 hover:text-brand transition-colors">News</a>
+                <a href="partners.html"
+                    class="text-sm font-medium text-foreground/80 hover:text-brand transition-colors">Partners</a>
+                <a href="contact.html"
+                    class="text-sm font-medium text-foreground/80 hover:text-brand transition-colors">Contact</a>
+            </nav>
+
+            <div class="hidden lg:flex items-center">
+                <a href="donate.html"
+                    class="inline-flex items-center rounded-full bg-sun text-brand-dark px-6 py-2.5 text-sm font-bold hover:brightness-105 transition-all shadow-soft">
+                    Donate Now
                 </a>
             </div>
-            <nav class="main-nav">
-                <ul class="nav-links">
-                    <li class="mobile-close-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
+
+            <button
+                class="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-md text-foreground hover:bg-muted"
+                aria-label="Open menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-menu">
+                    <line x1="4" x2="20" y1="12" y2="12" />
+                    <line x1="4" x2="20" y1="6" y2="6" />
+                    <line x1="4" x2="20" y1="18" y2="18" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- MOBILE MENU -->
+        <div id="mobile-menu" class="hidden fixed inset-0 z-50 lg:hidden">
+            <div class="absolute inset-0 bg-foreground/40"></div>
+            <div class="absolute right-0 top-0 h-full w-[88%] max-w-sm bg-background shadow-xl flex flex-col">
+                <div class="flex items-center justify-between h-16 px-5 border-b border-border">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <span class="text-base font-display font-bold text-foreground">Sun & Soil</span>
+                    </a>
+                    <button class="h-10 w-10 inline-flex items-center justify-center rounded-md hover:bg-muted"
+                        aria-label="Close menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-x">
+                            <line x1="18" x2="6" y1="6" y2="18" />
+                            <line x1="6" x2="18" y1="6" y2="18" />
                         </svg>
-                    </li>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="work.html">Our Work</a></li>
-                    <li><a href="projects.html">Projects</a></li>
-                    <li><a href="impact.html">Impact</a></li>
-                    <li><a href="news.html">News</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="donate.html" class="btn-donate active">Donate</a></li>
-                </ul>
-                <div class="hamburger">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                    </svg>
+                    </button>
                 </div>
-            </nav>
+                <nav class="flex-1 overflow-auto p-5 flex flex-col gap-1">
+                    <a href="index.html" class="px-4 py-3 rounded-md text-base font-medium hover:bg-secondary">Home</a>
+                    <a href="about.html" class="px-4 py-3 rounded-md text-base font-medium hover:bg-secondary">About</a>
+                    <a href="programs.html"
+                        class="px-4 py-3 rounded-md text-base font-medium hover:bg-secondary">Programs</a>
+                    <a href="projects.html"
+                        class="px-4 py-3 rounded-md text-base font-medium hover:bg-secondary">Projects & Impact</a>
+                    <a href="news.html" class="px-4 py-3 rounded-md text-base font-medium hover:bg-secondary">News</a>
+                    <a href="partners.html"
+                        class="px-4 py-3 rounded-md text-base font-medium hover:bg-secondary">Partners</a>
+                    <a href="contact.html"
+                        class="px-4 py-3 rounded-md text-base font-medium hover:bg-secondary">Contact</a>
+                    <a href="donate.html"
+                        class="mt-4 px-4 py-4 rounded-xl text-center text-base font-bold bg-sun text-brand-dark">Donate</a>
+                </nav>
+            </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero small-hero hero-donate">
-        <div class="hero-overlay"></div>
-        <div class="container hero-content">
-            <h1 data-cms-block="donate_hero_title">Support Our Mission</h1>
-            <p class="hero-subheading" data-cms-block="donate_hero_subtitle">Your contribution directly empowers women and youth farmers in Malawi.</p>
-        </div>
-    </section>
+    <main class="pt-16 md:pt-20">
+        <section class="section-padding bg-secondary/40">
+            <div class="container-narrow grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+                <div class="reveal">
+                    <span class="eyebrow">Support Our Mission</span>
+                    <h1 class="mt-3 text-4xl md:text-5xl text-balance tracking-tight">Your contribution transforms rural
+                        lives.</h1>
+                    <p class="mt-6 text-lg leading-relaxed text-muted-foreground">Every dollar you give goes directly
+                        toward deploying solar water pumps and training smallholder farmers in sustainable,
+                        climate-smart agriculture. Together, we can build a food-secure Malawi.</p>
 
-    <!-- Donation Section -->
-    <section class="donate-page section-padding">
-        <div class="container">
-            <div class="donate-wrapper">
-                <!-- Donation Options -->
-                <div class="donation-card-container">
-                    <div class="section-header-left">
-                        <h2 data-cms-block="donate_impact_title">Choose Your Impact</h2>
-                        <div class="underline-left"></div>
-                    </div>
-                    
-                    <div class="currency-selector">
-                        <p class="selector-label">Choose your donation currency</p>
-                        <div class="currency-buttons">
-                            <button class="currency-btn active" data-currency="MWK">
-                                <span class="currency-code">MWK</span>
-                                <span class="currency-name">Donate in Malawian Kwacha</span>
-                            </button>
-                            <button class="currency-btn" data-currency="USD">
-                                <span class="currency-code">USD</span>
-                                <span class="currency-name">Donate in Dollars</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="donation-form-footer">
-                        <button class="btn btn-primary btn-block" id="donate-now-btn">Donate Now</button>
-                        
-                        <div class="trust-badge-container">
-                            <img loading="lazy" src="assets/tag 2.png" alt="Payments secured by Paychangu" class="trust-badge">
+                    <div class="mt-10 grid gap-4">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="h-10 w-10 rounded-full bg-brand/10 flex items-center justify-center shrink-0 text-brand">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-shield-check">
+                                    <path
+                                        d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" />
+                                    <path d="m9 12 2 2 4-4" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold">Transparent & Accountable</h3>
+                                <p class="text-sm text-muted-foreground">We provide regular reports on how your funds
+                                    are being utilised in the field.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Why Donate -->
-                <div class="why-donate-container">
-                    <div class="section-header-left">
-                        <h2>Where Your Money Goes</h2>
-                        <div class="underline-left"></div>
-                    </div>
-                    <div class="impact-list">
-                        <div class="impact-item">
-                            <div class="impact-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                            </div>
-                            <div class="impact-text">
-                                <h3>Solar Technology</h3>
-                                <p>Funding the purchase and installation of solar-powered irrigation pumps for rural communities.</p>
-                            </div>
+                <div class="reveal" data-delay="120">
+                    <div
+                        class="bg-card rounded-[2.5rem] p-8 md:p-10 shadow-lift border border-border relative overflow-hidden">
+                        <!-- Abstract Background -->
+                        <div class="absolute -top-12 -right-12 h-40 w-40 bg-sun/10 rounded-full blur-3xl"></div>
+
+                        <h2 class="text-2xl font-display font-bold">Select Donation Amount</h2>
+                        <div class="mt-8 grid grid-cols-2 gap-3">
+                            <button
+                                class="donation-btn py-4 rounded-2xl border border-border text-lg font-bold hover:border-brand hover:text-brand transition-all">$25</button>
+                            <button
+                                class="donation-btn py-4 rounded-2xl border border-border text-lg font-bold hover:border-brand hover:text-brand transition-all">$50</button>
+                            <button
+                                class="donation-btn py-4 rounded-2xl border border-border text-lg font-bold hover:border-brand hover:text-brand transition-all bg-brand text-white border-brand">$100</button>
+                            <button
+                                class="donation-btn py-4 rounded-2xl border border-border text-lg font-bold hover:border-brand hover:text-brand transition-all">$250</button>
                         </div>
-                        <div class="impact-item">
-                            <div class="impact-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                            </div>
-                            <div class="impact-text">
-                                <h3>Training & Education</h3>
-                                <p>Supporting intensive workshops on climate-smart agriculture and business management.</p>
-                            </div>
+
+                        <div class="mt-6">
+                            <input type="number" placeholder="Enter custom amount ($)"
+                                class="w-full rounded-2xl border border-border px-6 py-4 text-sm focus:ring-2 focus:ring-brand outline-none transition-all">
                         </div>
-                        <div class="impact-item">
-                            <div class="impact-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                            </div>
-                            <div class="impact-text">
-                                <h3>Community Resilience</h3>
-                                <p>Building long-term food security and economic independence for vulnerable groups.</p>
-                            </div>
+
+                        <button
+                            class="mt-8 w-full rounded-full bg-brand text-white py-5 text-lg font-bold hover:bg-brand-dark transition-all shadow-soft active:scale-[0.98]">
+                            Proceed to Secure Payment
+                        </button>
+
+                        <div class="mt-6 flex items-center justify-center gap-4">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"
+                                class="h-5 opacity-40 grayscale hover:grayscale-0 transition" alt="PayPal">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
+                                class="h-3 opacity-40 grayscale hover:grayscale-0 transition" alt="Visa">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
+                                class="h-6 opacity-40 grayscale hover:grayscale-0 transition" alt="Mastercard">
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <section class="section-padding">
+            <div class="container-narrow">
+                <div class="grid gap-12 lg:grid-cols-3">
+                    <div class="reveal">
+                        <div
+                            class="h-16 w-16 rounded-2xl bg-secondary flex items-center justify-center text-brand mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-users">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-display font-bold">Empower Families</h3>
+                        <p class="mt-3 text-muted-foreground">Your support enables households to transition from
+                            climate-vulnerable subsistence to market-ready farming.</p>
+                    </div>
+                    <div class="reveal" data-delay="100">
+                        <div
+                            class="h-16 w-16 rounded-2xl bg-secondary flex items-center justify-center text-brand mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-zap">
+                                <path d="M4 14.899 9.5 3H11l-2 9h8.5L12 21h-2l2-9H4Z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-display font-bold">Clean Energy</h3>
+                        <p class="mt-3 text-muted-foreground">Help us replace expensive, polluting diesel pumps with
+                            sustainable, solar-powered irrigation systems.</p>
+                    </div>
+                    <div class="reveal" data-delay="200">
+                        <div
+                            class="h-16 w-16 rounded-2xl bg-secondary flex items-center justify-center text-brand mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-graduation-cap">
+                                <path d="M22 10v6M2 10l10-5 10 5-10 5L2 10Z" />
+                                <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-display font-bold">Skills Training</h3>
+                        <p class="mt-3 text-muted-foreground">Support hands-on training for women and youth in
+                            climate-smart agronomy and agribusiness.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-dark text-white/90">
+        <div class="container-narrow px-5 md:px-8 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-5">
+            <!-- Brand -->
+            <div class="lg:col-span-2">
+                <a href="index.html" class="flex items-center gap-2.5 group text-white">
+                    <div class="footer-logo">
+                        <img src="assets/logo.png" alt="Sun & Soil Foundation Logo" class="h-12 w-auto">
+                    </div>
+                    <div class="flex flex-col -space-y-1">
+                        <span class="text-lg font-display font-bold">Sun & Soil</span>
+                        <span class="text-[0.65rem] font-bold tracking-[0.2em] uppercase text-sun">Foundation</span>
+                    </div>
+                </a>
+                <p class="mt-5 text-sm leading-relaxed text-white/70 max-w-xs">
+                    Empowering rural communities through solar-powered irrigation, climate-smart agriculture, and
+                    inclusive economic development across Malawi.
+                </p>
+                <div class="mt-6 flex gap-3">
+                    <a href="#"
+                        class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-sun hover:text-brand-dark transition-colors"
+                        aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                    </a>
+                    <a href="#"
+                        class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-sun hover:text-brand-dark transition-colors"
+                        aria-label="Twitter/X">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+                        </svg>
+                    </a>
+                    <a href="#"
+                        class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-sun hover:text-brand-dark transition-colors"
+                        aria-label="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                            <rect width="4" height="12" x="2" y="9" />
+                            <circle cx="4" cy="4" r="2" />
+                        </svg>
+                    </a>
+                </div>
+                <div class="mt-6">
+                    <a href="donate.html"
+                        class="inline-flex items-center rounded-full bg-sun text-brand-dark px-6 py-3 text-sm font-bold hover:brightness-105 transition-all">
+                        Donate Now
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-sm font-semibold uppercase tracking-widest text-sun">Explore</h3>
+                <ul class="mt-5 space-y-3 text-sm">
+                    <li><a href="about.html" class="text-white/75 hover:text-sun transition-colors">About Us</a></li>
+                    <li><a href="programs.html" class="text-white/75 hover:text-sun transition-colors">Our Programs</a>
+                    </li>
+                    <li><a href="projects.html" class="text-white/75 hover:text-sun transition-colors">Projects &
+                            Impact</a></li>
+                    <li><a href="news.html" class="text-white/75 hover:text-sun transition-colors">News & Updates</a>
+                    </li>
+                    <li><a href="partners.html" class="text-white/75 hover:text-sun transition-colors">Partners &
+                            Alignment</a></li>
+                    <li><a href="contact.html" class="text-white/75 hover:text-sun transition-colors">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div>
+                <h3 class="text-sm font-semibold uppercase tracking-widest text-sun">Support</h3>
+                <ul class="mt-5 space-y-3 text-sm">
+                    <li><a href="donate.html" class="text-white hover:text-sun transition-colors font-bold">Donate
+                            Now</a></li>
+                    <li><a href="contact.html" class="text-white/75 hover:text-sun transition-colors">Fundraising
+                            Partnerships</a></li>
+                    <li><a href="partners.html" class="text-white/75 hover:text-sun transition-colors">Corporate
+                            Sponsorship</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h3 class="text-sm font-semibold uppercase tracking-widest text-sun">Contact</h3>
+                <ul class="mt-5 space-y-4 text-sm text-white/80">
+                    <li class="flex items-start gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-sun shrink-0 mt-0.5">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        <span>Kaphiri, Area 36<br>Lilongwe, Malawi</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-sun shrink-0 mt-0.5">
+                            <rect width="20" height="16" x="2" y="4" rx="2" />
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                        </svg>
+                        <a href="mailto:sunandsoilfoundation@gmail.com"
+                            class="hover:text-sun break-all">sunandsoilfoundation@gmail.com</a>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-sun shrink-0 mt-0.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                        </svg>
+                        <span>+265 (0) 995 856 237<br>+265 (0) 888 655 069</span>
+                    </li>
+                </ul>
             </div>
         </div>
-    </section>
 
-    <!-- Transparency Section -->
-    <section class="transparency section-padding bg-light">
-        <div class="container">
-            <div class="section-header">
-                <h2 data-cms-block="donate_transparency_title">Our Commitment to Transparency</h2>
-                <div class="underline"></div>
-            </div>
-            <div class="transparency-grid">
-                <div class="transparency-card">
-                    <div class="t-icon">100%</div>
-                    <h3>Direct Impact</h3>
-                    <p>Every dollar donated goes directly toward our field programs and community support.</p>
-                </div>
-                <div class="transparency-card">
-                    <div class="t-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                    </div>
-                    <h3>Annual Reports</h3>
-                    <p>We publish detailed annual reports and financial statements for public review.</p>
-                </div>
-                <div class="transparency-card">
-                    <div class="t-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                    </div>
-                    <h3>Local Leadership</h3>
-                    <p>Our programs are led by Malawian experts who understand the local context and needs.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-col">
-                    <h3>Sun & Soil</h3>
-                    <p>Empowering communities through sustainable agriculture and clean energy solutions.</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="work.html">Our Work</a></li>
-                        <li><a href="projects.html">Projects</a></li>
-                        <li><a href="impact.html">Impact</a></li>
-                        <li><a href="news.html">News</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Get Involved</h3>
-                    <ul>
-                        <li><a href="donate.html">Donate</a></li>
-                        <li><a href="#">Partner With Us</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="about.html#team">Our Team</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Contact Info</h3>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg> 
-                        <span data-setting="contact_address">Kaphiri, Area 36, Lilongwe, Malawi</span>
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg> 
-                        <a href="mailto:sunandsoilfoundation@gmail.com" data-setting="contact_email">sunandsoilfoundation@gmail.com</a>
-                    </p>
-                    <p>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; vertical-align: middle;">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                        </svg> 
-                        <a href="tel:+265995856237" data-setting="contact_phone">+265 995 856 237</a>
-                    </p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <div class="legal">
-                    <p>Registered Non-Profit Organization | Aligned with Malawi Vision 2063 & UN SDGs</p>
-                </div>
-                <div class="credits">
-                    <p>&copy; 2026 Sun & Soil Foundation. All rights reserved.</p>
-                    <p>Developed by Nyasa Creatives</p>
-                </div>
+        <div class="border-t border-white/10">
+            <div
+                class="container-narrow px-5 md:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/50">
+                <p>© 2026 Sun & Soil Foundation. All rights reserved.</p>
+                <p class="italic">Building Climate-Resilient Food Systems Through Clean Energy and Skills.</p>
             </div>
         </div>
     </footer>
-
-    <script type="module" src="script.js"></script>
-    <script type="module" src="js/content-loader.js"></script>
+    <script src="js/main.js"></script>
 </body>
+
 </html>
