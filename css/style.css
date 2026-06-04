@@ -210,13 +210,13 @@ header.scrolled {
 }
 
 .logo-container img {
-  height: 2.5rem;
+  height: 6.5rem;
   width: auto;
   object-fit: contain;
 }
 
 .footer-logo img {
-  height: 3rem;
+  height: 4rem;
   width: auto;
   object-fit: contain;
 }
