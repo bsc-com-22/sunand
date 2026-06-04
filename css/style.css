@@ -198,35 +198,15 @@ h4 {
   border-color: var(--brand);
 }
 
-/* Sticky Header with Backdrop Blur */
+/* Header Styles */
+header {
+  background-color: #ffffff;
+  border-bottom: 1px solid transparent;
+}
+
 header.scrolled {
-  background-color: color-mix(in oklch, var(--background), transparent 15%);
-  backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
-}
-
-/* Homepage Transparent Header */
-header.home-transparent:not(.scrolled) {
-  background-color: transparent;
-  border-bottom-color: transparent;
-  box-shadow: none;
-}
-
-header.home-transparent:not(.scrolled) .nav-link {
-  color: white;
-}
-
-header.home-transparent:not(.scrolled) .logo-text-primary {
-  color: white;
-}
-
-header.home-transparent:not(.scrolled) .logo-text-secondary {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-header.home-transparent:not(.scrolled) .mobile-menu-btn {
-  color: white;
 }
 
 .logo-container img {
