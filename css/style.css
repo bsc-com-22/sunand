@@ -221,7 +221,7 @@ header.scrolled {
   object-fit: contain;
 }
 
-/* Mobile Menu — viewport lock (fixes scroll-blocked-behind issue) */
+/* Mobile Menu - viewport lock (fixes scroll-blocked-behind issue) */
 html.menu-open,
 html.menu-open body {
   overflow: hidden;
