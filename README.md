@@ -1,6 +1,6 @@
-# Sun & Soil Foundation - Pure HTML/CSS/JS Version
+# Sun & Soil Foundation
 
-This directory contains the entire website converted to pure HTML, CSS, and Javascript. It has no build dependencies and can be served from any web server or opened directly in a browser.
+This directory contains the entire website in HTML, CSS, and Javascript. It has no build dependencies and can be served from any web server or opened directly in a browser.
 
 ## Structure
 
