@@ -1,0 +1,24 @@
+{
+  "name": "sunand",
+  "version": "1.0.0",
+  "description": "This directory contains the entire website in HTML, CSS, and Javascript. It has no build dependencies and can be served from any web server or opened directly in a browser.",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bsc-com-22/sunand.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bsc-com-22/sunand/issues"
+  },
+  "homepage": "https://github.com/bsc-com-22/sunand#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.4.15"
+  }
+}
