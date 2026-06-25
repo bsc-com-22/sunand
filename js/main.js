@@ -91,3 +91,16 @@ window.addEventListener('load', () => {
         document.body.classList.remove('is-loading');
     }
 });
+
+// Parallax Effect
+window.addEventListener('scroll', () => {
+    const parallaxImages = document.querySelectorAll('.parallax-bg');
+    parallaxImages.forEach(img => {
+        const speed = 0.15;
+        const rect = img.parentElement.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            const shift = (window.innerHeight / 2 - rect.top) * speed;
+            img.style.transform = `translate3d(0, ${shift}px, 0)`;
+        }
+    });
+}, { passive: true });
