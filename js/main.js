@@ -82,3 +82,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     counters.forEach(el => counterObserver.observe(el));
 });
+
+// Window Load Preloader
+window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    if (preloader) {
+        preloader.classList.add('fade-out');
+        document.body.classList.remove('is-loading');
+    }
+});
